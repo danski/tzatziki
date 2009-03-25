@@ -1,9 +1,6 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'tzatziki'
-
-require 'test/unit/assertions'
-
-require 'test/unit/assertions'
+require 'spec/expectations'
 
 World do |world|
   

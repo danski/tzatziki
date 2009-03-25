@@ -1,0 +1,95 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.join(File.dirname(__FILE__), *%w[.. lib])
+
+help = <<HELP
+Tzatziki is a combined API documentation and testing tool.
+----------------------------------------------------------
+By writing your developer API documentation with Tzatziki, 
+you're creating a set of tests that run over HTTP *and* a 
+lovely, readable, configurable HTML documentation set.
+
+Basic Command Line Usage:
+  taz --help                                            # Show this message
+  taz <path to write generated site>                    # Runs the Tzatziki suites in ./ and saves the resulting documentation to <destination>
+  taz <path to source> <path to write generated site>   # Runs the Tzatziki suites in <source> and saves the resulting documentation to <destination>
+    
+  Options:
+HELP
+
+require 'optparse'
+require 'tzatziki'
+
+options = {
+  :generate_default_template=>false,
+  :domain=>"http://localhost"
+}
+
+opts = OptionParser.new do |opts|
+  opts.banner = help
+  
+  opts.on("--generate", "Generate a new Tzatziki site in the specified directory.") do
+    options[:generate_default_template] = true
+  end
+  
+  opts.on("--domain [domain]", "Run the tests against a specific domain. Defaults to #{options[:domain]}") do |domain|
+    Tzatziki.domain = domain || options[:domain]
+  end
+  
+  opts.on("--nodoc", "Runs your Tzatziki files as tests without producing new documentation files.") do
+    Tzatziki.write_docs = false
+  end
+  
+  opts.on("--notest", "Compiles the Tzatziki documentation for your API without running the tests.") do
+    Tzatziki.run_tests = false
+  end
+  
+  opts.on("--pygments", "Use pygments to highlight code") do
+    Tzatziki.pygments = true
+  end
+  
+  opts.on("--version", "Display current version") do
+    puts "Tzatziki " + Tzatziki.version
+    exit 0
+  end
+end
+
+opts.parse!
+
+def clean(dest)
+  FileUtils.rm_rf(dest)
+  FileUtils.mkdir_p(dest)
+end
+
+def globs(source)
+  Dir.chdir(source) do
+    dirs = Dir['*'].select { |x| File.directory?(x) }
+    dirs -= ['_site']
+    dirs = dirs.map { |x| "#{x}/**/*" }
+    dirs += ['*']
+  end
+end
+
+source = nil
+destination = nil
+
+case ARGV.size
+  when 0
+    source = '.'
+    destination = File.join('.', 'docs')
+  when 1
+    source = '.'
+    destination = ARGV[0]
+  when 2
+    source = ARGV[0]
+    destination = ARGV[1]
+  else
+    puts "Invalid options. Run `taz --help` for assistance."
+    exit(1)
+end
+
+if options[:generate_default_template]
+  puts "Generating default template in #{destination}..."
+else
+  Tzatziki.process!(source, destination)
+end
