@@ -7,6 +7,7 @@ require 'yaml'
 # Gem requires
 require 'liquid'
 require 'redcloth'
+require 'jekyll'
 # Tzatziki requires
 require 'tzatziki/testable'
 require 'tzatziki/site'
@@ -38,9 +39,7 @@ module Tzatziki
       document(source, destination)
     end
     puts "Out of Tzatziki."
-  end
-  
-  
+  end 
    
   def self.test(source, destination)
     
