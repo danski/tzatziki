@@ -19,9 +19,21 @@ describe Tzatziki::Site do
       @site.layouts["default"].should be_kind_of(Jekyll::Layout)
       @site.layouts["thingy"].should be_nil
     end
-    it "should index all the data types"
-    it "should index all the specifications"
-    it "should index all the pages"
+      
+    # - root
+    # - _templates
+    # - _types
+    # - _specifications
+    # - _apis    
+    # --- api_name
+    # ------ _types
+    # ------ _specifications
+    # ------ index.markdown
+    # ------ search.markdown
+    # ------ another_api
+    # --------- index.markdown
+    # --------- _types
+    
   end
   
 end

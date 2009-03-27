@@ -12,6 +12,14 @@ module SpecHelper
     )
   end
   
+  def get_test_api
+    Tzatziki::Site.new(
+      File.join(File.dirname(__FILE__), *%w[example source the_google]),
+      File.join(File.dirname(__FILE__), *%w[example destination]),
+      get_test_site
+    )
+  end
+  
 end
 
 Spec::Runner.configure do |config|
