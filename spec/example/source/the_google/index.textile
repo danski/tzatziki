@@ -1,0 +1,7 @@
+---
+title: The Google Search API
+---
+
+This is a textile document intended to be a cover sheet for the The Google Search API. It searches The Google.
+
+This one doesn't generate any test results, but it does appear in the generated site pretty much just like a Jekyll::Page.
