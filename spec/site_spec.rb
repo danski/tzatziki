@@ -8,11 +8,13 @@ describe Tzatziki::Site do
 
   describe "initialization" do
     
-    it "should read the config file and include it in the site payload" do
+    it "should read the config file" do
       @site.read_config
       @site.config["api_key"].should == "FOOOOOBAAAAAAAR"
       @site.config["api_token"].should == "RHUUUUUBAAAAARRRB"
     end
+    
+    it "should include the config file in the site payload"
     
     it "should read all the layouts" do
       @site.read_layouts

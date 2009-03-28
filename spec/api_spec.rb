@@ -8,6 +8,10 @@ describe Tzatziki::API do
     @site.read_types
     @api = get_test_api(@site)
   end
+  
+  it "should == another instance with the same source path" do
+    @site.should == get_test_site
+  end
 
   describe "initialization" do
     
@@ -42,10 +46,23 @@ describe Tzatziki::API do
       @api.read_specifications
       @api.local_specifications.keys.should == ["searchable"]
     end
-    it "should index all the local documents"
-    it "should index all the child APIs at level N+1"
+    it "should index all the local documents" do
+      @api.read_documents
+      @api.documents.should_not be_empty
+    end
+    it "should index all the child APIs at level N+1" do
+      @site.read_children
+      @site.children.first.source.should include("the_google")
+      @site.children.length.should == 1
+      
+      @api.read_children
+      @api.children.should be_empty
+    end
     
-    it "should use all non-hidden and non-underscored folders that do not end with a tilde as child APIs"
+    it "should not use hidden folders as child APIs"
+    it "should not use folders ending with a tilde as child APIs"
+    it "should not use folders ending with .example as child APIs"
+    
     it "should index all the APIs and start them recursing"
     
     it "should merge the data types found at this level with the list known to the parent without altering the types hash on the parent" do

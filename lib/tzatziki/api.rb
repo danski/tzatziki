@@ -53,7 +53,7 @@ module Tzatziki
       # Register parent
       if parent
         self.parent = parent
-        parent.children << self
+        parent.children << self unless parent.children.include?(self)
       end
     end
     
@@ -64,9 +64,9 @@ module Tzatziki
     def process
       self.read_config
       self.read_specifications
-      #self.read_types
-      #self.read_documents
-      #self.read_children
+      self.read_types
+      self.read_documents
+      self.read_children
       #self.transform!
     end
   
@@ -108,6 +108,29 @@ module Tzatziki
       self.types.merge!(self.local_types)
     end
     
+    # Read all the flat text files in self.source and create a new Document instance for each.
+    def read_documents
+      self.documents = read_transformables_from_directory(".", Tzatziki::Document).values
+    end
+    
+    # Read all the directories under self.source except for those:
+    #   beginning with _ or .
+    #   ending with ~ or .examples
+    # and create new Tzatziki::API instances for them.
+    def read_children
+      entries = Dir.entries(self.source)
+      directories = entries.select { |e| File.directory?(File.join(self.source, e)) }
+      directories = directories.reject { |d| d[0..0]=~/\.|_/ or d=~/\.examples$/ or d[-1]=="~" }
+      directories.each do |dir|
+        api = Tzatziki::API.new(File.join(self.source, dir), self.destination, self)
+      end
+    end
+    
+    def ==(other)
+      self.source == other.source
+    end
+    
+    private
     def read_transformables_from_directory(folder, transformable_klass)
       begin
         path = File.join(self.source, folder)
@@ -124,7 +147,7 @@ module Tzatziki
         return {}
       end
     end
-    
+        
     
 
 #    # Copy all regular files from <source> to <dest>/ ignoring
@@ -175,41 +198,7 @@ module Tzatziki
 #      end
 #    end
 
-#    # Read all the files in <base>/_posts except backup files (end with "~")
-#    # and create a new Post object with each one.
-#    #
-#    # Returns nothing
-#    def read_posts(dir)
-#      base = File.join(self.source, dir, '_posts')
-#      
-#      entries = []
-#      Dir.chdir(base) { entries = Dir['**/*'] }
-#      entries = entries.reject { |e| e[-1..-1] == '~' }
-#      entries = entries.reject { |e| File.directory?(File.join(base, e)) }
-#
-#      # first pass processes, but does not yet render post content
-#      entries.each do |f|
-#        if Post.valid?(f)
-#          post = Post.new(self.source, dir, f)
-#
-#          if post.published
-#            self.posts << post
-#            post.categories.each { |c| self.categories[c] << post }
-#          end
-#        end
-#      end
-#      
-#      # second pass renders each post now that full site payload is available
-#      self.posts.each do |post|
-#        post.render(self.layouts, site_payload)
-#      end
-#      
-#      self.posts.sort!
-#      self.categories.values.map { |cats| cats.sort! { |a, b| b <=> a} }
-#    rescue Errno::ENOENT => e
-#      # ignore missing layout dir
-#    end
-#    
+    
 #    # Write each post to <dest>/<year>/<month>/<day>/<slug>
 #    #
 #    # Returns nothing
