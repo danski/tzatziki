@@ -126,7 +126,7 @@ module Tzatziki
     def read_children
       entries = Dir.entries(self.source)
       directories = entries.select { |e| File.directory?(File.join(self.source, e)) }
-      directories = directories.reject { |d| d[0..0]=~/\.|_/ or d=~/\.examples$/ or d[-1]=="~" }
+      directories = directories.reject { |d| d[0..0]=~/\.|_/ or d=~/\.examples$/ or d[-1..-1]=="~" }
       directories.each do |dir|
         api = Tzatziki::API.new(File.join(self.source, dir), self.destination, self)
       end

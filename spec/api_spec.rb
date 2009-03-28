@@ -66,9 +66,24 @@ describe Tzatziki::API do
       @api.children.first.source.should include("mail")
     end
     
-    it "should not use hidden folders as child APIs"
-    it "should not use folders ending with a tilde as child APIs"
-    it "should not use folders ending with .examples as child APIs"
+    it "should ignore folders ending with a tilde" do
+      # Assert that a folder with .examples does exist
+      entries = Dir.entries(@api.source)
+      entries.select { |e| e.match(/~/) }.should_not be_empty
+      # Assert that no API with that path was created
+      @api.children.each do |c|
+        c.source.should_not match(/~/)
+      end
+    end
+    it "should not use folders ending with .examples as child APIs" do
+      # Assert that a folder with .examples does exist
+      entries = Dir.entries(@api.source)
+      entries.select { |e| e.match(/\.examples$/) }.should_not be_empty
+      # Assert that no API with that path was created
+      @api.children.each do |c|
+        c.source.should_not match(/\.examples/)
+      end
+    end
     
     it "should index all the APIs and start them recursing"
     
