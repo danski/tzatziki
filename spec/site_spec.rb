@@ -6,6 +6,8 @@ describe Tzatziki::Site do
     @site = get_test_site
   end
 
+  it "should report ./ as the relative path from the site root"
+
   describe "initialization" do
     
     it "should read the config file" do

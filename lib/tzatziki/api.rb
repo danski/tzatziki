@@ -54,6 +54,12 @@ module Tzatziki
       if parent
         self.parent = parent
         parent.children << self unless parent.children.include?(self)
+        # Traverse upwards and find root site
+        p = parent
+        while p and !p.is_a?(Tzatziki::Site) do
+          p = parent.parent
+        end
+        self.site = p
       end
     end
     
@@ -126,8 +132,18 @@ module Tzatziki
       end
     end
     
+    # Comparison with another Tzatziki::Site or Tzatziki::API instance.
+    # Returns <true> if the source directories of both objects match.
     def ==(other)
       self.source == other.source
+    end
+    
+    # Returns the relative path components off the site root.
+    # If this instance of Tzatziki::API is in a subfolder named "bar"
+    # within another subfolder called "foo" off the site root "~user/taz_site",
+    # then site path_offset_components will be "foo/bar"
+    def path_offset
+      self.source.gsub /#{self.site.source}\//, ""
     end
     
     private

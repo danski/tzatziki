@@ -11,6 +11,14 @@ describe Tzatziki::API do
   
   it "should == another instance with the same source path" do
     @site.should == get_test_site
+  end  
+  it "should be able to traverse the parent structure to find the root site instance" do
+    @api.site.should == @site
+  end
+  it "should be able to determine own position in file system relative to site root" do
+    @api.path_offset.should == "the_google"
+    @api.read_children
+    @api.children.first.path_offset.should == "the_google/mail"
   end
 
   describe "initialization" do
@@ -53,15 +61,14 @@ describe Tzatziki::API do
     it "should index all the child APIs at level N+1" do
       @site.read_children
       @site.children.first.source.should include("the_google")
-      @site.children.length.should == 1
-      
+      @site.children.length.should == 1      
       @api.read_children
-      @api.children.should be_empty
+      @api.children.first.source.should include("mail")
     end
     
     it "should not use hidden folders as child APIs"
     it "should not use folders ending with a tilde as child APIs"
-    it "should not use folders ending with .example as child APIs"
+    it "should not use folders ending with .examples as child APIs"
     
     it "should index all the APIs and start them recursing"
     
