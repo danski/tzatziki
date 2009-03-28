@@ -27,7 +27,7 @@ module Tzatziki
       #
       # Returns <Site>
       def initialize(source, destination)
-        super(source, destination, self)
+        super(source, destination)
         self.layouts = {}
       end
     

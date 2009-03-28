@@ -1,6 +1,6 @@
 module Tzatziki
   
-  class Page
+  class Document
     
   end
   

@@ -10,7 +10,7 @@
   where they will only be available to APIs that level or lower in the tree.
   
   Including a specification or type lower down the tree with the same name as one higher up the tree will
-  completely replace the higher-up version for all pages this level or lower, in a predictable display of 
+  completely replace the higher-up version for all documents this level or lower, in a predictable display of 
   override behaviour. Developers should note that replacement specs/types are not merged with their 
   parent counterparts but rather completely replace them at the point of insertion and below.
 
@@ -25,25 +25,32 @@ module Tzatziki
     # and 0..n child API instances which will inherit from this one. Each API also belongs to an
     # instance of Tzatziki::Site.
     attr_accessor :site, :parent, :children
-    # Each API may have pages, specifications and types.
-    attr_accessor :config, :pages, :specifications, :types
+    # Each API may have documents, specifications and types.
+    attr_accessor :config, :documents, :specifications, :types
     
     # Initializes and returns the API object.
     #   +source+ is the path to the API's source folder.
     #   +destination+ is the path in which the API documentation is being generated.
-    #   +site+ is the Tzatziki::Site instance to use as the scope for this API's global settings.
     #   +parent+ (optional) is the Tzatziki::API instance that this API inherits from.
     # 
     # Returns <API>
-    def initialize(source, destination, site, parent=nil)
+    def initialize(source, destination, parent=nil)
       # Set properties
       self.source = source
       self.destination = destination
-      self.specifications = {}
-      self.pages = []
+      # Blanks that will get populated by recursive descent through the file system.
+      self.documents = []
       self.children = []
-      self.config = {}
-      # Merge with parent and store on the instance
+      # Blanks that will get duped from parent and then merged with local results
+      # when we descend from this point.    
+      self.specifications   = (parent)? parent.specifications.dup : {}
+      self.types            = (parent)? parent.types.dup : {}
+      self.config           = (parent)? parent.config.dup : {}
+      # Register parent
+      if parent
+        self.parent = parent
+        parent.children << self
+      end
     end
     
     # Do the actual work of processing the site and generating the
@@ -52,8 +59,11 @@ module Tzatziki
     # Returns nothing
     def process
       self.read_config
-      #self.transform_pages
-      #self.write_posts
+      self.read_specifications
+      #self.read_types
+      #self.read_documents
+      #self.read_children
+      #self.transform!
     end
   
     # Read the config file into a hash ready for inclusion in the site payload.
@@ -79,6 +89,39 @@ module Tzatziki
       end
       self.config = data
     end
+    
+    # Reads and instantiates any specifications in the _specifications directory below self.source,
+    # if such a folder exists. Otherwise the specifications hash will be left untouched from the parent.
+    def read_specifications
+      found_specs = read_transformables_from_directory("_specifications", Tzatziki::Specification)
+      self.specifications.merge!(found_specs)
+    end
+    
+    # Reads and instantiates any types in the _types directory below self.source,
+    # if such a folder exists. Otherwise the types hash will be left untouched from the parent.
+    def read_types
+      found_types = read_transformables_from_directory("_types", Tzatziki::Type)
+      self.types.merge!(found_types)
+    end
+    
+    def read_transformables_from_directory(folder, transformable_klass)
+      begin
+        path = File.join(self.source, folder)
+        entries = Dir.entries(path)
+        files = entries.reject { |e| File.directory?(File.join(path, e)) }
+        files = entries.reject { |e| e[0..0]=~/\./ or e[-1]=="~" }
+        transformables = {}
+        files.each do |f|
+          transformables[f.split(".").first] = transformable_klass.new(File.join(path, f), self)
+        end
+        return transformables
+      rescue Errno::ENOENT => e
+        # Ignore missing specifications
+        return {}
+      end
+    end
+    
+    
 
 #    # Copy all regular files from <source> to <dest>/ ignoring
 #    # any files/directories that are hidden or backup files (start
@@ -89,7 +132,7 @@ module Tzatziki
 #    #            recursively as it descends through directories
 #    #
 #    # Returns nothing
-#    def transform_pages(dir = '')
+#    def transform_documents(dir = '')
 #      base = File.join(self.source, dir)
 #      entries = Dir.entries(base)
 #      entries = entries.reject { |e| e[-1..-1] == '~' }
@@ -109,7 +152,7 @@ module Tzatziki
 #        entries.each do |f|
 #          if File.directory?(File.join(base, f))
 #            next if self.dest.sub(/\/$/, '') == File.join(base, f)
-#            transform_pages(File.join(dir, f))
+#            transform_documents(File.join(dir, f))
 #          else
 #            first3 = File.open(File.join(self.source, dir, f)) { |fd| fd.read(3) }
 #        

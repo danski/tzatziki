@@ -13,7 +13,8 @@ require 'tzatziki/core_ext'
 require 'tzatziki/testable'
 require 'tzatziki/api'
 require 'tzatziki/site'
-require 'tzatziki/page'
+require 'tzatziki/document'
+require 'tzatziki/type'
 require 'tzatziki/specification'
 
 module Tzatziki
