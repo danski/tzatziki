@@ -10,8 +10,6 @@ describe Tzatziki::API do
   end
 
   describe "initialization" do
-        
-
     
     it "should get the data types hash from the parent" do
       @api.types.should_not be_empty
@@ -32,9 +30,17 @@ describe Tzatziki::API do
   
   describe "processing" do
     
-    it "should index all the local data types"
+    it "should index all the local data types" do
+      @site.read_types
+      @site.local_types.keys.should == ["date"]
+      @api.read_types
+      @api.local_types.keys.should == ["search_query"]
+    end
     it "should index all the local specifications" do
       @site.read_specifications
+      @site.local_specifications.keys.should == ["successful"]
+      @api.read_specifications
+      @api.local_specifications.keys.should == ["searchable"]
     end
     it "should index all the local documents"
     it "should index all the child APIs at level N+1"
@@ -42,12 +48,16 @@ describe Tzatziki::API do
     it "should use all non-hidden and non-underscored folders that do not end with a tilde as child APIs"
     it "should index all the APIs and start them recursing"
     
-    it "should merge and override the data types found at this level with the list known to the parent"
-    it "should merge and override the specifications found at this level with the list known to the parent"
-    
-    it "should merge a duplicate of the data types hash, without affecting the data types hash on the parent"
-    it "should merge a duplicate of the specifications hash, without affecting the specifications hash on the parent"
-    
+    it "should merge the data types found at this level with the list known to the parent without altering the types hash on the parent" do
+      @site.read_types; @api.read_types
+      @api.types.keys.should == ["date","search_query"]
+      @site.types.keys.should == ["date"]
+    end
+    it "should merge the specifications found at this level with the list known to the parent without altering the specs hash on the parent" do
+      @site.read_specifications; @api.read_specifications
+      @api.specifications.keys.should == ["searchable","successful"]
+      @site.specifications.keys.should == ["successful"]
+    end    
   end
   
 end

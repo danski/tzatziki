@@ -27,6 +27,8 @@ module Tzatziki
     attr_accessor :site, :parent, :children
     # Each API may have documents, specifications and types.
     attr_accessor :config, :documents, :specifications, :types
+    # Specs and types specific to this level of recursion are made available here.
+    attr_accessor :local_specifications, :local_types
     
     # Initializes and returns the API object.
     #   +source+ is the path to the API's source folder.
@@ -41,6 +43,8 @@ module Tzatziki
       # Blanks that will get populated by recursive descent through the file system.
       self.documents = []
       self.children = []
+      self.local_specifications = {}
+      self.local_types = {}
       # Blanks that will get duped from parent and then merged with local results
       # when we descend from this point.    
       self.specifications   = (parent)? parent.specifications.dup : {}
@@ -93,15 +97,15 @@ module Tzatziki
     # Reads and instantiates any specifications in the _specifications directory below self.source,
     # if such a folder exists. Otherwise the specifications hash will be left untouched from the parent.
     def read_specifications
-      found_specs = read_transformables_from_directory("_specifications", Tzatziki::Specification)
-      self.specifications.merge!(found_specs)
+      self.local_specifications = read_transformables_from_directory("_specifications", Tzatziki::Specification)
+      self.specifications.merge!(self.local_specifications)
     end
     
     # Reads and instantiates any types in the _types directory below self.source,
     # if such a folder exists. Otherwise the types hash will be left untouched from the parent.
     def read_types
-      found_types = read_transformables_from_directory("_types", Tzatziki::Type)
-      self.types.merge!(found_types)
+      self.local_types = read_transformables_from_directory("_types", Tzatziki::Type)
+      self.types.merge!(self.local_types)
     end
     
     def read_transformables_from_directory(folder, transformable_klass)
