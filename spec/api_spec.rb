@@ -85,7 +85,11 @@ describe Tzatziki::API do
       end
     end
     
-    it "should index all the APIs and start them recursing"
+    it "should index all the APIs and start them recursing when #process is called" do
+      @site = get_test_site
+      @site.process
+      @site.children.first.children.should_not be_empty
+    end
     
     it "should merge the data types found at this level with the list known to the parent without altering the types hash on the parent" do
       @site.read_types; @api.read_types

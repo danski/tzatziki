@@ -73,6 +73,7 @@ module Tzatziki
       self.read_types
       self.read_documents
       self.read_children
+      self.children.each { |c| c.process }
       #self.transform!
     end
   
