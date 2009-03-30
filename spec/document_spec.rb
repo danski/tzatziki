@@ -2,7 +2,9 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe Tzatziki::Document do
 
-  it "should have specs"
+  it "should be testable"
+  it "should be convertible"
+  it "should be transformable"
   
   it "can have multiple specifications"
   it "can have only one signing specification"

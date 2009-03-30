@@ -117,7 +117,7 @@ module Tzatziki
     
     # Read all the flat text files in self.source and create a new Document instance for each.
     def read_documents
-      self.documents = read_transformables_from_directory(".", Tzatziki::Document).values
+      self.documents = read_transformables_from_directory(self.source, Tzatziki::Document).values
     end
     
     # Read all the directories under self.source except for those:
@@ -150,10 +150,10 @@ module Tzatziki
     private
     def read_transformables_from_directory(folder, transformable_klass)
       begin
-        path = File.join(self.source, folder)
+        path = (folder==self.source)? folder : File.join(self.source, folder)
         entries = Dir.entries(path)
         files = entries.reject { |e| File.directory?(File.join(path, e)) }
-        files = entries.reject { |e| e[0..0]=~/\./ or e[-1]=="~" }
+        files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" }
         transformables = {}
         files.each do |f|
           transformables[f.split(".").first] = transformable_klass.new(File.join(path, f), self)

@@ -10,7 +10,10 @@ require 'redcloth'
 require 'jekyll'
 # Tzatziki requires
 require 'tzatziki/core_ext'
+require 'tzatziki/errors'
+
 require 'tzatziki/testable'
+
 require 'tzatziki/api'
 require 'tzatziki/site'
 require 'tzatziki/example'

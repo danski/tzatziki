@@ -91,6 +91,12 @@ describe Tzatziki::API do
       @site.children.first.children.should_not be_empty
     end
     
+    it "should read all the documents" do
+      @api.read_documents
+      @api.documents.length.should == 2
+      @api.documents.first.should be_kind_of(Tzatziki::Document)
+    end
+    
     it "should merge the data types found at this level with the list known to the parent without altering the types hash on the parent" do
       @site.read_types; @api.read_types
       @api.types.keys.should == ["date","search_query"]
