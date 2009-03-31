@@ -104,20 +104,20 @@ module Tzatziki
     # Reads and instantiates any specifications in the _specifications directory below self.source,
     # if such a folder exists. Otherwise the specifications hash will be left untouched from the parent.
     def read_specifications
-      self.local_specifications = read_transformables_from_directory("_specifications", Tzatziki::Specification)
+      self.local_specifications = read_documentables_from_directory("_specifications", Tzatziki::Specification)
       self.specifications.merge!(self.local_specifications)
     end
     
     # Reads and instantiates any types in the _types directory below self.source,
     # if such a folder exists. Otherwise the types hash will be left untouched from the parent.
     def read_types
-      self.local_types = read_transformables_from_directory("_types", Tzatziki::Type)
+      self.local_types = read_documentables_from_directory("_types", Tzatziki::Type)
       self.types.merge!(self.local_types)
     end
     
     # Read all the flat text files in self.source and create a new Document instance for each.
     def read_documents
-      self.documents = read_transformables_from_directory(self.source, Tzatziki::Document).values
+      self.documents = read_documentables_from_directory(self.source, Tzatziki::Document).values
     end
     
     # Read all the directories under self.source except for those:
@@ -148,17 +148,17 @@ module Tzatziki
     end
     
     private
-    def read_transformables_from_directory(folder, transformable_klass)
+    def read_documentables_from_directory(folder, transformable_klass)
       begin
         path = (folder==self.source)? folder : File.join(self.source, folder)
         entries = Dir.entries(path)
         files = entries.reject { |e| File.directory?(File.join(path, e)) }
         files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" }
-        transformables = {}
+        documentables = {}
         files.each do |f|
-          transformables[f.split(".").first] = transformable_klass.new(File.join(path, f), self)
+          documentables[f.split(".").first] = transformable_klass.new(File.join(path, f), self)
         end
-        return transformables
+        return documentables
       rescue Errno::ENOENT => e
         # Ignore missing specifications
         return {}

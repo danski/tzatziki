@@ -4,7 +4,7 @@ describe Tzatziki::Document do
 
   it "should be testable"
   it "should be convertible"
-  it "should be transformable"
+  it "should be documentable"
   
   it "can have multiple specifications"
   it "can have only one signing specification"

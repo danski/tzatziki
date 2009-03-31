@@ -1,7 +1,7 @@
 module Tzatziki
   
   class Document
-    include Jekyll::Convertible
+    include Parsable
     
     def initialize(path, api=nil)
       @path = path; @api = api

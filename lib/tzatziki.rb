@@ -12,6 +12,8 @@ require 'jekyll'
 require 'tzatziki/core_ext'
 require 'tzatziki/errors'
 
+require 'tzatziki/parsable'
+require 'tzatziki/documentable'
 require 'tzatziki/testable'
 
 require 'tzatziki/api'

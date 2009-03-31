@@ -75,6 +75,7 @@ describe Tzatziki::API do
         c.source.should_not match(/~/)
       end
     end
+    
     it "should not use folders ending with .examples as child APIs" do
       # Assert that a folder with .examples does exist
       entries = Dir.entries(@api.source)
