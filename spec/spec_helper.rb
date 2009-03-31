@@ -20,6 +20,10 @@ module SpecHelper
     )
   end
   
+  def textile_fixture_path
+    File.join( File.dirname(__FILE__), "example", "source", "the_google", "index.textile" )
+  end
+  
 end
 
 Spec::Runner.configure do |config|

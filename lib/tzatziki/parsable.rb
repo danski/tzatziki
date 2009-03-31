@@ -4,17 +4,10 @@ module Tzatziki
     attr_accessor :raw
     attr_accessor :data, :post_parse
     
-    def parse!(path_to_source_file)
-      read(path_to_source_file)
-      self.data, self.post_parse = extract_yaml(self.raw)
+    def parse!(raw_doc = self.raw)
+      self.data, self.post_parse = extract_yaml(raw_doc)
     end
     
-    # Reads the source file into an instance variable called 'src'.
-    # Returns nothing.    
-    def read(path_to_source_file)
-      f = File.open(path_to_source_file)
-      self.raw = f.read
-    end
     
     def extract_yaml(parsable_string, replacement_pattern=nil)
       data_table = {}
