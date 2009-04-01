@@ -2,6 +2,8 @@ Tzatziki
 ========
 **Work in progress not ready for installation**
 
+This README is actually a TODO of things I need to write in the README so that people understand WTF this gem is for.
+
 * Description of gem purpose
 ** Documentation system based on [Jekyll](http://github.com/mojombo/jekyll)
 ** Tests your API as you document
@@ -39,6 +41,7 @@ Design principles checklist
 
 * Documentation-led testing, rather than testing-led documentation
 * Scalable logic. Same classes and patterns apply to one-file Tzatziki sites as to 50-level/500-file sites.
+* Nesting and inheritance
 * Out of the box experience:
 ** Must be easy to start a new site
 ** Portable directory structure should allow sites to migrate seamlessly to new versions of this gem
