@@ -19,9 +19,6 @@ describe Tzatziki::Testable do
   end
   
   it "should set up a request factory when given a descriptive hash"
-  
-  it "should include included specifications into the request factory options at the appropriate level"
-  it "should include included types into the request factory options at the appropriate level"
 
   it "should manufacture requests based on the data found in the parsable hash"
   it "should manufacture response assertions based on the data found in the parsable hash"
