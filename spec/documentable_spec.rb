@@ -7,6 +7,11 @@ describe Tzatziki::Documentable do
       include Tzatziki::Documentable
       include Tzatziki::Parsable
     end
+    class ::TestDocumentableWithInterface < ::TestDocumentable
+      def payload
+        {:foo=>"bar"}
+      end
+    end
   end
   before(:each) do
     @api = get_test_api
@@ -39,9 +44,14 @@ i am the walrus
   end
   
   it "should provide global options to the liquid template" do
+    @documentable = ::TestDocumentableWithInterface.new(textile_fixture_path, @api)
     @documentable.template_payload.should be_kind_of(Hash)
   end
-  it "should raise an error if the implementing class does not provide its own options for the liquid template"
+  it "should raise an error if the implementing class does not provide its own options for the liquid template" do
+    @documentable = ::TestDocumentable.new(textile_fixture_path, @api)
+    lambda {@documentable.template_payload}.should raise_error(Tzatziki::InterfaceNotProvided)
+    
+  end
   
   it "should provide a default write location for the file"
   it "should write the file"

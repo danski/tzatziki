@@ -43,8 +43,14 @@ module Tzatziki
       {
         :api=>self.api.to_hash,
         :config=>self.api.config
-      }
+      }.deep_merge(payload)
     end
+    
+    # Should be overridden to return a hash for the template implementation of the including class.
+    def payload
+      raise InterfaceNotProvided
+    end
+    
     
   end
 end

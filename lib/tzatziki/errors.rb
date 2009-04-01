@@ -8,4 +8,8 @@ module Tzatziki
   # and so anything more than one signing specification is a circular dependency.
   class MultipleSigningSpecificationError < ArgumentError; end
   
+  # Raised when an internal method which requires an interface to be provided by the including
+  # class is not overridden.
+  class InterfaceNotProvided < NoMethodError; end
+  
 end
