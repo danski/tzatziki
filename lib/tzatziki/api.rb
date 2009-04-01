@@ -29,6 +29,8 @@ module Tzatziki
     attr_accessor :config, :documents, :specifications, :types
     # Specs and types specific to this level of recursion are made available here.
     attr_accessor :local_specifications, :local_types
+    # Job state
+    attr_accessor :processed
     
     # Initializes and returns the API object.
     #   +source+ is the path to the API's source folder.
@@ -61,20 +63,26 @@ module Tzatziki
         end
         self.site = p
       end
+      process
     end
     
     # Do the actual work of processing the site and generating the
     # documentation, as well as outputting the test results.
     #
     # Returns nothing
-    def process
+    def process(recurse=true)
+      unless self.processed      
+        process!(recurse)
+      end
+      self.processed = true
+    end
+    def process!(recurse=true)
       self.read_config
       self.read_specifications
       self.read_types
       self.read_documents
-      self.read_children
-      self.children.each { |c| c.process }
-      #self.transform!
+      self.read_children      
+      self.children.each { |c| c.process } if recurse
     end
   
     # Read the config file into a hash ready for inclusion in the site payload.
@@ -98,7 +106,7 @@ module Tzatziki
       rescue Errno::ENOENT => e
         data = {}
       end
-      self.config = data
+      self.config = self.config.deep_merge(data)
     end
     
     # Reads and instantiates any specifications in the _specifications directory below self.source,
@@ -147,13 +155,22 @@ module Tzatziki
       self.source.gsub /#{self.site.source}\//, ""
     end
     
+    # Marshalls the API into a hash ready for inclusion in templates.
+    def to_hash(include_children=true)
+      {
+        :config=>config,
+        :parent=>(parent ? parent.to_hash(false) : {}),
+        :children=>(include_children ? children.collect{|c| c.to_hash} : nil)
+      }
+    end
+    
     private
     def read_documentables_from_directory(folder, transformable_klass)
       begin
         path = (folder==self.source)? folder : File.join(self.source, folder)
         entries = Dir.entries(path)
         files = entries.reject { |e| File.directory?(File.join(path, e)) }
-        files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" }
+        files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" or e.match(/\.(yaml|yml)/) }
         documentables = {}
         files.each do |f|
           documentables[f.split(".").first] = transformable_klass.new(File.join(path, f), self)

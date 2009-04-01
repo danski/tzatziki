@@ -10,7 +10,7 @@ describe Tzatziki::Documentable do
   end
   before(:each) do
     @api = get_test_api
-    @documentable = ::TestDocumentable.new("")
+    @documentable = ::TestDocumentable.new("", get_test_api)
   end
 
   it "should be initable with a path and an api instance" do
@@ -38,7 +38,9 @@ i am the walrus
     @documentable.raw.should_not be_empty
   end
   
-  it "should provide global options to the liquid template"
+  it "should provide global options to the liquid template" do
+    @documentable.template_payload.should be_kind_of(Hash)
+  end
   it "should raise an error if the implementing class does not provide its own options for the liquid template"
   
   it "should provide a default write location for the file"

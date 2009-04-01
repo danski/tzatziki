@@ -26,12 +26,18 @@ describe Tzatziki::API do
     it "should get the data types hash from the parent" do
       @api.types.should_not be_empty
       @api.types["date"].should be_kind_of(Tzatziki::Type)
-      @api.types.should == @api.parent.types
+      @api.parent.types.keys.each do |k|
+        @api.types[k].should_not be_nil
+      end
+      (@api.types.keys - @api.parent.types.keys).should_not be_empty
     end
     it "should get the specifications hash from the parent" do
       @api.specifications.should_not be_empty
       @api.specifications["successful"].should be_kind_of(Tzatziki::Specification)
-      @api.specifications.should == @api.parent.specifications
+      @api.parent.specifications.keys.each do |k|
+        @api.specifications[k].should_not be_nil
+      end
+      (@api.specifications.keys - @api.parent.specifications.keys).should_not be_empty
     end
     
     it "should call back to the parent when initialized" do
@@ -41,6 +47,15 @@ describe Tzatziki::API do
   end
   
   describe "processing" do
+    
+    it "should read the config file and merge with the parent" do
+      @site.process
+      @site.config.keys.should_not be_empty
+      @site.config.keys.each do |k|
+        @api.config[k].should == @site.config[k]
+      end
+      (@api.config.keys - @site.config.keys).should_not be_empty
+    end
     
     it "should index all the local data types" do
       @site.read_types
@@ -92,7 +107,7 @@ describe Tzatziki::API do
       @site.children.first.children.should_not be_empty
     end
     
-    it "should read all the documents" do
+    it "should read all the documents and exclude the config file" do
       @api.read_documents
       @api.documents.length.should == 2
       @api.documents.first.should be_kind_of(Tzatziki::Document)
@@ -108,6 +123,13 @@ describe Tzatziki::API do
       @api.specifications.keys.should == ["searchable","successful"]
       @site.specifications.keys.should == ["successful"]
     end    
+  end
+  
+  describe "marshalling" do
+    it "should provide a hashed version of the object" do
+      h = @api.to_hash
+      h[:config].should be_kind_of(Hash)
+    end 
   end
   
 end

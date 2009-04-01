@@ -35,8 +35,8 @@ module Tzatziki
       # documentation, as well as outputting the test results.
       #
       # Returns nothing
-      def process
-        self.read_layouts
+      def process(recurse=false)
+        #self.read_layouts
         super
       end
     

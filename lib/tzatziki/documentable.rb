@@ -9,6 +9,10 @@ module Tzatziki
     attr_accessor :api
     # The raw, unprocessed document
     attr_accessor :raw
+    # An interstitial state before the application of the liquid template
+    attr_accessor :preflight
+    # The final be-liquidededed content of the file.
+    attr_accessor :content
     
     # Initializes the object given:
     # path_or_document: A string which can be the path to a file (which will be read), or
@@ -28,6 +32,18 @@ module Tzatziki
     def read(path_to_source_file)
       f = File.open(path_to_source_file)
       self.raw = f.read
+    end
+    
+    # Returns a hash representing the global template payload for this 
+    # instance. The global template payload includes the user config for
+    # this API, the API document tree and other utilities. It is made available
+    # to any request fixtures that use liquid syntax, and is also included in the
+    # wider hash used to render this document as an HTML file.
+    def template_payload
+      {
+        :api=>self.api.to_hash,
+        :config=>self.api.config
+      }
     end
     
   end
