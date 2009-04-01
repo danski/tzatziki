@@ -2,19 +2,27 @@
 title: The Google Search API
 ===
 
-This is a textile document intended to be a cover sheet for the The Google Search API. It searches The Google.
-
-This one doesn't generate any test results, but it does appear in the generated site pretty much just like a Jekyll::Page.
-
-Here's another YAML block just to fuck off the parser.
+Searching The Google is really easy. Just craft a request like this one:
 
 ---
 request:
+  domain: http://google.com
+  uri: /search
   headers:
-    content-accept: GOOGLE LOL
+    content-accept: text/html
 ===
 
-And another lol.
+And choose from a series of very easy parameters like so:
+
+---
+cocks:
+  query_string:
+    q: 
+      description: The URL-encoded search term you wish to Google for.
+      example: Now you're thinking with portals
+===
+
+The response that comes back is very simple, too:
 
 ---
 response: 

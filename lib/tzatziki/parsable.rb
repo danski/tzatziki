@@ -16,7 +16,8 @@ module Tzatziki
         yaml = $1.dup
         out = out.gsub(/#{yaml}#{$2}/m,"")
         d = YAML.load(yaml)
-        data_table = data_table.deep_merge(d)
+        data_table = data_table.deep_merge(d) if d.is_a?(Hash)
+        d = nil
       end
       return data_table, out
     end

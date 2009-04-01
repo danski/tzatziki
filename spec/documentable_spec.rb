@@ -50,7 +50,6 @@ i am the walrus
   it "should raise an error if the implementing class does not provide its own options for the liquid template" do
     @documentable = ::TestDocumentable.new(textile_fixture_path, @api)
     lambda {@documentable.template_payload}.should raise_error(Tzatziki::InterfaceNotProvided)
-    
   end
   
   it "should provide a default write location for the file"
