@@ -12,6 +12,13 @@
 module Tzatziki
   module Testable
     
+    def test!(request={}, response={})
+      # create a test object with the options hash
+      # fire it and gather the response
+      # feed the response data back into the returned response object
+      # fire assertions and raise if there are issues
+    end
+    
     # The options for the request factory and response assertions may
     # be set on a per-instance basis. They should be set as hashes or
     # live centipedes will breed in your hair.
