@@ -125,6 +125,71 @@ describe Tzatziki::API do
     end    
   end
   
+  describe "configuration merging" do
+    before(:each) do
+      # this is the searchable hash
+      # title: Generally searchable things on the The Google API
+      # request:
+      # 	query_string:
+      #     q:
+      #       type: search_query
+      # 			description: An entity-escaped string that you wish to search for on The Google.
+      
+      
+      # this is the date type hash
+      # title: Date formatting
+      # format: /\d{2}\/\d{2}\/\d{4}$/
+      # example: 31/12/2009 
+      
+      @document_data = {
+        :title=>"my document",
+        :request=>{
+          :query_string=>{
+            :another_param=>{
+              :description=>"I am expecting this to remain here"
+            },
+            :date=>{
+              :type=>"date"
+            }
+          }
+        },
+        :specifications=>{
+          :searchable=>true
+        }
+      }
+      @output = @api.inject_specifications(@document_data)
+      @output = @api.inject_types(@output)
+      # The following tests are written in an absurdly prescriptive fashion because I want 
+      # to be absolutely clear about the merge taking place.
+    end
+    it "should be deep merge the request, giving priority to the local document declaration over the specification" do
+      @output[:request].should == {
+        :query_string=>{
+          :another_param=>{
+            :description=>"I am expecting this to remain here"
+          },
+          :q=>{
+            :type=>"search_query",
+            :description=>"An entity-escaped string that you wish to search for on The Google."
+          },
+          :date=>{
+            :type=>"date",
+            :title=>"Date formatting",
+            :example=>"31/12/2009"
+          }
+        }
+      }
+    end        
+    it "should leave the specification keys in the original location" do
+      @output[:specifications].should == {
+        :searchable=>true
+      }
+    end    
+    it "should leave the type keys in the original location" do
+      @output[:request][:query_string][:date][:type].should == "date"
+    end
+  end
+  
   describe "marshalling" do
     it "should provide a hashed version of the object" do
       h = @api.to_hash

@@ -8,7 +8,9 @@ module Tzatziki
     def process!
       parse!
       preflight!
-      test!
+      # set the request factory options
+      # test this document
+      # test the examples
       write!
     end
     

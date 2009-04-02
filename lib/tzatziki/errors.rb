@@ -1,5 +1,8 @@
 module Tzatziki
   
+  class TypeNotFound < RuntimeError; end
+  class SpecificationNotFound < RuntimeError; end
+  
   # Raised when a circular dependency is encountered in the specification logic.
   class RecursiveSpecificationError < ArgumentError; end
   

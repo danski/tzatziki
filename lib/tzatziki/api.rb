@@ -156,12 +156,68 @@ module Tzatziki
     end
     
     # Marshalls the API into a hash ready for inclusion in templates.
+    # Returns the resulting hash object.
     def to_hash(include_children=true)
       {
         :config=>config,
         :parent=>(parent ? parent.to_hash(false) : {}),
         :children=>(include_children ? children.collect{|c| c.to_hash} : nil)
       }
+    end
+    
+    # Takes a hash which may reference specifications from this API
+    # (or from its parents) and expands it to fill in all the detail. If specification
+    # is referenced that does not exist at this point in the tree, an exception 
+    # will be raised. Otherwise, the resulting merged hash will be returned.
+    #
+    # Looks for entries in a hash like this:
+    # {:foo=>:bar, :bar=>{ :car=>:daz }, :specifications=>{:myspec=>true}}
+    # The :specifications key will be found (even if nested in a child hash), and the 
+    # hash containing this key will be deep_merged against the data hash from the referenced
+    # specifications.
+    #
+    # Additional note: this method runs recursively against any hashes used as values
+    # within the given argument.
+    def inject_specifications(specifiable={})
+      h = specifiable.dup.deep_symbolize
+      # Locate specification keys and create the merged spec hash
+      spec_list = h[:specifications] || {}
+      spec_opts = spec_list.inject({}) do |memo, (key, value)|
+        memo.deep_merge(specifications[key.to_s].data.deep_symbolize) if value
+      end
+      # Recurse over each child hash
+      h = h.inject({}) do |memo, (key, value)|
+        memo.merge(key => (value.is_a?(Hash)? self.inject_specifications(value) : value))
+      end
+      spec_opts.deep_merge(h)
+    end
+    
+    # Takes a hash which may reference types from this API
+    # (or from its parents) and expands it to fill in all the detail. If a
+    # type is referenced that does not exist at this point in the tree, an exception 
+    # will be raised. Otherwise, the resulting merged hash will be returned.
+    # 
+    # Looks for entries in a hash like this:
+    # {:foo=>{:type=>:mytype, :this_attribute=>:preserved}} 
+    # The data hash from the type :mytype will be have merge called against it
+    # with the hash containing the :type key as an argument, and the resulting
+    # merge will replace the value of key :foo in the returned hash.
+    #
+    # Additional note: this method runs recursively against any hashes used as values
+    # within the given argument.
+    def inject_types(specifiable={})
+      h = specifiable.dup.deep_symbolize
+      # Locate type keys and create the merged spec hash
+      type_opts = if type = h[:type]
+                    types[type.to_s].data rescue raise(Tzatziki::TypeNotFound, "Type #{type.inspect} not available for api #{to_hash.inspect}")
+                  else
+                    {}
+                  end
+      # Recurse over each child hash
+      h = h.inject({}) do |memo, (key, value)|
+        memo.merge(key => (value.is_a?(Hash)? self.inject_types(value) : value))
+      end
+      type_opts.deep_merge(h)
     end
     
     private

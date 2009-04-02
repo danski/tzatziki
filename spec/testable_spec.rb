@@ -35,16 +35,29 @@ describe Tzatziki::Testable do
     @testable.response_options[:nested][:deep_symbolized].should == true
   end
   
-  it "should set up a request factory when given a descriptive hash"
-
-  it "should manufacture requests based on the data found in the parsable hash"
-  it "should allow 20X-style request types as ranges"
-  it "should recognise file uploads in the params"
-  it "should automatically set the content-type to multipart form if a file is present"
+  describe "request factory" do
+    it "should set up a request factory when given a descriptive hash"
+    it "should manufacture requests based on the data found in the parsable hash"
+    
+    it "should run values through the liquid helpers"
+        
+    it "sets the status"
+    it "sets the headers"
+    it "sets the body"
+  end
   
-  it "should manufacture response assertions based on the data found in the parsable hash"
+  describe "response assertions" do
+    it "should allow 20X-style request types as ranges"
+    it "should recognise file uploads in the params"
+    it "should automatically set the content-type to multipart form if a file is present"
   
+    it "should manufacture response assertions based on the data found in the parsable hash"
+    
+    it "should return tuple of test result (:success,:pending,:fail) and message"
+  end  
   
-  it "should make the response data available to the template payload"
+  describe "response post-processing" do
+    it "should make the response data available to the template payload"
+  end
   
 end

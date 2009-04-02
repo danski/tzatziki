@@ -12,8 +12,11 @@
 module Tzatziki
   module Testable
     
+    # Tests this testable against the given option and response hashes.
+    # Each key in the response hash will be considered to be an assertion.
     def test!(request={}, response={})
       # create a test object with the options hash
+      
       # fire it and gather the response
       # feed the response data back into the returned response object
       # fire assertions and raise if there are issues
