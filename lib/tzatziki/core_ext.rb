@@ -1,4 +1,17 @@
 class Hash
+
+  # Returns a new hash just like this one, but with all the string keys expressed as symbols.
+  # Also applies to hashes within self.
+  # Based on an implementation within Rails 2.x, thanks Rails!
+  def deep_symbolize
+    target = dup    
+    target.inject({}) do |memo, (key, value)|
+      value = value.deep_symbolize if value.is_a?(Hash)
+      memo[(key.to_sym rescue key) || key] = value
+      memo
+    end
+  end  
+  
   # Merges self with another hash, recursively.
   # 
   # This code was lovingly stolen from some random gem:

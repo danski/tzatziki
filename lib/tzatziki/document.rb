@@ -3,6 +3,7 @@ module Tzatziki
   class Document
     include Documentable
     include Parsable
+    include Testable
     
     def process!
       parse!

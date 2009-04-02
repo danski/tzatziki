@@ -34,7 +34,7 @@ i am the walrus
     @documentable = ::TestDocumentable.new(doc, @api)
     @documentable.raw.should == doc
     @documentable.parse!
-    @documentable.data["foo"].should == "bar"
+    @documentable.data[:foo].should == "bar"
   end
   
   it "should read the file" do

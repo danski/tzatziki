@@ -12,12 +12,12 @@ describe Tzatziki::Parsable do
     @parsable = ::TestParsable.new("")
   end  
   
-  it "should identify YAML blocks within the file, even multiple ones, and turn them into a big hash" do
+  it "should identify YAML blocks within the file, even multiple ones, and turn them into a big hash with symbolized keys" do
     @parsable.read(textile_fixture_path)
     data, template = @parsable.extract_yaml(@parsable.raw)
-    data["request"].should be_kind_of(Hash)
-    data["response"].should be_kind_of(Hash)
-    data["title"].should be_kind_of(String)
+    data[:request].should be_kind_of(Hash)
+    data[:response].should be_kind_of(Hash)
+    data[:title].should be_kind_of(String)
     template.should_not match(/---/)
   end
   it "should replace YAML blocks with a liquid template marker"

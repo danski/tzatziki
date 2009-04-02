@@ -19,6 +19,7 @@ module Tzatziki
         data_table = data_table.deep_merge(d) if d.is_a?(Hash)
         d = nil
       end
+      data_table = data_table.deep_symbolize
       return data_table, out
     end
     
