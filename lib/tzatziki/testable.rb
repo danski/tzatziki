@@ -9,6 +9,8 @@
   assertions by giving your own configuration hashes.
 =end
 
+require 'net/http'
+
 module Tzatziki
   module Testable
     
@@ -19,7 +21,7 @@ module Tzatziki
       request = request_options.deep_merge(request)
       response = response_options.deep_merge(response)
       failures = []
-      # Create and massage the request object
+      
       
       # fire it and gather the response
       # feed the response data back into the returned response object

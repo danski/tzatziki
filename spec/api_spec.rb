@@ -110,7 +110,7 @@ describe Tzatziki::API do
     it "should read all the documents and exclude the config file" do
       @api.read_documents
       @api.documents.length.should == 2
-      @api.documents.first.should be_kind_of(Tzatziki::Document)
+      @api.documents.values.first.should be_kind_of(Tzatziki::Document)
     end
     
     it "should merge the data types found at this level with the list known to the parent without altering the types hash on the parent" do

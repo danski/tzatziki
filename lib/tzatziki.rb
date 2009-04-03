@@ -4,18 +4,18 @@ require 'rubygems'
 # Stdlib requires
 require 'fileutils'
 require 'yaml'
+require 'net/http'
 # Gem requires
 require 'liquid'
 require 'redcloth'
 require 'jekyll'
 # Tzatziki requires
-require 'tzatziki/core_ext'
+require 'tzatziki/core_ext/hash'
+require 'tzatziki/core_ext/http_request'
 require 'tzatziki/errors'
-
 require 'tzatziki/parsable'
 require 'tzatziki/documentable'
 require 'tzatziki/testable'
-
 require 'tzatziki/api'
 require 'tzatziki/site'
 require 'tzatziki/example'

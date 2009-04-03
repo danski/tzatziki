@@ -36,29 +36,23 @@ describe Tzatziki::Testable do
   end
   
   describe "request factory" do
+    before(:each) do
+      # Get the google search test document. It's true that the Document
+      # class also includes Parsable and Documentable, but we want to run
+      # something at least approximating a real-world example here.
+      @api = get_test_api
+      @testable = @api.documents["search"]
+      @testable.should be_kind_of(Tzatziki::Testable)
+    end
+    
     it "should set up a request factory when given a descriptive hash"
     it "should manufacture requests based on the data found in the parsable hash"
     
-    it "should run values through the liquid helpers"
-        
-    it "should support :method in the options hash"
-    it "should support :protocol in the options hash"
-    it "should support :domain in the options hash"
-    it "should support :uri in the options hash"
-    it "should support :query_string in the options hash"
-    it "should support :form_body in the options hash"
-    it "should support :headers in the options hash"
-    it "should support :multipart_form in the options hash"
-    it "should support :basic_auth in the options hash"
-    
-    describe "value generation" do
-      it "should support :example in the options hash for a value"
-      it "should support :format in the options hash for a value"
-      it "should support :required in the options hash for a value"
-      it "should support :values with a list of options in the options hash for a value"
-      it "should support :default in the options hash for a value"
-      it "should ignore :default if :required is TRUE and :values is not specified"
+    describe "liquid helpers" do
+      it "should insert configuration values into the request values where marked with liquid syntax"
     end
+        
+
   end
   
   describe "response assertions" do

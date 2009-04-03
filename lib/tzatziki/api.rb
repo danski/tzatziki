@@ -43,7 +43,7 @@ module Tzatziki
       self.source = source
       self.destination = destination
       # Blanks that will get populated by recursive descent through the file system.
-      self.documents = []
+      self.documents = {}
       self.children = []
       self.local_specifications = {}
       self.local_types = {}
@@ -125,7 +125,7 @@ module Tzatziki
     
     # Read all the flat text files in self.source and create a new Document instance for each.
     def read_documents
-      self.documents = read_documentables_from_directory(self.source, Tzatziki::Document).values
+      self.documents = read_documentables_from_directory(self.source, Tzatziki::Document)
     end
     
     # Read all the directories under self.source except for those:
