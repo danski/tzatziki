@@ -13,7 +13,9 @@ describe Net::HTTPRequest do
     (req_data = @testable.data[:request]).should_not be_empty
     @request = Net::HTTPRequest.from_hash(req_data)
   end
-  it "should accept a block as an argument for returning the response object"
+  it "should accept a block as an argument for returning the response object" do
+    @response = Net::HTTPRequest.from_hash(@testable.data[:request]) { |http, req| http.request(req) }.should be_kind_of(Net::HTTPResponse)
+  end
   
   describe Net::HTTPRequest::Factory do
     before(:each) do

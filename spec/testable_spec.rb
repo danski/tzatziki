@@ -45,34 +45,10 @@ describe Tzatziki::Testable do
       @testable.should be_kind_of(Tzatziki::Testable)
     end
     
-    it "should set up a request factory when given a descriptive hash"
-    it "should manufacture requests based on the data found in the parsable hash"
-    
     describe "liquid helpers" do
       it "should insert configuration values into the request values where marked with liquid syntax"
     end
-        
-
   end
-  
-  describe "response assertions" do
-    it "should allow 20X-style request types as ranges"
-    it "should recognise words like 'Success' as HTTP response class types e.g. HTTPSuccess"
-    
-    it "should recognise file uploads in the params"
-    it "should automatically set the content-type to multipart form if a file is present"
-  
-    it "should manufacture response assertions based on the data found in the parsable hash"
-    
-    it "should return tuple of test result (:success,:pending,:fail) and message"
-    
-    it "should match against :status in the response hash"
-    it "should match against :body in the response hash"
-    it "should match against :body by CSS in the response hash when the returned content type is an XML variant"
-    it "should match against :body by XPath in the response hash when the returned content type is an XML variant"
-    it "should match against :body by XPath in the response hash when the returned content type is an JSON variant"
-    it "should match against :body by XPath in the response hash when the returned content type is an YAML variant"
-  end  
   
   describe "response post-processing" do
     it "should make the real response data available to the template payload"

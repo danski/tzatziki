@@ -34,8 +34,6 @@ class Net::HTTPRequest
         # Headers
         if spec[:headers].is_a?(Hash)
           spec[:headers].each { |key, value| request[key.to_s] = value }
-        else
-          #raise spec[:headers].inspect
         end
         
         if block_given?        
