@@ -183,7 +183,8 @@ module Tzatziki
       # Locate specification keys and create the merged spec hash
       spec_list = h[:specifications] || {}
       spec_opts = spec_list.inject({}) do |memo, (key, value)|
-        memo.deep_merge(specifications[key.to_s].data.deep_symbolize) if value
+        s = specifications[key.to_s].data.deep_symbolize rescue raise(Tzatziki::SpecificationNotFound, "Specification #{key} not available for api #{to_hash.inspect}")
+        memo.deep_merge(s) if value
       end
       # Recurse over each child hash
       h = h.inject({}) do |memo, (key, value)|

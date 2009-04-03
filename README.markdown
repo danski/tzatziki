@@ -36,6 +36,22 @@ This README is actually a TODO of things I need to write in the README so that p
 * Customising the HTML
 ** Liquid reference
 
+Supported request variables
+---------------------------
+method
+protocol
+domain
+uri
+query string
+form body
+headers
+multipart form
+basic auth
+
+
+Supported response variables
+---------------------------
+
 Design principles checklist
 ---------------------------
 

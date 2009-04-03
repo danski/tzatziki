@@ -41,23 +41,47 @@ describe Tzatziki::Testable do
     
     it "should run values through the liquid helpers"
         
-    it "sets the status"
-    it "sets the headers"
-    it "sets the body"
+    it "should support :method in the options hash"
+    it "should support :protocol in the options hash"
+    it "should support :domain in the options hash"
+    it "should support :uri in the options hash"
+    it "should support :query_string in the options hash"
+    it "should support :form_body in the options hash"
+    it "should support :headers in the options hash"
+    it "should support :multipart_form in the options hash"
+    it "should support :basic_auth in the options hash"
+    
+    describe "value generation" do
+      it "should support :example in the options hash for a value"
+      it "should support :format in the options hash for a value"
+      it "should support :required in the options hash for a value"
+      it "should support :values with a list of options in the options hash for a value"
+      it "should support :default in the options hash for a value"
+      it "should ignore :default if :required is TRUE and :values is not specified"
+    end
   end
   
   describe "response assertions" do
     it "should allow 20X-style request types as ranges"
+    it "should recognise words like 'Success' as HTTP response class types e.g. HTTPSuccess"
+    
     it "should recognise file uploads in the params"
     it "should automatically set the content-type to multipart form if a file is present"
   
     it "should manufacture response assertions based on the data found in the parsable hash"
     
     it "should return tuple of test result (:success,:pending,:fail) and message"
+    
+    it "should match against :status in the response hash"
+    it "should match against :body in the response hash"
+    it "should match against :body by CSS in the response hash when the returned content type is an XML variant"
+    it "should match against :body by XPath in the response hash when the returned content type is an XML variant"
+    it "should match against :body by XPath in the response hash when the returned content type is an JSON variant"
+    it "should match against :body by XPath in the response hash when the returned content type is an YAML variant"
   end  
   
   describe "response post-processing" do
-    it "should make the response data available to the template payload"
+    it "should make the real response data available to the template payload"
   end
   
 end

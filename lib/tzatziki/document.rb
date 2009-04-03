@@ -4,13 +4,17 @@ module Tzatziki
     include Documentable
     include Parsable
     include Testable
+
+    def initialize(*args)
+      super
+      parse!
+    end
     
     def process!
-      parse!
-      preflight!
       # set the request factory options
       # test this document
       # test the examples
+      # write the file
       write!
     end
     
