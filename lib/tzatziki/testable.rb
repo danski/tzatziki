@@ -15,11 +15,18 @@ module Tzatziki
     # Tests this testable against the given option and response hashes.
     # Each key in the response hash will be considered to be an assertion.
     def test!(request={}, response={})
-      # create a test object with the options hash
+      # Two-tier defaults system in effect, yo
+      request = request_options.deep_merge(request)
+      response = response_options.deep_merge(response)
+      failures = []
+      # Create and massage the request object
       
       # fire it and gather the response
       # feed the response data back into the returned response object
       # fire assertions and raise if there are issues
+      
+      # Tuple it up
+      return (failures.empty? ? true : false), failures
     end
     
     # The options for the request factory and response assertions may
@@ -49,7 +56,8 @@ module Tzatziki
       def default_request_factory_options
         {
           :method=>"get",
-          :domain=>"http://localhost",
+          :protocol=>"http"
+          :domain=>"localhost",
           :uri=>"/",
           :query_string=>{},
           :post_body=>{},
