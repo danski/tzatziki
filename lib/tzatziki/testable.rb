@@ -56,7 +56,7 @@ module Tzatziki
       def default_request_factory_options
         {
           :method=>"get",
-          :protocol=>"http"
+          :protocol=>"http",
           :domain=>"localhost",
           :uri=>"/",
           :query_string=>{},
