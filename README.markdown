@@ -42,11 +42,11 @@ method
 protocol
 host
 uri
-query string
-form body
+query_string
+form_data
 headers
-multipart form
-basic auth
+multipart_form
+basic_auth
 
 Supported type variables
 ------------------------

@@ -13,6 +13,7 @@ require 'randexp'
 # Tzatziki requires
 require 'tzatziki/core_ext/hash'
 require 'tzatziki/core_ext/http_request'
+require 'tzatziki/core_ext/http_response'
 require 'tzatziki/errors'
 require 'tzatziki/parsable'
 require 'tzatziki/documentable'

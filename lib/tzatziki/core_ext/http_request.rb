@@ -8,15 +8,41 @@
 =end
 
 class Net::HTTPRequest  
-  class << self    
+  class << self
+    
+    # Creates and returns a Net:HTTPRequest object of the appropriate type from
+    # a Tzatziki specification hash object. 
+    # If no block is given, returns the created Net:HTTPRequest object.
+    # May optionally be given a block like so:
+    #
+    # response = Net::HTTPRequest.from_hash(specification) do |http, request|
+    #   http.start(request)
+    # end
+    #
+    # In cases where the block is given, the request will be automatically closed
+    # at the end of the block scope.
     def from_hash(spec, &block)
       # Create and massage the request object
       protocol_klass = module_for_protocol(spec[:protocol])
       method_klass = class_for_method(spec[:method], protocol_klass)
         # Start with the URI
-        uri = URI.parse("#{spec[:protocol]}://#{spec[:host]}#{spec[:uri]}")
-        # Then the request of correct type with the headers
-        # Basic auth
+        uri = Factory.specification_hash_to_uri(spec)
+        # Then create the request of correct type and combine the query
+        request = method_klass.new(uri.path + ("?#{uri.query}" if uri.query))
+        # Set the form data if given (this will set the method to POST)
+        request.set_form_data(Factory.parameter_hash_to_fixture_hash(spec[:form_data])) if spec[:form_data]
+        # Headers
+        if spec[:headers].is_a?(Hash)
+          spec.each { |key, value| request[key] = value }
+        end
+        
+        if block_given?        
+          response =  Net::HTTP.start(uri.host, uri.port) do |http|
+                        block.call(http, request)
+                      end
+          return response
+        end
+        return request
     end
     
     # Returns the wrapping module for a requested protocol.
@@ -51,6 +77,18 @@ class Net::HTTPRequest
   
   module Factory
     class << self
+      
+      def specification_hash_to_uri(spec)
+        uri = URI.parse("")
+        uri.scheme = spec[:protocol]
+        uri.host = spec[:host]
+        uri.port = spec[:port] if spec[:port]
+        uri.path = spec[:uri]
+        uri.fragment = spec[:fragment] if spec[:fragment]
+        uri.query = parameter_hash_to_query_string(spec[:query_string]) if spec[:query_string]
+        uri
+      end
+      
       # Produces a query string from a parameter hash, with a schema like:
       # :parameter_name=>{
       #   :description=>"a text description of the parameter",
@@ -67,25 +105,36 @@ class Net::HTTPRequest
           query << "#{key}=#{generate_value_from_parameter_specification(properties)}"
         end.join("&")
       end
-    
-      def generate_value_from_parameter_specification(properties)
-        if example = properties[:example]
-          # return example as defacto use case
-          return example
-        elsif values = properties[:values]
-          # use values but error if required is false and default is not specified
-          raise RuntimeError, "Multiple-choice attributes must have a :default set if :required is false" unless properties[:required] or properties[:default]
-          return properties[:default] || properties[:values].keys.first
-        elsif pattern = properties[:pattern]
-          # compile and generate pattern using randexp
-          return Regexp.compile(pattern).gen
-        elsif default = properties[:default]
-          # fall back to default
-          return default
-        else
-          # fall back to FAIL
-          "FAIL"
+      
+      # Much like parameter_hash_to_query_string, this method takes a parameter
+      # specification hash and generates a fixture from it with dm-sweatshop-style
+      # behaviour. This function returns the query as a hash suitable for
+      # handing off to ruby's internal HTTPRequest object.
+      def parameter_hash_to_fixture_hash(parameter_hash)
+        parameter_hash.inject({}) do |fixture, (key, properties)|
+          fixture[key] = generate_value_from_parameter_specification(properties)
         end
+      end
+    
+      def generate_value_from_parameter_specification(properties, escape=true)
+        val =   if example = properties[:example]
+                  # return example as defacto use case
+                  example
+                elsif values = properties[:values]
+                  # use values but error if required is false and default is not specified
+                  raise RuntimeError, "Multiple-choice attributes must have a :default set if :required is false" unless properties[:required] or properties[:default]
+                  properties[:default] || properties[:values].keys.first
+                elsif pattern = properties[:pattern]
+                  # compile and generate pattern using randexp
+                  Regexp.compile(pattern).gen
+                elsif default = properties[:default]
+                  # fall back to default
+                  default
+                else
+                  # fall back to FAIL
+                  "FAIL"
+                end
+          return (escape)? URI.escape(val) : val
       end
     end # class << self
   end # module Factory  
