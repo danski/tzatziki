@@ -69,6 +69,9 @@ describe Net::HTTPRequest do
       @response = Net::HTTPRequest.from_hash(@testable.data[:request]) { |http, req| http.request(req) }
     end
     
+    it "should recognise file uploads in the params"
+    it "should automatically set the content-type to multipart form if a file is present"
+    
     it "should support :method in the options hash" do
       @request.should be_kind_of(Net::HTTP::Get)
     end

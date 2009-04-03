@@ -60,6 +60,15 @@ example
 
 Supported response variables
 ---------------------------
+status
+	- by number
+	- by mask (20X)
+	- by name (ok/success/redirect/servererror etc.)
+headers
+body
+	- xml/html
+		- by xpath
+		- by css
 
 Design principles checklist
 ---------------------------

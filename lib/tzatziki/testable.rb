@@ -18,17 +18,19 @@ module Tzatziki
     # Each key in the response hash will be considered to be an assertion.
     def test!(request={}, response={})
       # Two-tier defaults system in effect, yo
-      request = request_options.deep_merge(request)
-      response = response_options.deep_merge(response)
+      request_spec = request_options.deep_merge(request)
+      response_spec = response_options.deep_merge(response)
       failures = []
       
-      
-      # fire it and gather the response
+      # fire it and gather the response (::from_hash is defined in core_ext/http_request)
+      response = Net::HTTPRequest.from_hash(response_spec) do |http, req|
+        http.request(req)
+      end
       # feed the response data back into the returned response object
       # fire assertions and raise if there are issues
       
       # Tuple it up
-      return (failures.empty? ? true : false), failures
+      return (failures.empty? ? true : false), failures, response
     end
     
     # The options for the request factory and response assertions may

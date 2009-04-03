@@ -35,6 +35,11 @@ describe Tzatziki::Testable do
     @testable.response_options[:nested][:deep_symbolized].should == true
   end
   
+  describe "test assertion integration" do
+    it "should return a successful result from the success fixture"
+    it "should return a correct failure result from the failure fixture"
+  end
+  
   describe "request factory" do
     before(:each) do
       # Get the google search test document. It's true that the Document
