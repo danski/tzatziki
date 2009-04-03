@@ -146,7 +146,7 @@ describe Tzatziki::API do
         :request=>{
           :query_string=>{
             :another_param=>{
-              :description=>"I am expecting this to remain here"
+              :description=>"I am expecting this to remain here but {{config.api_key}} should be replaced from the global spec and {{config.in_the_google}} should be replaced from the local spec."
             },
             :date=>{
               :type=>"date"
@@ -159,28 +159,30 @@ describe Tzatziki::API do
       }
       @output = @api.inject_specifications(@document_data)
       @output = @api.inject_types(@output)
+      @output = @api.inject_configuration(@output)
       # The following tests are written in an absurdly prescriptive fashion because I want 
       # to be absolutely clear about the merge taking place.
     end
-    it "should be deep merge the request, giving priority to the local document declaration over the specification" do
-      @output[:request].should == {
-        :query_string=>{
-          :another_param=>{
-            :description=>"I am expecting this to remain here"
-          },
-          :q=>{
-            :type=>"search_query",
-            :description=>"An entity-escaped string that you wish to search for on The Google.",
-            :example=>"now you're thinking with portals"
-          },
-          :date=>{
-            :type=>"date",
-            :title=>"Date formatting",
-            :example=>"31/12/2009"
-          }
-        }
+    it "should deep merge the specifications, giving priority to the local document scope" do
+      @output[:request][:query_string][:q].should == {
+        :type=>"search_query",
+        :description=>"An entity-escaped string that you wish to search for on The Google.",
+        :example=>"now you're thinking with portals"
       }
-    end        
+    end
+    it "should deep merge the types, giving priority to the local document scope" do
+      @output[:request][:query_string][:date].should == {
+        :type=>"date",
+        :title=>"Date formatting",
+        :example=>"31/12/2009"
+      }
+    end  
+    it "should render liquid markup into all the variables" do
+      @output[:request][:query_string][:another_param].should == {
+        :description=>"I am expecting this to remain here but FOOOOOBAAAAAAAR should be replaced from the global spec and YAAARRRRRRR should be replaced from the local spec."
+      }      
+    end
+       
     it "should leave the specification keys in the original location" do
       @output[:specifications].should == {
         :searchable=>true

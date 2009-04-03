@@ -49,10 +49,6 @@ describe Tzatziki::Testable do
       @testable = @api.documents["search"]
       @testable.should be_kind_of(Tzatziki::Testable)
     end
-    
-    describe "liquid helpers" do
-      it "should insert configuration values into the request values where marked with liquid syntax"
-    end
   end
   
   describe "response post-processing" do

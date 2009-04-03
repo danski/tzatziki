@@ -23,14 +23,11 @@ module Tzatziki
       failures = []
       
       # fire it and gather the response (::from_hash is defined in core_ext/http_request)
-      response = Net::HTTPRequest.from_hash(response_spec) do |http, req|
+      resp = Net::HTTPRequest.from_hash(response_spec) do |http, req|
         http.request(req)
       end
       # feed the response data back into the returned response object
-      # fire assertions and raise if there are issues
-      
-      # Tuple it up
-      return (failures.empty? ? true : false), failures, response
+      return resp.compare!(response_spec)
     end
     
     # The options for the request factory and response assertions may

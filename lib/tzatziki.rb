@@ -10,6 +10,7 @@ require 'liquid'
 require 'redcloth'
 require 'jekyll'
 require 'randexp'
+require 'mash'
 # Tzatziki requires
 require 'tzatziki/core_ext/hash'
 require 'tzatziki/core_ext/http_request'
@@ -58,6 +59,10 @@ module Tzatziki
   
   def self.document(source, destination)
     
+  end
+  
+  def self.template_helpers
+    []
   end
   
   def self.version

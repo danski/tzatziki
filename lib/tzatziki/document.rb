@@ -10,6 +10,7 @@ module Tzatziki
       parse!
       self.data = self.api.inject_specifications(self.data)
       self.data = self.api.inject_types(self.data)
+      self.data = self.api.inject_configuration(self.data)
     end
     
     def process!

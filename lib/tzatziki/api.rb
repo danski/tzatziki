@@ -164,6 +164,25 @@ module Tzatziki
         :children=>(include_children ? children.collect{|c| c.to_hash} : nil)
       }
     end
+    def to_mash(include_children=true)
+      Mash.new(to_hash(include_children))
+    end
+    
+    # Takes a specification hash from any documentable object and renders all possible
+    # values using the hash representation of this api as the payload
+    def inject_configuration(specifiable={})
+      specifiable.deep_symbolize.inject({}) do |memo, (key, value)|
+        memo.merge(key => (
+          if value.is_a?(String)
+            Liquid::Template.parse(value).render(to_mash)
+          elsif value.is_a?(Hash)
+            inject_configuration(value)
+          else
+            value
+          end
+        ))
+      end
+    end
     
     # Takes a hash which may reference specifications from this API
     # (or from its parents) and expands it to fill in all the detail. If specification
@@ -179,7 +198,7 @@ module Tzatziki
     # Additional note: this method runs recursively against any hashes used as values
     # within the given argument.
     def inject_specifications(specifiable={})
-      h = specifiable.dup.deep_symbolize
+      h = specifiable.deep_symbolize
       # Locate specification keys and create the merged spec hash
       spec_list = h[:specifications] || {}
       spec_opts = spec_list.inject({}) do |memo, (key, value)|
@@ -207,7 +226,7 @@ module Tzatziki
     # Additional note: this method runs recursively against any hashes used as values
     # within the given argument.
     def inject_types(specifiable={})
-      h = specifiable.dup.deep_symbolize
+      h = specifiable.deep_symbolize
       # Locate type keys and create the merged spec hash
       type_opts = if type = h[:type]
                     types[type.to_s].data rescue raise(Tzatziki::TypeNotFound, "Type #{type.inspect} not available for api #{to_hash.inspect}")
