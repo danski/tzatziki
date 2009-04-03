@@ -22,7 +22,7 @@ require 'tzatziki'
 
 options = {
   :generate_default_template=>false,
-  :domain=>"http://localhost"
+  :host=>"http://localhost"
 }
 
 opts = OptionParser.new do |opts|
@@ -32,8 +32,8 @@ opts = OptionParser.new do |opts|
     options[:generate_default_template] = true
   end
   
-  opts.on("--domain [domain]", "Run the tests against a specific domain. Defaults to #{options[:domain]}") do |domain|
-    Tzatziki.domain = domain || options[:domain]
+  opts.on("--host [host]", "Run the tests against a specific host. Defaults to #{options[:host]}") do |host|
+    Tzatziki.host = host || options[:host]
   end
   
   opts.on("--nodoc", "Runs your Tzatziki files as tests without producing new documentation files.") do

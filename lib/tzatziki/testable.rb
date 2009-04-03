@@ -59,7 +59,7 @@ module Tzatziki
         {
           :method=>"get",
           :protocol=>"http",
-          :domain=>"localhost",
+          :host=>"localhost",
           :uri=>"/",
           :query_string=>{},
           :post_body=>{},

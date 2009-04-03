@@ -9,6 +9,7 @@ require 'net/http'
 require 'liquid'
 require 'redcloth'
 require 'jekyll'
+require 'randexp'
 # Tzatziki requires
 require 'tzatziki/core_ext/hash'
 require 'tzatziki/core_ext/http_request'
@@ -26,11 +27,11 @@ require 'tzatziki/specification'
 module Tzatziki
   
   class << self
-    attr_accessor :source, :destination, :domain, :pygments, :write_docs, :run_tests
+    attr_accessor :source, :destination, :host, :pygments, :write_docs, :run_tests
   end
   
   # Configuration
-  Tzatziki.domain = "http://localhost"
+  Tzatziki.host = "http://localhost"
   Tzatziki.pygments = false
   Tzatziki.write_docs = true
   Tzatziki.run_tests = true
@@ -40,7 +41,7 @@ module Tzatziki
   
   def self.process!(source, destination)
     if run_tests
-      puts "Running tests against #{domain}..."
+      puts "Running tests against #{host}..."
       test(source, destination)
     end
     if write_docs

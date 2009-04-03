@@ -6,7 +6,7 @@ Searching The Google is really easy. Just craft a request like this one:
 
 ---
 request:
-  domain: http://google.com
+  host: http://google.com
   uri: /search
   headers:
     content-accept: text/html

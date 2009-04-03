@@ -40,13 +40,22 @@ Supported request variables
 ---------------------------
 method
 protocol
-domain
+host
 uri
 query string
 form body
 headers
 multipart form
 basic auth
+
+Supported type variables
+------------------------
+description
+pattern
+values
+default
+required
+example
 
 
 Supported response variables

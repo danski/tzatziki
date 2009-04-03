@@ -2,7 +2,7 @@
 title: Requesting the search results from The Google
 request:
   protocol: http
-  domain: www.google.com
+  host: www.google.com
   uri: /search
   method: get
 specifications:
