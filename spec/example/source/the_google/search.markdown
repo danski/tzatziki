@@ -5,8 +5,8 @@ request:
   host: www.google.com
   uri: /search
   method: get
-headers:
-  custom: add a custom header
+  headers:
+    custom: add a custom header
 specifications:
   successful: true
   searchable: true

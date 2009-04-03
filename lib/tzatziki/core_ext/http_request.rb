@@ -33,7 +33,9 @@ class Net::HTTPRequest
         request.set_form_data(Factory.parameter_hash_to_fixture_hash(spec[:form_data])) if spec[:form_data]
         # Headers
         if spec[:headers].is_a?(Hash)
-          spec.each { |key, value| request[key] = value }
+          spec[:headers].each { |key, value| request[key.to_s] = value }
+        else
+          #raise spec[:headers].inspect
         end
         
         if block_given?        
