@@ -106,8 +106,8 @@ module Tzatziki
             else
               Tz.out.write red("#{"--"*(stack+1)} #{name}\n")
               messages.each{ |m| Tz.out.write(red("#{"--"*(stack+2)} #{m}\n")) }
-              Tz.out.write "#{"  "*(stack+2)} Request data: #{document.data[:request].inspect}\n"
-              Tz.out.write "#{"  "*(stack+2)} Response assertions: #{document.data[:response].inspect}\n"
+              Tz.out.write red("#{"  "*(stack+2)} Request data          \n #{"  "*(stack+2)}#{document.data[:request].inspect}\n")
+              Tz.out.write red("#{"  "*(stack+2)} Response assertions   \n #{"  "*(stack+2)}#{document.data[:response].inspect}\n")
             end
           else
             Tz.out.write yellow("#{"--"*(stack+1)} #{name} #{"(skipped)" unless document.testable?}\n")
