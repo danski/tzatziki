@@ -41,15 +41,15 @@ module Tzatziki
   Tzatziki.out = $stdout
     
   def self.process!(source, destination)
-    Tz.out.write "Tzatziki is reading the specifications from #{source}...\n"
+    Taz.out.write "Tzatziki is reading the specifications from #{source}...\n"
     Tzatziki.site = Tzatziki::Site.new(source, destination)
-    Tz.out.write "=> Done.\n"
+    Taz.out.write "=> Done.\n"
     test Tzatziki.site if run_tests
     document Tzatziki.site if write_docs
   end 
    
   def self.test(site)
-    Tz.out.write "Tzatziki is testing against the specifications...\n"
+    Taz.out.write "Tzatziki is testing against the specifications...\n"
     Tzatziki.site.test!
   end
   
@@ -67,4 +67,4 @@ module Tzatziki
   end
   
 end
-Tz = Tzatziki
+Taz = Tzatziki
