@@ -32,16 +32,8 @@ opts = OptionParser.new do |opts|
     options[:generate_default_template] = true
   end
   
-  opts.on("--host [host]", "Run the tests against a specific host. Defaults to #{options[:host]}") do |host|
-    Tzatziki.host = host || options[:host]
-  end
-  
   opts.on("--nodoc", "Runs your Tzatziki files as tests without producing new documentation files.") do
     Tzatziki.write_docs = false
-  end
-  
-  opts.on("--notest", "Compiles the Tzatziki documentation for your API without running the tests.") do
-    Tzatziki.run_tests = false
   end
   
   opts.on("--pygments", "Use pygments to highlight code") do

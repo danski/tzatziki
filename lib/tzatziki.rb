@@ -29,7 +29,7 @@ require 'tzatziki/specification'
 module Tzatziki
   
   class << self
-    attr_accessor :source, :destination, :host, :pygments, :write_docs, :run_tests
+    attr_accessor :source, :destination, :host, :pygments, :write_docs, :run_tests, :site, :out
   end
   
   # Configuration
@@ -37,27 +37,22 @@ module Tzatziki
   Tzatziki.pygments = false
   Tzatziki.write_docs = true
   Tzatziki.run_tests = true
-  
-  # Pointers
-  
-  
+  Tzatziki.out = $stdout
+    
   def self.process!(source, destination)
-    if run_tests
-      puts "Running tests against #{host}..."
-      test(source, destination)
-    end
-    if write_docs
-      puts "Generating documentation in #{destination}"
-      document(source, destination)
-    end
-    puts "Out of Tzatziki."
+    Tz.out.write "Tzatziki is loading the specifications from #{source}...\n"
+    Tzatziki.site = Tzatziki::Site.new(source, destination)
+    Tz.out.write "=> Done.\n"
+    test Tzatziki.site if run_tests
+    document Tzatziki.site if write_docs
   end 
    
-  def self.test(source, destination)
-    
+  def self.test(site)
+    Tz.out.write "Tzatziki is testing against the specifications...\n"
+    Tzatziki.site.test!
   end
   
-  def self.document(source, destination)
+  def self.document(site)
     
   end
   
@@ -71,3 +66,4 @@ module Tzatziki
   end
   
 end
+Tz = Tzatziki

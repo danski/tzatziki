@@ -78,11 +78,32 @@ module Tzatziki
     end
     def process!(recurse=true)
       self.read_config
-      self.read_specifications
       self.read_types
+      self.read_specifications
       self.read_documents
       self.read_children      
       self.children.each { |c| c.process } if recurse
+    end
+    
+    # Actually runs the test suites in a processed site.
+    # +recurse+ is a boolean indicating whether or not to also test the child APIs.
+    def test!(recurse=true, options={}, stack=1)
+      options = {
+        :print=>false,
+        :format=>:specdoc # May also be one of :unit or :specdoc
+      }.merge(options)
+      # Test all the documents in this API
+      case options[:format]
+      when :specdoc
+        Tz.out.write "#{"--"*stack} API located in #{self.source}\n"
+        self.documents.each do |name, document|
+          Tz.out.write "#{"--"*(stack+1)} #{name}\n"
+          Tz.out.write "document.test!.inspect\n"
+        end
+      else
+        
+      end
+      self.children.map {|c| c.test!(recurse, options, stack+1) } if recurse
     end
   
     # Read the config file into a hash ready for inclusion in the site payload.

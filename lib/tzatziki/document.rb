@@ -13,6 +13,10 @@ module Tzatziki
       self.data = self.api.inject_configuration(self.data)
     end
     
+    def test!
+      super if self.data[:request]
+    end
+    
     def process!
       # set the request factory options
       # test this document
