@@ -65,7 +65,7 @@ class Net::HTTPResponse
               k.to_s.split("::HTTP").last.downcase
           end          
           ok = (klasses.include?(arg.downcase))
-          return ok, ("expected code of class '#{klasses.first}' or specific type '#{klasses.last}' but response code was of type #{response.class.to_s.split("::HTTP").last.downcase}" unless ok)
+          return ok, ("expected code of class '#{arg}' but response code was of type #{klasses.join(" / ")}" unless ok)
         end
       end
       

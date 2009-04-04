@@ -96,27 +96,28 @@ module Tzatziki
       # Test all the documents in this API
       case options[:format]
       when :specdoc
+        message_count = 1
         Taz.out.write "#{"--"*stack} #{self.is_a?(Tzatziki::Site)? "Document bundle" : "API"} located in #{self.source}\n"
-        self.documents.each do |name, document|
-          
+        self.documents.each do |name, document|          
           if document.testable?
             result, messages = document.test!
             if result
               Taz.out.write "#{"--"*(stack+1)} "
-              Taz.out.write green("#{name}\n")
+              Taz.out.write green("#{name.capitalize}\n")
             else
               Taz.out.write "#{"--"*(stack+1)} "
-              Taz.out.write red("#{name}\n")
+              Taz.out.write red("#{name.capitalize}\n")
               messages.each do |m| 
                 Taz.out.write "#{"--"*(stack+2)} "
-                Taz.out.write(red("#{m}\n"))
+                Taz.out.write(red("[#{message_count}] #{m.capitalize}\n"))
+                message_count += 1
               end
-              Taz.out.write red("#{"  "*(stack+2)} Request data          \n #{"  "*(stack+2)}#{document.data[:request].inspect}\n")
-              Taz.out.write red("#{"  "*(stack+2)} Response assertions   \n #{"  "*(stack+2)}#{document.data[:response].inspect}\n")
+              Taz.out.write yellow("#{"  "*(stack+2)} Request data          \n #{"  "*(stack+2)}#{document.data[:request].inspect}\n")
+              Taz.out.write yellow("#{"  "*(stack+2)} Response assertions   \n #{"  "*(stack+2)}#{document.data[:response].inspect}\n")
             end
           else
             Taz.out.write "#{"--"*(stack+1)} "
-            Taz.out.write green("#{name} #{"(skipped because document contains no request data)" unless document.testable?}\n")
+            Taz.out.write green("#{name.capitalize} #{"(skipped because document contains no request data)" unless document.testable?}\n")
           end
         end
       else

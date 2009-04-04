@@ -26,5 +26,5 @@ The response that comes back is very simple, too:
 
 ---
 response: 
-  status: ok
+  status: 20X
 ===
