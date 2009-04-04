@@ -14,7 +14,7 @@ class Net::HTTPResponse
                     end
       messages = result.last
       messages << message
-      [ok, messages.compact]
+      result = ok, messages.flatten.compact
     end
   end
   
@@ -77,7 +77,7 @@ class Net::HTTPResponse
           end
         end
         ok = errors.empty?
-        return ok, (errors.join(", ") unless ok)
+        return ok, (errors unless ok)
       end
       
       def assert_body(response, arg)

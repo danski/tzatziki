@@ -102,15 +102,21 @@ module Tzatziki
           if document.testable?
             result, messages = document.test!
             if result
-              Taz.out.write green("#{"--"*(stack+1)} #{name}\n")
+              Taz.out.write "#{"--"*(stack+1)} "
+              Taz.out.write green("#{name}\n")
             else
-              Taz.out.write red("#{"--"*(stack+1)} #{name}\n")
-              messages.each{ |m| Taz.out.write(red("#{"--"*(stack+2)} #{m}\n")) }
+              Taz.out.write "#{"--"*(stack+1)} "
+              Taz.out.write red("#{name}\n")
+              messages.each do |m| 
+                Taz.out.write "#{"--"*(stack+2)} "
+                Taz.out.write(red("#{m}\n"))
+              end
               Taz.out.write red("#{"  "*(stack+2)} Request data          \n #{"  "*(stack+2)}#{document.data[:request].inspect}\n")
               Taz.out.write red("#{"  "*(stack+2)} Response assertions   \n #{"  "*(stack+2)}#{document.data[:response].inspect}\n")
             end
           else
-            Taz.out.write green("#{"--"*(stack+1)} #{name} #{"(skipped because document contains no request data)" unless document.testable?}\n")
+            Taz.out.write "#{"--"*(stack+1)} "
+            Taz.out.write green("#{name} #{"(skipped because document contains no request data)" unless document.testable?}\n")
           end
         end
       else

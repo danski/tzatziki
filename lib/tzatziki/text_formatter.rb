@@ -13,7 +13,7 @@ module Tzatziki
       Tzatziki::TextFormatter::TTYFormatter.colour = true
       
       def make_fabulous(text, colour_code)
-        return text unless Tzatziki::TextFormatter::TTYFormatter.colour
+        return text unless !Tzatziki.out.tty? or Tzatziki::TextFormatter::TTYFormatter.colour
         "#{colour_code}#{text}\e[0m"
       end
 
