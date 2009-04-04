@@ -1,31 +1,5 @@
 $:.unshift File.dirname(__FILE__)     # For use/testing when no gem is installed
-# Core requires
-require 'rubygems'
-# Stdlib requires
-require 'fileutils'
-require 'yaml'
-require 'net/http'
-# Gem requires
-require 'liquid'
-require 'redcloth'
-require 'jekyll'
-require 'randexp'
-require 'mash'
-# Tzatziki requires
-require 'tzatziki/core_ext/hash'
-require 'tzatziki/core_ext/http_request'
-require 'tzatziki/core_ext/http_response'
-require 'tzatziki/text_formatter'
-require 'tzatziki/errors'
-require 'tzatziki/parsable'
-require 'tzatziki/documentable'
-require 'tzatziki/testable'
-require 'tzatziki/api'
-require 'tzatziki/site'
-require 'tzatziki/example'
-require 'tzatziki/document'
-require 'tzatziki/type'
-require 'tzatziki/specification'
+require 'dependencies'
 
 module Tzatziki
   
