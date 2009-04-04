@@ -7,6 +7,8 @@ request:
   method: get
   headers:
     custom: add a custom header
+response:
+  status: 200
 specifications:
   successful: true
   searchable: true

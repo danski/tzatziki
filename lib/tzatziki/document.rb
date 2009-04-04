@@ -14,7 +14,13 @@ module Tzatziki
     end
     
     def test!
-      super if self.data[:request]
+      super(self.data[:request], self.data[:response])
+    end
+    
+    # Determines if tests should be run against this particular document
+    # based on the presence of a request fixture in the doc.
+    def testable?
+      true if self.data[:request]
     end
     
     def process!

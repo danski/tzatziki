@@ -18,6 +18,7 @@
 
 module Tzatziki
   class API
+    include TextFormatter::TTYFormatter
     
     # The source and destination folders for this API
     attr_accessor :source, :destination
@@ -95,15 +96,31 @@ module Tzatziki
       # Test all the documents in this API
       case options[:format]
       when :specdoc
-        Tz.out.write "#{"--"*stack} API located in #{self.source}\n"
+        Tz.out.write "#{"--"*stack} #{self.is_a?(Tzatziki::Site)? "Document bundle" : "API"} located in #{self.source}\n"
         self.documents.each do |name, document|
-          Tz.out.write "#{"--"*(stack+1)} #{name}\n"
-          Tz.out.write "document.test!.inspect\n"
+          
+          if document.testable?
+            result, messages = document.test!
+            if result
+              Tz.out.write green("#{"--"*(stack+1)} #{name}\n")
+            else
+              Tz.out.write red("#{"--"*(stack+1)} #{name}\n")
+              messages.each{ |m| Tz.out.write(red("#{"--"*(stack+2)} #{m}\n")) }
+              Tz.out.write "#{"  "*(stack+2)} Request data: #{document.data[:request].inspect}\n"
+              Tz.out.write "#{"  "*(stack+2)} Response assertions: #{document.data[:response].inspect}\n"
+            end
+          else
+            Tz.out.write yellow("#{"--"*(stack+1)} #{name} #{"(skipped)" unless document.testable?}\n")
+          end
         end
       else
         
       end
       self.children.map {|c| c.test!(recurse, options, stack+1) } if recurse
+    end
+    
+    def test_and_output_specdoc(stack=1)
+      
     end
   
     # Read the config file into a hash ready for inclusion in the site payload.

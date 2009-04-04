@@ -15,6 +15,7 @@ require 'mash'
 require 'tzatziki/core_ext/hash'
 require 'tzatziki/core_ext/http_request'
 require 'tzatziki/core_ext/http_response'
+require 'tzatziki/text_formatter'
 require 'tzatziki/errors'
 require 'tzatziki/parsable'
 require 'tzatziki/documentable'
@@ -40,7 +41,7 @@ module Tzatziki
   Tzatziki.out = $stdout
     
   def self.process!(source, destination)
-    Tz.out.write "Tzatziki is loading the specifications from #{source}...\n"
+    Tz.out.write "Tzatziki is reading the specifications from #{source}...\n"
     Tzatziki.site = Tzatziki::Site.new(source, destination)
     Tz.out.write "=> Done.\n"
     test Tzatziki.site if run_tests
