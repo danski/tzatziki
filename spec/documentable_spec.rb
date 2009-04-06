@@ -57,5 +57,8 @@ i am the walrus
   
   it "should render the template with a layout"
   it "should render the template with liquid helpers "
+  it "should recognise multi-datablock input and use the YAML declares as placeholders for data tables"
+  it "should recognise single datablock input and let the user specify where to place the tables"
+  it "should place the request/response data tables at the end of the document if the user did not place them"
   
 end
