@@ -6,5 +6,6 @@ describe Tzatziki do
   it "should only run the document generator when run with the --notest option"
   it "should specify a new config file for this suite given the --config option"
   it "should not compile documents if there are test failures when given the --fatal option"
+  it "should highlight document syntax when the --highlight option is given"
   
 end

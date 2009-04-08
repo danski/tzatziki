@@ -14,24 +14,41 @@ a {
 	color: green;
 }
 
-#main {
-	margin-left: 250px;
+/* @end */
+
+/* @group Brand header */
+
+#header {
+	clear: both;
+	background: black;
+	color: white;
+	padding: 20px;
 }
 
 /* @end */
 
 /* @group Document layout */
 
+#main {
+	height: 100%;
+	background: #fdecb8;
+}
+
+ol.breadcrumb, div.document {
+	margin: 0 0 0 251px;
+	clear: none;
+}
+
 #main ol.breadcrumb {
-	margin: 0; padding: 10px;
+	padding: 10px;
+	background: #444;
 	height: 2em;
-	background: #59f;
 	list-style-type: none;
 }
 	#main ol.breadcrumb li {
 		padding: 5px 10px;
 		margin-right: 5px;
-		background: #4068ff;
+		background: #666;
 		-webkit-border-radius: 5px;
 		-moz-border-radius: 5px;
 		float: left;
@@ -40,24 +57,27 @@ a {
 			color: white;
 		}
 	#main ol.breadcrumb li.current {
-		background: #eafbf7;
+		background: #333;
 		height: 2em;
-		border-color: transparent;
 		-webkit-border-bottom-left-radius: 0;
 		-webkit-border-bottom-right-radius: 0;
 		-moz-border-radius-bottomleft: 0;
 		-moz-border-radius-bottomright: 0;
 	}
-		#main ol.breadcrumb li.current a {
-			color: inherit;
-		}
+
+div.document {
+}
 
 h1 {
-	clear: both;
 	margin: 0;
 	padding: 10px;
 	font-size: 2em;
-	background-color: #eafbf7;
+	color: white;
+	background-color: #333;
+}
+
+div.template {
+	padding: 20px 10px;
 }
 
 /* @end */
@@ -65,18 +85,23 @@ h1 {
 /* @group Tree navigation */
 
 #navigation {
-	position: fixed;
 	top: 0; left: 0;
 	width: 250px;
+	float: left;
 	height: 100%;
-	background: #FFF;
-	border-right: 1px solid black;
 }
 
 /* @group Tree list */
 
-	.tree {
-		
+	.treeview {
+		padding: 10px;
+	}
+	.treeview a {
+	}
+	.treeview ul a {
+		position: static;
+		font-weight: normal;
+		font-size: 1em;
 	}
 
 /* @end */
@@ -88,7 +113,7 @@ h1 {
 	}
 	#search-form fieldset { 
 		border: none;
-		background: #333;
+		background: #0953d7;
 		padding: 10px 10px 10px 10px;
 		text-align: right;
 	}

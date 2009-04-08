@@ -6,7 +6,7 @@
 
 	<!-- Complete and varied array of tags to prevent IE from buggering about with my carefully-prepared markup -->
 	<meta name="ROBOTS" content="ALL" />
-	<meta http-equiv="imagetoolbar" content="no" />
+	<meta http-equiv="imagetoulbar" content="no" />
 	<meta name="MSSmartTagsPreventParsing" content="true" />
 	<meta http-equiv="X-UA-Compatible" content="IE=8" />
 	<!-- Document metadata -->
@@ -15,29 +15,23 @@
 	<!-- Third-party Dependencies -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js" type="text/javascript"></script>
+		<!-- jQuery Cookie plugin -->
+		<script src="lib/jquery-treeview/lib/jquery.cookie.js" type="text/javascript"></script>
+		<!-- jQuery Treeview plugin -->
+		<script src="lib/jquery-treeview/jquery.treeview.pack.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="lib/jquery-treeview/jquery.treeview.css" type="text/css" media="screen" />
 
 	<!-- Tzatziki Dependencies -->
 	<link rel="stylesheet" href="css/screen.css" type="text/css" media="screen" />	
-	<script src="lib/tzatziki-core.js"></script>
+	<script src="javascript/tzatziki-core.js"></script>
 </head>
 <body>
 
-	<div id="root">		
-		<div id="main">
-		
-			<ol class="breadcrumb">
-				<li class="root"><a href="">Home</a></li>
-				<li><a href="">Child category</a></li>
-				<li class="current"><a href="">Current page</a></li>
-			</ol>
-			
-			<h1>Document title</h1>
-			
-			<div class="template formatted">
-				template goes here
-			</div>
-			
+	<div id="root">	
+		<div id="header">
+			Brand header do what you like here
 		</div>
+		
 		<div id="navigation">
 			<form action="" method="get" id="search-form">
 				<fieldset>
@@ -49,33 +43,54 @@
 					<input type="submit" name="commit" value="Search" />
 				</fieldset>
 			</form>
-			<ol class="tree">
+			<ul class="treeview">
 				<li>
 					<a href="/">Root label</a>
-					<ol>
+					<ul>
 						<li><a href="">Child label (empty)</a></li>
 						<li>
 							<a href="">Child label (with entries)</a>
-							<ol>
+							<ul>
 								<li><a href="">Leaf node</a></li>
-							</ol>
+							</ul>
 						</li>
-					</ol>
+					</ul>
 				</li>
 				<li>
 					<a href="/">Root label</a>
-					<ol>
+					<ul>
 						<li><a href="">Child label (empty)</a></li>
 						<li>
 							<a href="">Child label (with entries)</a>
-							<ol>
+							<ul>
 								<li><a href="">Leaf node</a></li>
-							</ol>
+							</ul>
 						</li>
-					</ol>
+					</ul>
 				</li>
-			</ol>
+			</ul>
 		</div>
+
+		
+		<div id="main">
+		
+			<ol class="breadcrumb">
+				<li class="root"><a href="">Home</a></li>
+				<li><a href="">Child category</a></li>
+				<li class="current"><a href="">Current page</a></li>
+			</ol>
+			
+			<div class="document formatted">			
+				<h1>Document title</h1>
+				
+				<div class="template">
+					template goes here
+				</div>			
+			</div>
+			
+		</div>
+		
+				
 	</div>
 	
 </body>

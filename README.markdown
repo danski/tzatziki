@@ -36,6 +36,11 @@ This README is actually a TODO of things I need to write in the README so that p
 * Customising the HTML
 ** Liquid reference
 
+* Authoring documentation
+* YAML declare syntax
+* Declaring with one block (jekyll-style)
+* Declaring with multiple blocks (auto table insertion)
+
 Supported request variables
 ---------------------------
 method
