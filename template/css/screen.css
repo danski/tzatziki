@@ -10,8 +10,13 @@ body, form, fieldset, h1,h2,h3,h4,h5,h6, hr {
 	margin: 0; 
 	padding: 0;
 }
-a {
+a, img {
+	border: none;
 	color: green;
+}
+#root {
+	max-width: 960px;
+	margin: 0 auto;
 }
 
 /* @end */
@@ -31,11 +36,12 @@ a {
 
 #main {
 	height: 100%;
+	margin-left: 251px;
 	background: #fdecb8;
 }
 
 ol.breadcrumb, div.document {
-	margin: 0 0 0 251px;
+	margin: 0 0 0 0;
 	clear: none;
 }
 

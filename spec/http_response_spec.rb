@@ -11,6 +11,8 @@ describe Net::HTTPResponse do
     @success_response = Net::HTTPRequest.from_hash(@testable.data[:request]) { |http, req| http.request(req) }
   end
   
+  it "should allow for liquid markup referencing the request properties"
+  
   it "should return true, [] for the success fixture on comparison" do
     ok, messages = @success_response.compare!(:status=>200)
     ok.should be_true
@@ -20,6 +22,11 @@ describe Net::HTTPResponse do
     ok, messages = @success_response.compare!(:status=>500)
     ok.should be_false
     messages.length.should == 1    
+  end
+  it "should return false, error array for a partial failure state" do
+    ok, messages = @success_response.compare!(:status=>200, :headers=>{:"content-type" => "application/json"})
+    ok.should be_false
+    messages.length.should == 1
   end
   
   describe "casual typing" do

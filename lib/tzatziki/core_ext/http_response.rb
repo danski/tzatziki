@@ -3,6 +3,7 @@ require 'net/http'
 class Net::HTTPResponse
   
   def compare!(specification_hash)
+    header_fail = false
     specification_hash.inject([true, []]) do |result, (key, value)|
       ok, message = case key
                     when :status
@@ -10,11 +11,12 @@ class Net::HTTPResponse
                     when :headers
                       Assertions.assert_headers(self, value)
                     when :body
-                      Assertions.assert_headers(self, value)
+                      #Assertions.assert_headers(self, value)
                     end
+      last_ok = result.first
       messages = result.last
       messages << message
-      result = ok, messages.flatten.compact
+      result = (last_ok ? ok : false), messages.flatten.compact
     end
   end
   
