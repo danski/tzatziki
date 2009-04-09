@@ -3,140 +3,83 @@
 body {
 	font-family: Tahoma, Helvetica, sans-serif;
 	font-size: 1em;
-	background: white;
-
+	background: white url('../images/background-tile.jpg');
 }
-body, form, fieldset, h1,h2,h3,h4,h5,h6, hr {
+body, form, fieldset, h1,h2,h3,h4,h5,h6,hr,ol,ul {
 	margin: 0; 
 	padding: 0;
 }
 a, img {
 	border: none;
-	color: green;
 }
 #root {
-	max-width: 960px;
+	padding: 0 50px;
+	background: transparent url('../images/background-gradient.jpg') repeat-x;
+}
+#root-inner {
+	min-height: 900px;
+	min-width: 800px;
+	max-width: 1200px;
 	margin: 0 auto;
+}
+#main {
+	padding: 15px;
+	background: transparent url('../images/document-border-noise.jpg');
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+}
+#main-inner {
+	background: white;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
 }
 
 /* @end */
 
 /* @group Brand header */
-
-#header {
-	clear: both;
-	background: black;
-	color: white;
-	padding: 20px;
-}
-
+	#brand {
+		padding: 15px;
+	}
 /* @end */
 
-/* @group Document layout */
+/* @group Navigation */
 
-#main {
-	height: 100%;
-	margin-left: 251px;
-	background: #fdecb8;
-}
-
-ol.breadcrumb, div.document {
-	margin: 0 0 0 0;
-	clear: none;
-}
-
-#main ol.breadcrumb {
-	padding: 10px;
-	background: #444;
-	height: 2em;
-	list-style-type: none;
-}
-	#main ol.breadcrumb li {
-		padding: 5px 10px;
-		margin-right: 5px;
-		background: #666;
-		-webkit-border-radius: 5px;
-		-moz-border-radius: 5px;
+	#breadcrumb {
+		height: 39px;
+		clear: both;
+		list-style-type: none;	
+		background: white url('../images/breadcrumb-li-gradient.jpg') repeat-x bottom left;
+		border-bottom: 1px solid #999;
+		-webkit-border-top-left-radius: 15px;
+		-webkit-border-top-right-radius: 15px;
+		-moz-border-radius-topleft: 15px;
+		-moz-border-radius-topright: 15px;
+	}
+	#breadcrumb li {		
 		float: left;
 	}
-		#main ol.breadcrumb li a {
-			color: white;
-		}
-	#main ol.breadcrumb li.current {
-		background: #333;
-		height: 2em;
-		-webkit-border-bottom-left-radius: 0;
-		-webkit-border-bottom-right-radius: 0;
-		-moz-border-radius-bottomleft: 0;
-		-moz-border-radius-bottomright: 0;
+	#breadcrumb li a, #breadcrumb li span {
+		display: block;
+		padding: 0.6em 30px 0.7em 0.6em;
+		background: transparent url('../images/breadcrumb-li-pointer.jpg') no-repeat top right;
 	}
-
-div.document {
-}
-
-h1 {
-	margin: 0;
-	padding: 10px;
-	font-size: 2em;
-	color: white;
-	background-color: #333;
-}
-
-div.template {
-	padding: 20px 10px;
-}
-
-/* @end */
-
-/* @group Tree navigation */
-
-#navigation {
-	top: 0; left: 0;
-	width: 250px;
-	float: left;
-	height: 100%;
-}
-
-/* @group Tree list */
-
-	.treeview {
-		padding: 10px;
+	#breadcrumb .current {
+		background: none;
+		color: #333;
+		text-decoration: none;
 	}
-	.treeview a {
-	}
-	.treeview ul a {
-		position: static;
-		font-weight: normal;
-		font-size: 1em;
+	#breadcrumb .home img {
+		margin-left: 5px;
 	}
 
 /* @end */
 
-/* @group Search form */
+/* @group Document */
+
 	
-	#search-form {
+
+	/* @group Wrapper */
 		
-	}
-	#search-form fieldset { 
-		border: none;
-		background: #0953d7;
-		padding: 10px 10px 10px 10px;
-		text-align: right;
-	}
-	#search-form input.text {
-		height: 1.1em;
-		font-size: 1em;
-		padding: 0.5em;
-		border-width: 0;
-		-webkit-border-radius: 1em;
-		-moz-border-radius: 1em;
-	}
-		#search-form label { display: none; }
-		#search-form legend { display: none; }
-		#search-form .submit { display: none; }
+	/* @end */
 
 /* @end */
-	
-
-/* @end */
-

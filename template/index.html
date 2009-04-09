@@ -27,22 +27,54 @@
 </head>
 <body>
 
-	<div id="root">	
-		<div id="header">
-			Brand header do what you like here
-		</div>
+	<div id="root"><div id="root-inner">
 		
-		<div id="navigation">
-			<form action="" method="get" id="search-form">
-				<fieldset>
-					<legend>Search the API docs</legend>
-					<label for="search_field">Search term</label>
-					<input type="text" class="text" value="" id="search_field" name="q" />
-				</fieldset>
-				<fieldset class="submit">
-					<input type="submit" name="commit" value="Search" />
-				</fieldset>
-			</form>
+		<h4 id="brand">
+			<!-- You should put your own brand in here -->
+			PUT YOUR LOGO HERE
+		</h4>
+		
+		<div id="main"><div id="main-inner">
+			
+			<ol id="breadcrumb" class="navigation breadcrumb">
+				<li><a href="#" class="home"><img src="images/breadcrumb-home.jpg" alt="Home" /></a></li>
+				<li><a href="#">Category</a></li>
+				<li><a href="#">Subcategory</a></li>
+				<li><a href="#" class="current">Current page</a></li>
+			</ol>
+			
+			<ol id="navigation" class="navigation tree">
+				<li><a href="#">Empty category with an index page</a></li>
+				<li><span>Empty category with no index page</span></li>
+				<li>
+					<a href="#">Head of a category with an index page</a>
+					<ol>
+						<li><a href="#">child page</a></li>
+						<li><a href="#">child page</a></li>
+						<li><a href="#">child page</a></li>
+					</ol>
+				</li>
+				<li>
+					<span>Head of a category with no index page</span>
+					<ol>
+						<li><a href="#">child page</a></li>
+						<li><a href="#">child page</a></li>
+						<li><a href="#">child page</a></li>
+					</ol>
+				</li>
+			</ol>
+
+			
+			
+			<div id="document">
+				document bit
+			</div>
+			
+		</div></div>
+				
+	</div></div>
+	
+	<!--
 			<ul class="treeview">
 				<li>
 					<a href="/">Root label</a>
@@ -69,29 +101,19 @@
 					</ul>
 				</li>
 			</ul>
-		</div>
-
 		
-		<div id="main">
 		
-			<ol class="breadcrumb">
-				<li class="root"><a href="">Home</a></li>
-				<li><a href="">Child category</a></li>
-				<li class="current"><a href="">Current page</a></li>
-			</ol>
-			
-			<div class="document formatted">			
-				<h1>Document title</h1>
-				
-				<div class="template">
-					template goes here
-				</div>			
-			</div>
-			
-		</div>
-		
-				
-	</div>
+			<form action="" method="get" id="search-form">
+				<fieldset>
+					<legend>Search the API docs</legend>
+					<label for="search_field">Search term</label>
+					<input type="text" class="text" value="" id="search_field" name="q" />
+				</fieldset>
+				<fieldset class="submit">
+					<input type="submit" name="commit" value="Search" />
+				</fieldset>
+			</form>
+	-->
 	
 </body>
 </html>
