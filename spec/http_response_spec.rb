@@ -28,6 +28,11 @@ describe Net::HTTPResponse do
     ok.should be_false
     messages.length.should == 1
   end
+  it "should return false, error array for success-fail-success failure states, ensuring that we don't introduce a regression" do
+    ok, messages = @success_response.compare!(:headers=>{:"content-type" => "text/html; charset=ISO-8859-1", :status=>201})
+    ok.should be_false
+    messages.length.should == 1
+  end
   
   describe "casual typing" do
     it "should match any part of the content-type header, e.g. 'html' to 'text/html; charset...'" do
