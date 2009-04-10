@@ -68,9 +68,28 @@ a, img {
 		color: #333;
 		text-decoration: none;
 	}
+	#breadcrumb .home {
+		padding-bottom: 6px;
+	}
 	#breadcrumb .home img {
 		margin-left: 5px;
 	}
+
+/* @group Column view */
+
+	.view-columnar {
+		margin: 20px;
+		overflow-x: scroll;
+		background: #CCC;
+	}
+		.view-columnar .tier_wrapper {
+			width: 250px;
+			height: 150px;
+			overflow-y: scroll;
+			float: left;
+		}
+
+/* @end */
 
 /* @end */
 
