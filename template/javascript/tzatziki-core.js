@@ -16,14 +16,15 @@ $(document).ready(function() {
 // styled to resemble OSX's columnar view.
 // Was authored as a part of the initial Tzatziki release.
 $.fn.columnify = function(options) {
+	var $this = $(this);
 	// Default options
 	var defaults = {
     	recursive: true
 	};
   	var opts = $.extend(defaults, options);
 
-	var links = $(this).columnify.extract(opts.recursive);
-		
+	var links = $this.columnify.extract($this, opts.recursive);
+    console.log(links);
 };
 	// Goes over nested links in an LI and extracts to an object like:
 	/*
@@ -35,20 +36,20 @@ $.fn.columnify = function(options) {
 		}
 			*/
 	// Run this function against an OL or UL element.
-	$.fn.columnify.extract = function(recurse) {
+	$.fn.columnify.extract = function(on, recurse) {
 	   var r_obj = {
 	   	links: [],
 	   	children: []
 	   };		
 	   // Find the child lists if present and intern them before removing them from the DOM
-	   //var this_child_lists = $("ol, ul", $(this));
-	   //if(recurse) {
-	   //	this_child_lists.each(function() {
-	   //		r_obj.children.push(this.columnify.extract());
-	   //	});
-	   //	this_child_lists.remove();		
-	   //}
+	   var this_child_lists = $("ol, ul", on);
+	   if(recurse) {
+	   	this_child_lists.each(function() {
+	   		r_obj.children.push(on.columnify.extract());
+	   	});
+	   	this_child_lists.remove();		
+	   }
 	   // Remaining links are direct descendants
-	   //obj.links = $("li > a", $(this));		
+	   r_obj.links = $("li > a", on);		
 	   return r_obj;		
 	};
