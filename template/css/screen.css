@@ -78,15 +78,24 @@ a, img {
 /* @group Column view */
 
 	.view-columnar {
-		margin: 20px;
-		overflow-x: scroll;
+		overflow-x: auto;
 		background: #CCC;
+		border-bottom: 1px solid #999;
 	}
 		.view-columnar .tier_wrapper {
 			width: 250px;
 			height: 150px;
-			overflow-y: scroll;
+			overflow-y: auto;
 			float: left;
+		}
+		.view-columnar li {
+			padding: 3px;
+		}
+		.view-columnar li.current {
+			background: red;
+		}
+		.view-columnar li.selected {
+			background: blue;
 		}
 
 /* @end */
@@ -95,9 +104,18 @@ a, img {
 
 /* @group Document */
 
-	
+	h1 {
+		padding: 20px;
+		background: #EEE;
+		font-weight: lighter;
+		clear: both;
+	}
 
 	/* @group Wrapper */
+
+		#document {
+			padding: 0px 20px 20px 20px;
+		}
 		
 	/* @end */
 

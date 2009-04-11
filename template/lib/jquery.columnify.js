@@ -19,6 +19,33 @@ $.fn.columnify = function(options) {
 	$this.remove();
 };
 	$.fn.columnify.list_counter = 0;
+	$.fn.columnify.getListRef = function() {
+		var r = $.fn.columnify.list_counter;
+		$.fn.columnify.list_counter++;
+		return r;
+	}
+	
+	// Selects a list item given the <a /> node of the link. The parent list will be inferred from the
+	// HTML5 data attributes on the parent list, and any child lists will be searched for.
+	// When selecting an item, the parent list is not affected but the child lists will be reset.
+	$.fn.columnify.select = function(link) {
+		var link = $(link);
+		var child_tier = $("#"+link.attr("data-owned-list-tier-id"));
+		var show_list = $("#"+link.attr("data-owns-list"));
+		
+		// Hide all lists in all tiers below this one
+		var count=1;
+		var t = parseInt(link.attr("data-owns-list-in-tier"));
+		while(count > 1) {
+			
+		}
+		
+		// Show the list we want to control
+		show_list.show();
+		
+		// Add class to this link
+		link.parent().attr("class", "current");
+	}
 	
 	// Renders a tier of the list into a wrapper, and recurses to child lists
 	// to place them in further wrappers.
@@ -34,13 +61,13 @@ $.fn.columnify = function(options) {
 		if($("#"+tier_wrapper_id).length > 0) {
 			var tier_wrapper = $("#"+tier_wrapper_id);
 		} else {
-			var tier_wrapper = $("<div id=\""+tier_wrapper_id+"\" class=\"tier_wrapper\"></div>").appendTo(target);
+			var tier_wrapper = $("<div id=\""+tier_wrapper_id+"\" class=\"tier_wrapper wraps_tier_"+tier+"\" data-tier=\""+tier+"\"></div>").appendTo(target);
 		}
 		
 		// Start processing the child links into the lists below this one
 		// Determine list ID and create or get reference
-		var list_id = target.attr("id")+"_tier"+tier+"_list"+$.fn.columnify.list_counter;
-		$.fn.columnify.list_counter++;
+		var list_ref = $.fn.columnify.getListRef();
+		var list_id = target.attr("id")+"_tier"+tier+"_list"+list_ref;
 		if($("#"+list_id).length > 0) {
 			var tier_list = $("#"+list_id);
 		} else {
@@ -49,15 +76,17 @@ $.fn.columnify = function(options) {
 		
 		// Loopit
 		$(links).each(function() { var $link = this;
-			// Render the link into the list
-			console.log("rendering tier link...");
-			$("<li><a href=\""+$link.href+"\">"+$link.label+"</a></li>").appendTo(tier_list);
-				// Attach events
 			// Render the child lists
-			if($link.children.length > 0) {
-				$.fn.columnify.render(target, $link.children, tier+1);
-			}
+			var child_props = $.fn.columnify.render(target, $link.children, tier+1);
+			// Render the parent link into the list
+			li = $("<li></li>").appendTo(tier_list);
+			link = $("<a href=\""+$link.href+"\" data-owns-list=\""+child_props.list_id+"\" data-owns-list-in-tier=\""+tier+1+"\" data-owned-list-tier-id=\""+child_props.tier_wrapper_id+"\">"+$link.label+"</a>").appendTo(li);
+				// Attach events
+				link.mouseover(function() {
+					$.fn.columnify.select(this);
+				});
 		});
+		return {"list_id": list_id, "tier_wrapper_id": tier_wrapper_id};
 	}
 
 	// Goes over nested links in an LI and extracts to an object like:
