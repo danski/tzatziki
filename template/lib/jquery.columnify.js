@@ -13,7 +13,7 @@ $.fn.columnify = function(options) {
   	var opts = $.extend(defaults, options);
 
 	var links = $.fn.columnify.extract($this);
-	var wrapper = $("<div id=\""+opts.id+"\" class=\"view-columnar\"></div>").insertAfter($this);
+	var wrapper = $("<nav id=\""+opts.id+"\" class=\"view-columnar\"></nav>").insertAfter($this);
 	$.fn.columnify.render(wrapper, links);	
 
 	$this.remove();
@@ -33,6 +33,9 @@ $.fn.columnify = function(options) {
 		var child_tier = $("#"+link.attr("data-owned-list-tier-id"));
 		var show_list = $("#"+link.attr("data-owns-list"));
 		
+		// Deselect all links
+		$("a", link.closest("nav")).attr("class", "");
+		
 		// Hide all lists in all tiers below this one
 		var count=1;
 		var t = parseInt(link.attr("data-owns-list-in-tier"));
@@ -44,7 +47,7 @@ $.fn.columnify = function(options) {
 		show_list.show();
 		
 		// Add class to this link
-		link.parent().attr("class", "current");
+		link.attr("class", "current");
 	}
 	
 	// Renders a tier of the list into a wrapper, and recurses to child lists

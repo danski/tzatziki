@@ -29,108 +29,74 @@
 
 	<div id="root"><div id="root-inner">
 		
-		<h4 id="brand">
+		<header>
 			<!-- You should put your own brand in here -->
 			PUT YOUR LOGO HERE
-		</h4>
+		</header>
 		
-		<div id="main"><div id="main-inner">
+		<section id="main">
+			<div id="main-inner">
 			
-			<ol id="breadcrumb" class="navigation breadcrumb">
-				<li><a href="#" class="home"><img src="images/breadcrumb-home.jpg" alt="Home" /></a></li>
-				<li><a href="#">Category</a></li>
-				<li><a href="#">Subcategory</a></li>
-				<li><a href="#" class="current">Current page</a></li>
-			</ol>
-			
-			<ol id="navigation" class="navigation view-columnar">
-				<!-- 
-					The navigation for the entire docset is represented here in
-					proper semantic form, which will be completely mangled by 
-					jQuery when the DOM is ready into something more useful to
-					humans.
-				-->
-				<li><a href="#">Empty category</a></li>
-				<li>
-					<a href="#">Head of a category</a>
-					<ol>
-						<li><a href="#">child page</a></li>
-						<li><a href="#">child page</a></li>
-						<li><a href="#">child page</a></li>
+				<nav>
+					<ol id="breadcrumb" class="navigation breadcrumb">
+						<li><a href="#" class="home"><img src="images/breadcrumb-home.jpg" alt="Home" /></a></li>
+						<li><a href="#">Category</a></li>
+						<li><a href="#">Subcategory</a></li>
+						<li><a href="#" class="current">Current page</a></li>
 					</ol>
-				</li>
-				<li>
-					<a href="#">Head of a category</a>
-					<ol>
-						<li><a href="#">child page</a></li>
-						<li><a href="#">child page</a></li>
-						<li><a href="#">child page</a></li>
+				</nav>			
+				<nav>
+					<ol id="navigation" class="navigation view-columnar">
+						<!-- 
+							The navigation for the entire docset is represented here in
+							proper semantic form, which will be completely mangled by 
+							jQuery when the DOM is ready into something more useful to
+							humans.
+						-->
+						<li><a href="#">Empty category</a></li>
+						<li>
+							<a href="#">Head of a category</a>
+							<ol>
+								<li><a href="#">child page</a></li>
+								<li><a href="#">child page</a></li>
+								<li><a href="#">child page</a></li>
+							</ol>
+						</li>
+						<li>
+							<a href="#">Head of a category</a>
+							<ol>
+								<li><a href="#">child page</a></li>
+								<li><a href="#">child page</a></li>
+								<li><a href="#">child page</a></li>
+							</ol>
+						</li>
 					</ol>
-				</li>
-			</ol>
+				</nav>
 
+				<document>
+					<h1>Document title</h1>
+				
+					<section>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec risus felis, mollis eget, convallis sit amet, luctus eget, urna. Nam nulla diam, laoreet sed, faucibus nec, commodo ut, neque. Nulla id quam id eros rhoncus ultrices. Nunc tincidunt, sem id sagittis eleifend, nibh massa mollis lorem, at mollis diam massa eget metus. Aliquam porta sem vel risus. Ut dictum nibh eget nibh. Pellentesque lacus leo, euismod ac, fringilla vel, congue ut, risus. Pellentesque tortor felis, pretium a, faucibus at, iaculis vitae, elit. Mauris id metus. Fusce quam velit, suscipit vitae, rhoncus ut, fermentum non, sapien.</p>
+				
+						<ol>
+							<li>Numbered</li>
+							<li>List</li>
+						</ol>
+				
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec risus felis, mollis eget, convallis sit amet, luctus eget, urna. Nam nulla diam, laoreet sed, faucibus nec, commodo ut, neque. Nulla id quam id eros rhoncus ultrices. Nunc tincidunt, sem id sagittis eleifend, nibh massa mollis lorem, at mollis diam massa eget metus. Aliquam porta sem vel risus. Ut dictum nibh eget nibh. Pellentesque lacus leo, euismod ac, fringilla vel, congue ut, risus. Pellentesque tortor felis, pretium a, faucibus at, iaculis vitae, elit. Mauris id metus. Fusce quam velit, suscipit vitae, rhoncus ut, fermentum non, sapien.</p>
+				
+						<ul>
+							<li>bullet</li>
+							<li>List</li>
+						</ul>
+					</section>
+				</document>
 			
-			<h1>Document title</h1>
-			<div id="document">
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec risus felis, mollis eget, convallis sit amet, luctus eget, urna. Nam nulla diam, laoreet sed, faucibus nec, commodo ut, neque. Nulla id quam id eros rhoncus ultrices. Nunc tincidunt, sem id sagittis eleifend, nibh massa mollis lorem, at mollis diam massa eget metus. Aliquam porta sem vel risus. Ut dictum nibh eget nibh. Pellentesque lacus leo, euismod ac, fringilla vel, congue ut, risus. Pellentesque tortor felis, pretium a, faucibus at, iaculis vitae, elit. Mauris id metus. Fusce quam velit, suscipit vitae, rhoncus ut, fermentum non, sapien.</p>
-				
-				<ol>
-					<li>Numbered</li>
-					<li>List</li>
-				</ol>
-				
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec risus felis, mollis eget, convallis sit amet, luctus eget, urna. Nam nulla diam, laoreet sed, faucibus nec, commodo ut, neque. Nulla id quam id eros rhoncus ultrices. Nunc tincidunt, sem id sagittis eleifend, nibh massa mollis lorem, at mollis diam massa eget metus. Aliquam porta sem vel risus. Ut dictum nibh eget nibh. Pellentesque lacus leo, euismod ac, fringilla vel, congue ut, risus. Pellentesque tortor felis, pretium a, faucibus at, iaculis vitae, elit. Mauris id metus. Fusce quam velit, suscipit vitae, rhoncus ut, fermentum non, sapien.</p>
-				
-				<ul>
-					<li>bullet</li>
-					<li>List</li>
-				</ul>
 			</div>
-			
-		</div></div>
+		</section>
 				
 	</div></div>
-	
-	<!--
-			<ul class="treeview">
-				<li>
-					<a href="/">Root label</a>
-					<ul>
-						<li><a href="">Child label (empty)</a></li>
-						<li>
-							<a href="">Child label (with entries)</a>
-							<ul>
-								<li><a href="">Leaf node</a></li>
-							</ul>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="/">Root label</a>
-					<ul>
-						<li><a href="">Child label (empty)</a></li>
-						<li>
-							<a href="">Child label (with entries)</a>
-							<ul>
-								<li><a href="">Leaf node</a></li>
-							</ul>
-						</li>
-					</ul>
-				</li>
-			</ul>
-		
-		
-			<form action="" method="get" id="search-form">
-				<fieldset>
-					<legend>Search the API docs</legend>
-					<label for="search_field">Search term</label>
-					<input type="text" class="text" value="" id="search_field" name="q" />
-				</fieldset>
-				<fieldset class="submit">
-					<input type="submit" name="commit" value="Search" />
-				</fieldset>
-			</form>
-	-->
 	
 </body>
 </html>

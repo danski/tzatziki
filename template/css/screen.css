@@ -23,6 +23,7 @@ a, img {
 	margin: 0 auto;
 }
 #main {
+	display: block;
 	padding: 15px;
 	background: transparent url('../images/document-border-noise.jpg');
 	-webkit-border-radius: 25px;
@@ -33,11 +34,16 @@ a, img {
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
 }
+/* HTML5 defaults*/
+document, section, header, footer, nav {
+	display: block;
+}
 
 /* @end */
 
 /* @group Brand header */
-	#brand {
+	header {
+		display: block;
 		padding: 15px;
 	}
 /* @end */
@@ -91,10 +97,10 @@ a, img {
 		.view-columnar li {
 			padding: 3px;
 		}
-		.view-columnar li.current {
+		.view-columnar .current {
 			background: red;
 		}
-		.view-columnar li.selected {
+		.view-columnar .selected {
 			background: blue;
 		}
 
@@ -113,7 +119,9 @@ a, img {
 
 	/* @group Wrapper */
 
-		#document {
+		document {
+		}
+		document section {
 			padding: 0px 20px 20px 20px;
 		}
 		
