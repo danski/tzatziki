@@ -33,16 +33,17 @@ $.fn.columnify = function(options) {
 		var child_tier = $("#"+link.attr("data-owned-list-tier-id"));
 		var show_list = $("#"+link.attr("data-owns-list"));
 		
-		// Deselect all links
-		$("a", link.closest("nav")).attr("class", "");
-		
-		// Select all 
-		
-		// Hide all lists in all tiers below this one
-		var next_to_hide = link.closest("section").next();
-		while(next_to_hide.length > 0) {
-			$("ol, ul", next_to_hide).hide();
-			next_to_hide = next_to_hide.next();
+	
+		// Work on all tiers beyond this one
+		var this_tier = link.closest("section");
+			$("a", this_tier).attr("class", "");
+		var next_tier = this_tier.next();
+		while(next_tier.length > 0) {
+			// Mark links in the onward tiers as not current
+			$("a", next_tier).attr("class", "");
+			// Hide lists in the onward tiers
+			$("ol, ul", next_tier).hide();
+			next_tier = next_tier.next();
 		}
 		
 		// Show the list we want to control
