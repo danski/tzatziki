@@ -101,6 +101,9 @@ document, section, header, footer, nav {
 		.view-columnar .current {
 			background: red;
 		}
+		.view-columnar .current-parent {
+			background: yellow;
+		}
 		.view-columnar .selected {
 			background: blue;
 		}

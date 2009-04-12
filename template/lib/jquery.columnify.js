@@ -15,8 +15,24 @@ $.fn.columnify = function(options) {
 	var links = $.fn.columnify.extract($this);
 	var wrapper = $("<nav id=\""+opts.id+"\" class=\"view-columnar\"></nav>").insertAfter($this);
 	$.fn.columnify.render(wrapper, links);	
-
 	$this.remove();
+	
+	// Do startup. Find the 'current' link in the rendered tree and mark all parents above it with 'current-parent'
+	current_link = $("a.current", wrapper);	
+	list_id = current_link.closest("ol").attr("id");	
+	sec = current_link.closest("section").prev();
+	while(sec.length > 0) {
+		// Find link owning defined list
+		link = $("a[data-owns-list='"+list_id+"']");
+		link.attr("class", "current-parent");
+		// Set vars to find references to this tier on next loop
+		list_id = link.closest("ol").attr("id");
+		sec = sec.prev();
+	}
+	// Now find all the lists that don't have a .current or .current-parent link in them, and hide them.
+	$("ol", wrapper).each(function() { $list = this;
+		if($(".current, .current-parent", $list).length < 1) $($list).hide();
+	});
 };
 	$.fn.columnify.list_counter = 0;
 	$.fn.columnify.getListRef = function() {
@@ -32,7 +48,6 @@ $.fn.columnify = function(options) {
 		var link = $(link);
 		var child_tier = $("#"+link.attr("data-owned-list-tier-id"));
 		var show_list = $("#"+link.attr("data-owns-list"));
-		
 	
 		// Work on all tiers beyond this one
 		var this_tier = link.closest("section");
@@ -42,14 +57,15 @@ $.fn.columnify = function(options) {
 			// Mark links in the onward tiers as not current
 			$("a", next_tier).attr("class", "");
 			// Hide lists in the onward tiers
-			$("ol, ul", next_tier).hide();
+			$(";, ul", next_tier).hide();
 			next_tier = next_tier.next();
 		}
 		
 		// Show the list we want to control
 		show_list.show();
 		
-		// Add class to this link
+		// Add class to this link and mark others as current-parent
+		$("a.current", this_tier.closest("nav")).attr("class", "current-parent");
 		link.attr("class", "current");
 	}
 	
@@ -86,7 +102,7 @@ $.fn.columnify = function(options) {
 			var child_props = $.fn.columnify.render(target, $link.children, tier+1);
 			// Render the parent link into the list
 			li = $("<li></li>").appendTo(tier_list);
-			link = $("<a href=\""+$link.href+"\" data-owns-list=\""+child_props.list_id+"\" data-owns-list-in-tier=\""+tier+1+"\" data-owned-list-tier-id=\""+child_props.tier_wrapper_id+"\">"+$link.label+"</a>").appendTo(li);
+			link = $("<a href=\""+$link.href+"\" class=\""+$link["class"]+"\" data-owns-list=\""+child_props.list_id+"\" data-owns-list-in-tier=\""+tier+1+"\" data-owned-list-tier-id=\""+child_props.tier_wrapper_id+"\">"+$link.label+"</a>").appendTo(li);
 				// Attach events
 				link.mouseover(function() {
 					$.fn.columnify.select(this);
@@ -116,7 +132,7 @@ $.fn.columnify = function(options) {
 		var tier = _tier || 0;
 	   	var r_arr = [];
 		// Create a virtual "all" object for this tier
-		var r_all = {label: "All", href: "#", children: []};
+		var r_all = {"label": "All", "href": "#", "class": "", "children": []};
 		
 	   	$("li", on).each(function(i) {
 			// Looping over the direct child LIs on this list only
@@ -128,6 +144,7 @@ $.fn.columnify = function(options) {
 		       		this_child_list.remove();
 				this_obj.label = $("a", this).html();
 				this_obj.href = $("a", this).attr("href");
+				this_obj["class"] = $("a", this).attr("class");
 				r_arr.push(this_obj);
 			} // if parent
 			return true; // don't stop the rock
