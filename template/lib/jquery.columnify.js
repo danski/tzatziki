@@ -36,11 +36,13 @@ $.fn.columnify = function(options) {
 		// Deselect all links
 		$("a", link.closest("nav")).attr("class", "");
 		
+		// Select all 
+		
 		// Hide all lists in all tiers below this one
-		var count=1;
-		var t = parseInt(link.attr("data-owns-list-in-tier"));
-		while(count > 1) {
-			
+		var next_to_hide = link.closest("section").next();
+		while(next_to_hide.length > 0) {
+			$("ol, ul", next_to_hide).hide();
+			next_to_hide = next_to_hide.next();
 		}
 		
 		// Show the list we want to control
@@ -64,7 +66,7 @@ $.fn.columnify = function(options) {
 		if($("#"+tier_wrapper_id).length > 0) {
 			var tier_wrapper = $("#"+tier_wrapper_id);
 		} else {
-			var tier_wrapper = $("<div id=\""+tier_wrapper_id+"\" class=\"tier_wrapper wraps_tier_"+tier+"\" data-tier=\""+tier+"\"></div>").appendTo(target);
+			var tier_wrapper = $("<section id=\""+tier_wrapper_id+"\" class=\"tier_wrapper wraps_tier_"+tier+"\" data-tier=\""+tier+"\"></section>").appendTo(target);
 		}
 		
 		// Start processing the child links into the lists below this one

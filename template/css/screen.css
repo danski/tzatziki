@@ -94,7 +94,8 @@ document, section, header, footer, nav {
 			overflow-y: auto;
 			float: left;
 		}
-		.view-columnar li {
+		.view-columnar a {
+			display: block;
 			padding: 3px;
 		}
 		.view-columnar .current {
