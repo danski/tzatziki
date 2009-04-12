@@ -57,7 +57,7 @@ $.fn.columnify = function(options) {
 			// Mark links in the onward tiers as not current
 			$("a", next_tier).attr("class", "");
 			// Hide lists in the onward tiers
-			$(";, ul", next_tier).hide();
+			$("ol, ul", next_tier).hide();
 			next_tier = next_tier.next();
 		}
 		
@@ -74,10 +74,6 @@ $.fn.columnify = function(options) {
 	$.fn.columnify.render = function(target, links, _tier) {
 		var tier = _tier || 0;
 		var target = $(target);
-
-		console.log("Rendering at tier "+tier);
-		console.log(links)
-		
 		// Create a wrapper for this tier if none exists
 		var tier_wrapper_id = target.attr("id")+"_tier"+tier;
 		if($("#"+tier_wrapper_id).length > 0) {
