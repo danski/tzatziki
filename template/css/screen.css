@@ -85,7 +85,7 @@ document, section, header, footer, nav {
 
 	.view-columnar {
 		overflow-x: auto;
-		background: #CCC;
+		background: #DDD;
 		border-bottom: 1px solid #999;
 	}
 		.view-columnar .tier_wrapper {
@@ -96,16 +96,19 @@ document, section, header, footer, nav {
 		}
 		.view-columnar a {
 			display: block;
-			padding: 3px;
+			padding: 0.6em 30px 0.7em 0.6em;
 		}
-		.view-columnar .current {
-			background: red;
+		.view-columnar .current-parent, .view-columnar .current {
+			display: block;
+		
+		background: transparent url('../images/breadcrumb-li-pointer.jpg') no-repeat top right;
 		}
 		.view-columnar .current-parent {
-			background: yellow;
+			color: #333;
 		}
-		.view-columnar .selected {
-			background: blue;
+		.view-columnar .current {
+			color: #333;
+			font-weight: bold;
 		}
 
 /* @end */
