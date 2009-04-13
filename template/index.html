@@ -32,18 +32,8 @@
 			PUT YOUR LOGO HERE
 		</header>
 		
-		<section id="main">
-			<div id="main-inner">
-			
-				<nav>
-					<ol id="breadcrumb" class="navigation breadcrumb">
-						<li><a href="#" class="home"><img src="images/breadcrumb-home.jpg" alt="Home" /></a></li>
-						<li><a href="#">Category</a></li>
-						<li><a href="#">Subcategory</a></li>
-						<li><a href="#" class="current">Current page</a></li>
-					</ol>
-				</nav>			
-				<nav>
+		<nav class="main">
+			<div class="main-inner">
 					<ol id="navigation" class="navigation view-columnar">
 						<!-- 
 							The navigation for the entire docset is represented here in
@@ -76,13 +66,28 @@
 							</ol>
 						</li>
 					</ol>
-				</nav>
+			</div>
+		</nav>
+		
+		<section class="main">
+			<div class="main-inner">
+			
+				<nav>
+					<ol id="breadcrumb" class="navigation breadcrumb">
+						<li><a href="#" class="home"><img src="images/breadcrumb-home.jpg" alt="Home" /></a></li>
+						<li><a href="#">Category</a></li>
+						<li><a href="#">Subcategory</a></li>
+						<li><a href="#" class="current">Current page</a></li>
+					</ol>
+				</nav>			
 
 				<document>
 					<h1>Document title</h1>
 				
 					<section>
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec risus felis, mollis eget, convallis sit amet, luctus eget, urna. Nam nulla diam, laoreet sed, faucibus nec, commodo ut, neque. Nulla id quam id eros rhoncus ultrices. Nunc tincidunt, sem id sagittis eleifend, nibh massa mollis lorem, at mollis diam massa eget metus. Aliquam porta sem vel risus. Ut dictum nibh eget nibh. Pellentesque lacus leo, euismod ac, fringilla vel, congue ut, risus. Pellentesque tortor felis, pretium a, faucibus at, iaculis vitae, elit. Mauris id metus. Fusce quam velit, suscipit vitae, rhoncus ut, fermentum non, sapien.</p>
+				
+						<h2>Heading H2</h2>
 				
 						<ol>
 							<li>Numbered</li>
@@ -91,11 +96,75 @@
 				
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec risus felis, mollis eget, convallis sit amet, luctus eget, urna. Nam nulla diam, laoreet sed, faucibus nec, commodo ut, neque. Nulla id quam id eros rhoncus ultrices. Nunc tincidunt, sem id sagittis eleifend, nibh massa mollis lorem, at mollis diam massa eget metus. Aliquam porta sem vel risus. Ut dictum nibh eget nibh. Pellentesque lacus leo, euismod ac, fringilla vel, congue ut, risus. Pellentesque tortor felis, pretium a, faucibus at, iaculis vitae, elit. Mauris id metus. Fusce quam velit, suscipit vitae, rhoncus ut, fermentum non, sapien.</p>
 				
+						<h3>Heading H3</h3>
+				
 						<ul>
 							<li>bullet</li>
 							<li>List</li>
 						</ul>
+						
+						<h4>Heading H4</h4>
+						
+						<blockquote>
+							I am quoted as having said a great number of things that I did not say.
+						</blockquote>
+						
+						<p>This paragraph is immediately above an HR</p>
+						<hr />						
+						<p>This paragraph is immediately below an HR</p>
+						
+						<h2>Code</h2>
+						
+						<code>
+							<div class="highlight">
+								<pre>
+def foo
+	return "bar"
+end
+								</pre>
+							</div>
+						</code>
+
+						<h2>Tables</h2>
+						
+						<table>
+							<tr>
+								<th>Table header</th>
+								<th>Table header</th>
+								<th>Table header</th>
+							</tr>
+							<tr>
+								<td>Table cell</td>
+								<td>Table cell</td>
+								<td>Table cell</td>
+							</tr>
+						</table>
+						
+						<h2>Definition lists</h2>
+						
+						<dl>
+							<dt>Term</dt>
+							<dd>Definition</dd>
+							
+							<dt>Term</dt>
+							<dd>Definition</dd>
+							
+							<dt>Term</dt>
+							<dd>Definition</dd>
+							
+							<dt>Term</dt>
+							<dd>Definition</dd>
+						</dl>
+						
 					</section>
+					<footer>
+						<p>This documentation was generated with <a href="http://github.com/danski/tzatziki">Tzatziki</a></p>
+						<span>
+								Tzatziki is an open-source API documentation tool by 
+								<a href="http://angryamoeba.co.uk/about.html">Dan Glegg</a> from 
+								<a href="http://angryamoeba.co.uk/">Angry amoeba</a>.
+						</span>
+					</footer>
 				</document>
 			
 			</div>

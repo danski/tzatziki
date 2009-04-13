@@ -24,7 +24,7 @@ $.fn.columnify = function(options) {
 	while(sec.length > 0) {
 		// Find link owning defined list
 		link = $("a[data-owns-list='"+list_id+"']");
-		link.attr("class", "current-parent");
+		link.addClass("current-parent");
 		// Set vars to find references to this tier on next loop
 		list_id = link.closest("ol").attr("id");
 		sec = sec.prev();
@@ -51,11 +51,11 @@ $.fn.columnify = function(options) {
 	
 		// Work on all tiers beyond this one
 		var this_tier = link.closest("section");
-			$("a", this_tier).attr("class", "");
+			$("a", this_tier).removeClass("current").removeClass("current-parent");
 		var next_tier = this_tier.next();
 		while(next_tier.length > 0) {
 			// Mark links in the onward tiers as not current
-			$("a", next_tier).attr("class", "");
+			$("a", next_tier).removeClass("current").removeClass("current-parent");
 			// Hide lists in the onward tiers
 			$("ol, ul", next_tier).hide();
 			next_tier = next_tier.next();
@@ -65,8 +65,8 @@ $.fn.columnify = function(options) {
 		show_list.show();
 		
 		// Add class to this link and mark others as current-parent
-		$("a.current", this_tier.closest("nav")).attr("class", "current-parent");
-		link.attr("class", "current");
+		$("a.current", this_tier.closest("nav")).addClass("current-parent");
+		link.addClass("current");
 	}
 	
 	// Renders a tier of the list into a wrapper, and recurses to child lists
@@ -98,7 +98,7 @@ $.fn.columnify = function(options) {
 			var child_props = $.fn.columnify.render(target, $link.children, tier+1);
 			// Render the parent link into the list
 			li = $("<li></li>").appendTo(tier_list);
-			link = $("<a href=\""+$link.href+"\" class=\""+$link["class"]+"\" data-owns-list=\""+child_props.list_id+"\" data-owns-list-in-tier=\""+tier+1+"\" data-owned-list-tier-id=\""+child_props.tier_wrapper_id+"\">"+$link.label+"</a>").appendTo(li);
+			link = $("<a href=\""+$link.href+"\" class=\""+($link.children.length < 1 ? "empty" : "not-empty")+" "+$link["class"]+"\" data-owns-list=\""+child_props.list_id+"\" data-owns-list-in-tier=\""+tier+1+"\" data-owned-list-tier-id=\""+child_props.tier_wrapper_id+"\">"+$link.label+"</a>").appendTo(li);
 				// Attach events
 				link.mouseover(function() {
 					$.fn.columnify.select(this);
