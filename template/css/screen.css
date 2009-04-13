@@ -206,6 +206,47 @@ code {
 		overflow: auto;
 	}
 
+document table {
+	display: block;
+	margin: 0 40px 10px 40px;
+	
+}
+	document tr, document th, document td {
+		margin: 0; padding: 0.5em;
+		border-right: 1px solid #999;
+		border-bottom: 1px solid #999;
+	}
+	document tr {
+	
+	}
+	document th {
+		background: #FFF9E5;
+	}
+	document td {
+		
+	}
+	
+document dl {
+	display: block;
+	margin: 0 40px;
+}
+	document dt, document dd {
+		display: block;
+		padding: 0.3em;
+	}
+	document dt {
+		float: left;
+		padding-right: 1em;
+		margin-right: 1em;
+		border-right: 1px solid #999;
+		background: #FFF9E5;
+		
+		font-style: italic;
+	}
+	document dd {
+		clear: right;
+	}
+
 /* @group Pygments theme */
 
 .hll { background-color: #ffffcc }
