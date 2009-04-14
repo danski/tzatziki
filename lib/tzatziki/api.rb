@@ -86,50 +86,6 @@ module Tzatziki
       self.children.each { |c| c.process } if recurse
     end
     
-    # Actually runs the test suites in a processed site.
-    # +recurse+ is a boolean indicating whether or not to also test the child APIs.
-    def test!(recurse=true, options={}, stack=1)
-      options = {
-        :print=>false,
-        :format=>:specdoc # May also be one of :unit or :specdoc
-      }.merge(options)
-      # Test all the documents in this API
-      case options[:format]
-      when :specdoc
-        message_count = 1
-        Taz.out.write "#{"--"*stack} #{self.is_a?(Tzatziki::Site)? "Document bundle" : "API"} located in #{self.source}\n"
-        self.documents.each do |name, document|          
-          if document.testable?
-            result, messages = document.test!
-            if result
-              Taz.out.write "#{"--"*(stack+1)} "
-              Taz.out.write green("#{name.capitalize}\n")
-            else
-              Taz.out.write "#{"--"*(stack+1)} "
-              Taz.out.write red("#{name.capitalize}\n")
-              messages.each do |m| 
-                Taz.out.write "#{"--"*(stack+2)} "
-                Taz.out.write(red("[#{message_count}] #{m.capitalize}\n"))
-                message_count += 1
-              end
-              Taz.out.write yellow("#{"  "*(stack+2)} Request data          \n #{"  "*(stack+2)}#{document.data[:request].inspect}\n")
-              Taz.out.write yellow("#{"  "*(stack+2)} Response assertions   \n #{"  "*(stack+2)}#{document.data[:response].inspect}\n")
-            end
-          else
-            Taz.out.write "#{"--"*(stack+1)} "
-            Taz.out.write green("#{name.capitalize} #{"(skipped because document contains no request data)" unless document.testable?}\n")
-          end
-        end
-      else
-        
-      end
-      self.children.map {|c| c.test!(recurse, options, stack+1) } if recurse
-    end
-    
-    def test_and_output_specdoc(stack=1)
-      
-    end
-  
     # Read the config file into a hash ready for inclusion in the site payload.
     # The config file is intended to include non-example data such as the API
     # key for the account against which you'll be running the tests.
@@ -303,7 +259,45 @@ module Tzatziki
       end
     end
         
-    
+    # Actually runs the test suites in a processed site.
+    # +recurse+ is a boolean indicating whether or not to also test the child APIs.
+    def test!(recurse=true, options={}, stack=1)
+      options = {
+        :print=>false,
+        :format=>:specdoc # May also be one of :unit or :specdoc
+      }.merge(options)
+      # Test all the documents in this API
+      case options[:format]
+      when :specdoc
+        message_count = 1
+        Taz.out.write "#{"--"*stack} #{self.is_a?(Tzatziki::Site)? "Document bundle" : "API"} located in #{self.source}\n"
+        self.documents.each do |name, document|          
+          if document.testable?
+            result, messages = document.test!
+            if result
+              Taz.out.write "#{"--"*(stack+1)} "
+              Taz.out.write green("#{name.capitalize}\n")
+            else
+              Taz.out.write "#{"--"*(stack+1)} "
+              Taz.out.write red("#{name.capitalize}\n")
+              messages.each do |m| 
+                Taz.out.write "#{"--"*(stack+2)} "
+                Taz.out.write(red("[#{message_count}] #{m.capitalize}\n"))
+                message_count += 1
+              end
+              Taz.out.write yellow("#{"  "*(stack+2)} Request data          \n #{"  "*(stack+2)}#{document.data[:request].inspect}\n")
+              Taz.out.write yellow("#{"  "*(stack+2)} Response assertions   \n #{"  "*(stack+2)}#{document.data[:response].inspect}\n")
+            end
+          else
+            Taz.out.write "#{"--"*(stack+1)} "
+            Taz.out.write green("#{name.capitalize} #{"(skipped because document contains no request data)" unless document.testable?}\n")
+          end
+        end
+      else
+        
+      end
+      self.children.map {|c| c.test!(recurse, options, stack+1) } if recurse
+    end
 
 #    # Copy all regular files from <source> to <dest>/ ignoring
 #    # any files/directories that are hidden or backup files (start
