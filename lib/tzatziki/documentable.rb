@@ -1,3 +1,5 @@
+require 'digest/md5'
+
 module Tzatziki
   
   # Documentable is a module wrapping the behaviour of all Tzatziki objects that will be converted into
@@ -8,7 +10,7 @@ module Tzatziki
     # The Tzatziki::API instance to which this documentable belongs.
     attr_accessor :api
     # The original filename
-    attr_accessor :filename
+    attr_accessor :file_basename
     # The raw, unprocessed document
     attr_accessor :raw
 
@@ -19,7 +21,7 @@ module Tzatziki
     def initialize(path_or_document, api=nil)
       self.api = api
       if File.file?(path_or_document)
-        self.filename = File.basename(path_or_document)
+        self.file_basename = File.basename(path_or_document)
         read(path_or_document)
       else
         self.raw = path_or_document
@@ -48,7 +50,7 @@ module Tzatziki
     end
     
     def transform(content=self.raw)
-      case self.filename
+      case self.file_basename
       when /\.textile/
         RedCloth.new(content).to_html
       when /\.(mdown|markdown)/
@@ -56,6 +58,23 @@ module Tzatziki
       else
         content
       end
+    end
+    
+    def write_filename
+      if file_basename
+        ext = File.extname(file_basename)
+        "#{file_basename[0..(file_basename.length-ext.length-1)]}.html"
+      else
+        Digest::MD5.hexdigest(self.raw)
+      end
+    end
+    
+    def write_path
+      File.join(
+        self.api.destination,
+        self.api.path_offset,
+        self.write_filename
+      )
     end
     
     # Returns a hash representing the global template payload for this 
