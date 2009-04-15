@@ -77,6 +77,14 @@ module Tzatziki
       )
     end
     
+    def write!(content=self.render)
+      FileUtils.mkdir_p(File.dirname(write_path))
+      out = File.open(write_path, "w+")
+      out.rewind
+      out.write(content)
+      out.close
+    end
+    
     # Returns a hash representing the global template payload for this 
     # instance. The global template payload includes the user config for
     # this API, the API document tree and other utilities. It is made available

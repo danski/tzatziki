@@ -58,19 +58,24 @@ i am the walrus
   
   describe "writing" do
     it "should provide a default write location for the file" do
-      @documentable = ::DocumentableOnly.new(textile_fixture_path, @api)
+      @documentable = ::TestDocumentable.new(textile_fixture_path, @api)
       @documentable.write_filename.should == "index.html"
       @documentable.write_path.should == "./spec/example/destination/the_google/index.html"
     end
     it "should use an MD5 hash of the document body as the filename" do
       body = "OH YEAHHHHHH"
-      @documentable = ::DocumentableOnly.new(body, @api)
+      @documentable = ::TestDocumentable.new(body, @api)
       require 'digest/md5'
       @documentable.write_filename.should == Digest::MD5.hexdigest(body)
     end
+    it "should write the file" do
+      @documentable = ::TestDocumentable.new(textile_fixture_path, @api)
+      @documentable.parse!
+      @documentable.write!
+      File.file?(@documentable.write_path).should be_true
+      File.open(@documentable.write_path).read.should == @documentable.render
+    end
   end
-  
-  it "should write the file"
   
   describe "rendering" do 
     before(:each) do
