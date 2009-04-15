@@ -85,17 +85,17 @@ i am the walrus
     it "should transform textile files using RedCloth" do
       @documentable = ::TestDocumentable.new(textile_fixture_path, @api)
       @documentable.parse!
-      @documentable.transform.should == RedCloth.new(@documentable.post_parse).to_html
+      @documentable.transform.should == RedCloth.new(@documentable.raw).to_html
     end
     it "should transform markdown files using Maruku" do
       @documentable = ::TestDocumentable.new(markdown_fixture_path, @api)
       @documentable.parse!
-      @documentable.transform.should == Maruku.new(@documentable.post_parse).to_html
+      @documentable.transform.should == Maruku.new(@documentable.raw).to_html
     end
     it "should not HTML files" do
       @documentable = ::TestDocumentable.new(html_fixture_path, @api)
       @documentable.parse!
-      @documentable.transform.should == @documentable.post_parse
+      @documentable.transform.should == @documentable.raw
     end
   end
   

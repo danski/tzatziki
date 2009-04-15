@@ -2,18 +2,15 @@ module Tzatziki
   module Parsable
     
     attr_accessor :raw
-    attr_accessor :data, :post_parse
+    attr_accessor :data
     
     def parse!(raw_doc = self.raw, defaults={})
-      self.data, self.post_parse = extract_yaml(raw_doc, nil, defaults)
+      self.data, self.raw = extract_yaml(raw_doc, nil, defaults)
     end
     
     # Overrides and extends documentable
     def payload
       self.data
-    end
-    def transform(content=self.post_parse)
-      super(content)
     end
     
     def extract_yaml(parsable_string, replacement_pattern=nil, defaults={})
