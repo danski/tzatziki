@@ -81,6 +81,24 @@ i am the walrus
     end
   end
   
+  describe "content transformation" do
+    it "should transform textile files using RedCloth" do
+      @documentable = ::TestDocumentable.new(textile_fixture_path, @api)
+      @documentable.parse!
+      @documentable.transform.should == RedCloth.new(@documentable.post_parse).to_html
+    end
+    it "should transform markdown files using Maruku" do
+      @documentable = ::TestDocumentable.new(markdown_fixture_path, @api)
+      @documentable.parse!
+      @documentable.transform.should == Maruku.new(@documentable.post_parse).to_html
+    end
+    it "should not HTML files" do
+      @documentable = ::TestDocumentable.new(html_fixture_path, @api)
+      @documentable.parse!
+      @documentable.transform.should == @documentable.post_parse
+    end
+  end
+  
   
   it "should recognise multi-datablock input and use the YAML declares as placeholders for data tables"
   it "should recognise single datablock input and let the user specify where to place the tables"

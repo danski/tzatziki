@@ -8,8 +8,12 @@ module Tzatziki
       self.data, self.post_parse = extract_yaml(raw_doc, nil, defaults)
     end
     
+    # Overrides and extends documentable
     def payload
       self.data
+    end
+    def transform(content=self.post_parse)
+      super(content)
     end
     
     def extract_yaml(parsable_string, replacement_pattern=nil, defaults={})

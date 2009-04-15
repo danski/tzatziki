@@ -7,6 +7,8 @@ module Tzatziki
     
     # The Tzatziki::API instance to which this documentable belongs.
     attr_accessor :api
+    # The original filename
+    attr_accessor :filename
     # The raw, unprocessed document
     attr_accessor :raw
 
@@ -17,6 +19,7 @@ module Tzatziki
     def initialize(path_or_document, api=nil)
       self.api = api
       if File.file?(path_or_document)
+        self.filename = File.basename(path_or_document)
         read(path_or_document)
       else
         self.raw = path_or_document
@@ -42,6 +45,17 @@ module Tzatziki
         s = self.api.layouts[layout_name].render(p.merge(:content=>s))
       end
       return s
+    end
+    
+    def transform(content=self.raw)
+      case self.filename
+      when /\.textile/
+        RedCloth.new(content).to_html
+      when /\.(mdown|markdown)/
+        Maruku.new(content).to_html
+      else
+        content
+      end
     end
     
     # Returns a hash representing the global template payload for this 

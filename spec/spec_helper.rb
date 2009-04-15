@@ -24,6 +24,14 @@ module SpecHelper
     File.join( File.dirname(__FILE__), "example", "source", "the_google", "index.textile" )
   end
   
+  def markdown_fixture_path
+    File.join( File.dirname(__FILE__), "example", "source", "the_google", "search.markdown" )
+  end
+  
+  def html_fixture_path
+    File.join( File.dirname(__FILE__), "example", "source", "the_google", "mail", "index.html" )
+  end
+  
 end
 
 Spec::Runner.configure do |config|

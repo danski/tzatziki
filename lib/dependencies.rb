@@ -7,6 +7,7 @@ require 'net/http'
 # Gem requires
 require 'liquid'
 require 'redcloth'
+require 'maruku'
 require 'jekyll'
 require 'randexp'
 require 'mash'
