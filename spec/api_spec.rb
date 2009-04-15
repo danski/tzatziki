@@ -71,10 +71,10 @@ describe Tzatziki::API do
     end
     it "should index all the layouts" do
       @site.read_layouts
-      @site.local_layouts.keys.sort.should == ["default", "request", "specification", "type"]
+      @site.local_layouts.keys.sort.should == ["default", "document", "specification", "type"]
       @api.read_layouts
       @api.local_layouts.keys.sort.should == ["custom"]
-      @api.layouts.keys.sort.should == ["custom", "default", "request", "specification", "type"]
+      @api.layouts.keys.sort.should == ["custom", "default", "document", "specification", "type"]
     end
     it "should index all the local documents" do
       @api.read_documents

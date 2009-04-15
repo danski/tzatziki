@@ -9,11 +9,7 @@ module Tzatziki
     attr_accessor :api
     # The raw, unprocessed document
     attr_accessor :raw
-    # An interstitial state before the application of the liquid template
-    attr_accessor :preflight
-    # The final be-liquidededed content of the file.
-    attr_accessor :content
-    
+
     # Initializes the object given:
     # path_or_document: A string which can be the path to a file (which will be read), or
     #                   the document to be dealt with itself.
@@ -34,6 +30,20 @@ module Tzatziki
       self.raw = f.read
     end
     
+    # Renders the documentable via Liquid to a string, recursing to any 
+    # specified layouts.
+    # +raw_source+ is the string to render, while 
+    # +_payload+ is a Mash of options to pass to the templates.
+    def render(_payload={})
+      s,p = self.raw, template_payload.merge(_payload)
+      s = Liquid::Template.parse(s).render(Mash.new(p))
+      if layout_name = p[:layout]
+        p.delete(:layout)
+        s = self.api.layouts[layout_name].render(p.merge(:content=>s))
+      end
+      return s
+    end
+    
     # Returns a hash representing the global template payload for this 
     # instance. The global template payload includes the user config for
     # this API, the API document tree and other utilities. It is made available
@@ -43,7 +53,7 @@ module Tzatziki
       {
         :api=>self.api.to_hash,
         :config=>self.api.config
-      }.deep_merge(payload)
+      }.merge(self.payload)
     end
     
     # Should be overridden to return a hash for the template implementation of the including class.

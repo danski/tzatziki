@@ -1,10 +1,11 @@
 module Tzatziki
   class Layout
-    include Parsable
     include Documentable
+    include Parsable
     
-    def render_with(documentable)
-      
+    def initialize(*args)
+      super
+      parse!
     end
     
   end #class Layout

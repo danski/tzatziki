@@ -8,5 +8,6 @@ module Tzatziki
       parse!(self.raw, :layout=>"type")
       self.data = self.api.inject_configuration(self.data)
     end
+    
   end # class Type
 end # module Tzatziki

@@ -8,6 +8,9 @@ module Tzatziki
       self.data, self.post_parse = extract_yaml(raw_doc, nil, defaults)
     end
     
+    def payload
+      self.data
+    end
     
     def extract_yaml(parsable_string, replacement_pattern=nil, defaults={})
       data_table = defaults
