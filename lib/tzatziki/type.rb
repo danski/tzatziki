@@ -5,7 +5,7 @@ module Tzatziki
   
     def initialize(*args)
       super
-      parse!
+      parse!(self.raw, :layout=>"type")
       self.data = self.api.inject_configuration(self.data)
     end
   end # class Type

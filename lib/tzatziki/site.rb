@@ -28,7 +28,6 @@ module Tzatziki
       # Returns <Site>
       def initialize(source, destination)
         super(source, destination)
-        self.layouts = {}
       end
     
       # Do the actual work of processing the site and generating the
@@ -38,25 +37,6 @@ module Tzatziki
       def process(recurse=false)
         #self.read_layouts
         super
-      end
-    
-      # Read all the files in <source>/_layouts except backup files
-      # (end with "~") into memory for later use.
-      #
-      # Returns nothing
-      def read_layouts
-        base = File.join(self.source, "_layouts")
-        entries = Dir.entries(base)
-        entries = entries.reject { |e| e[-1..-1] == '~' }
-        entries = entries.reject { |e| File.directory?(File.join(base, e)) }
-      
-        entries.each do |f|
-          name = f.split(".")[0..-2].join(".")
-          self.layouts[name] = Jekyll::Layout.new(base, f)
-        end
-        return self.layouts
-      rescue Errno::ENOENT => e
-        # ignore missing layout dir
       end
 
   #    # The Hash payload containing site-wide data

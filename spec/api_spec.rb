@@ -69,6 +69,13 @@ describe Tzatziki::API do
       @api.read_specifications
       @api.local_specifications.keys.should == ["searchable"]
     end
+    it "should index all the layouts" do
+      @site.read_layouts
+      @site.local_layouts.keys.sort.should == ["default", "request", "specification", "type"]
+      @api.read_layouts
+      @api.local_layouts.keys.sort.should == ["custom"]
+      @api.layouts.keys.sort.should == ["custom", "default", "request", "specification", "type"]
+    end
     it "should index all the local documents" do
       @api.read_documents
       @api.documents.should_not be_empty
@@ -167,14 +174,16 @@ describe Tzatziki::API do
       @output[:request][:query_string][:q].should == {
         :type=>"search_query",
         :description=>"An entity-escaped string that you wish to search for on The Google.",
-        :example=>"now you're thinking with portals"
+        :example=>"now you're thinking with portals",
+        :layout=>"type"
       }
     end
     it "should deep merge the types, giving priority to the local document scope" do
       @output[:request][:query_string][:date].should == {
         :type=>"date",
         :title=>"Date formatting",
-        :example=>"31/12/2009"
+        :example=>"31/12/2009",
+        :layout=>"type"
       }
     end  
     it "should render liquid markup into all the variables" do

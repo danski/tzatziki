@@ -27,13 +27,7 @@ describe Tzatziki::Site do
     end
     
     it "should include the config file in the site payload"
-    
-    it "should read all the layouts" do
-      @site.read_layouts
-      @site.layouts["default"].should be_kind_of(Jekyll::Layout)
-      @site.layouts["thingy"].should be_nil
-    end
-      
+        
     # - root
     # - _templates
     # - _types

@@ -26,10 +26,10 @@ module Tzatziki
     # and 0..n child API instances which will inherit from this one. Each API also belongs to an
     # instance of Tzatziki::Site.
     attr_accessor :site, :parent, :children
-    # Each API may have documents, specifications and types.
-    attr_accessor :config, :documents, :specifications, :types
+    # Each API may have documents, specifications, types and layouts which inherit from the parent.
+    attr_accessor :config, :documents, :specifications, :types, :layouts
     # Specs and types specific to this level of recursion are made available here.
-    attr_accessor :local_specifications, :local_types
+    attr_accessor :local_specifications, :local_types, :local_layouts
     # Job state
     attr_accessor :processed
     
@@ -48,11 +48,13 @@ module Tzatziki
       self.children = []
       self.local_specifications = {}
       self.local_types = {}
+      self.local_layouts = {}
       # Blanks that will get duped from parent and then merged with local results
       # when we descend from this point.    
       self.specifications   = (parent)? parent.specifications.dup : {}
       self.types            = (parent)? parent.types.dup : {}
       self.config           = (parent)? parent.config.dup : {}
+      self.layouts          = (parent)? parent.layouts.dup : {}
       # Register parent
       if parent
         self.parent = parent
@@ -79,6 +81,7 @@ module Tzatziki
     end
     def process!(recurse=true)
       self.read_config
+      self.read_layouts
       self.read_types
       self.read_specifications
       self.read_documents
@@ -127,6 +130,13 @@ module Tzatziki
     # Read all the flat text files in self.source and create a new Document instance for each.
     def read_documents
       self.documents = read_documentables_from_directory(self.source, Tzatziki::Document)
+    end
+    
+    # Reads and instantiates any layouts in the _layouts directory below self.source,
+    # if such a folder exists. Otherwise the layouts hash will be left untouched from the parent.
+    def read_layouts
+      self.local_layouts = read_documentables_from_directory("_layouts", Tzatziki::Layout)
+      self.layouts.merge!(self.local_layouts)
     end
     
     # Read all the directories under self.source except for those:
@@ -300,7 +310,8 @@ module Tzatziki
         end
         return documentables
       rescue Errno::ENOENT => e
-        # Ignore missing specifications
+        # Ignore missing files or folders
+        #raise e if folder=="_layouts"
         return {}
       end
     end

@@ -24,6 +24,8 @@ describe Tzatziki::Parsable do
     @parsable.read(textile_fixture_path)
     data, template = @parsable.parse!(@parsable.raw, {"layout"=>"specification"})
     data[:layout].should == "specification"
+    data, template = @parsable.parse!(@parsable.raw, {:layout=>"specification"})
+    data[:layout].should == "specification"    
   end
   it "should replace YAML blocks with a liquid template marker"
   

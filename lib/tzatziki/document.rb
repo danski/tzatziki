@@ -7,7 +7,7 @@ module Tzatziki
 
     def initialize(*args)
       super
-      parse!
+      parse!(self.raw, :layout=>"document")
       self.data = self.api.inject_specifications(self.data)
       self.data = self.api.inject_types(self.data)
       self.data = self.api.inject_configuration(self.data)
