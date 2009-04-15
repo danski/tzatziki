@@ -4,13 +4,13 @@ module Tzatziki
     attr_accessor :raw
     attr_accessor :data, :post_parse
     
-    def parse!(raw_doc = self.raw)
-      self.data, self.post_parse = extract_yaml(raw_doc)
+    def parse!(raw_doc = self.raw, defaults={})
+      self.data, self.post_parse = extract_yaml(raw_doc, nil, defaults)
     end
     
     
-    def extract_yaml(parsable_string, replacement_pattern=nil)
-      data_table = {}
+    def extract_yaml(parsable_string, replacement_pattern=nil, defaults={})
+      data_table = defaults
       out = parsable_string.dup      
       while out =~ /^(---\s*\n.*?)(\n===\s*$)/m
         yaml = $1.dup

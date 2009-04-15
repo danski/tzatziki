@@ -20,6 +20,11 @@ describe Tzatziki::Parsable do
     data[:title].should be_kind_of(String)
     template.should_not match(/---/)
   end
+  it "should allow defaults to be passed into the parse! method" do
+    @parsable.read(textile_fixture_path)
+    data, template = @parsable.parse!(@parsable.raw, {"layout"=>"specification"})
+    data[:layout].should == "specification"
+  end
   it "should replace YAML blocks with a liquid template marker"
   
 end

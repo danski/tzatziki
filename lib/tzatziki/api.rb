@@ -241,24 +241,6 @@ module Tzatziki
       type_opts.deep_merge(h)
     end
     
-    private
-    def read_documentables_from_directory(folder, transformable_klass)
-      begin
-        path = (folder==self.source)? folder : File.join(self.source, folder)
-        entries = Dir.entries(path)
-        files = entries.reject { |e| File.directory?(File.join(path, e)) }
-        files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" or e.match(/\.(yaml|yml)/) }
-        documentables = {}
-        files.each do |f|
-          documentables[f.split(".").first] = transformable_klass.new(File.join(path, f), self)
-        end
-        return documentables
-      rescue Errno::ENOENT => e
-        # Ignore missing specifications
-        return {}
-      end
-    end
-        
     # Actually runs the test suites in a processed site.
     # +recurse+ is a boolean indicating whether or not to also test the child APIs.
     def test!(recurse=true, options={}, stack=1)
@@ -297,6 +279,30 @@ module Tzatziki
         
       end
       self.children.map {|c| c.test!(recurse, options, stack+1) } if recurse
+    end
+    
+    # Actually compiles the documentation and writes it to the destination folder.
+    # +recurse+ is a boolean indicating whether or not to test the child APIs.
+    def document!(recurse=true, options={}, stack=1)
+      
+    end
+
+    private
+    def read_documentables_from_directory(folder, transformable_klass)
+      begin
+        path = (folder==self.source)? folder : File.join(self.source, folder)
+        entries = Dir.entries(path)
+        files = entries.reject { |e| File.directory?(File.join(path, e)) }
+        files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" or e.match(/\.(yaml|yml)/) }
+        documentables = {}
+        files.each do |f|
+          documentables[f.split(".").first] = transformable_klass.new(File.join(path, f), self)
+        end
+        return documentables
+      rescue Errno::ENOENT => e
+        # Ignore missing specifications
+        return {}
+      end
     end
 
 #    # Copy all regular files from <source> to <dest>/ ignoring
@@ -355,18 +361,6 @@ module Tzatziki
 #      self.posts.each do |post|
 #        post.write(self.dest)
 #      end
-#    end
-
-#    # Constructs a hash map of Posts indexed by the specified Post attribute
-#    #
-#    # Returns {post_attr => [<Post>]}
-#    def post_attr_hash(post_attr)
-#      # Build a hash map based on the specified post attribute ( post attr => array of posts )
-#      # then sort each array in reverse order
-#      hash = Hash.new { |hash, key| hash[key] = Array.new }
-#      self.posts.each { |p| p.send(post_attr.to_sym).each { |t| hash[t] << p } }
-#      hash.values.map { |sortme| sortme.sort! { |a, b| b <=> a} }
-#      return hash
 #    end
     
   end
