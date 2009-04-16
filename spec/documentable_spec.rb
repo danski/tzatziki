@@ -62,11 +62,11 @@ i am the walrus
       @documentable.write_filename.should == "index.html"
       @documentable.write_path.should == "./spec/example/destination/the_google/index.html"
     end
-    it "should use an MD5 hash of the document body as the filename" do
+    it "should use an MD5 hash of the document body as the filename if no file was given" do
       body = "OH YEAHHHHHH"
       @documentable = ::TestDocumentable.new(body, @api)
       require 'digest/md5'
-      @documentable.write_filename.should == Digest::MD5.hexdigest(body)
+      @documentable.write_basename.should == Digest::MD5.hexdigest(body)
     end
     it "should write the file" do
       @documentable = ::TestDocumentable.new(textile_fixture_path, @api)
