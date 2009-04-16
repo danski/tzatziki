@@ -38,6 +38,22 @@ module Tzatziki
         #self.read_layouts
         super
       end
+      
+      def write_path
+        self.destination
+      end
+      
+      def document!(*args)
+        # clear path
+        if self.destination == "/" or File.expand_path(self.destination) == File.expand_path("~")
+          raise RuntimeError, "You're about to do something very stupid and dangerous."
+        else
+          FileUtils.rm_r File.expand_path(self.destination)
+          FileUtils.mkdir_p File.expand_path(self.destination)
+        end
+        # run super
+        super
+      end
 
   #    # The Hash payload containing site-wide data
   #    #

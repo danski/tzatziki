@@ -71,8 +71,7 @@ module Tzatziki
     
     def write_path
       File.join(
-        self.api.destination,
-        self.api.path_offset,
+        self.api.write_path,
         self.write_filename
       )
     end

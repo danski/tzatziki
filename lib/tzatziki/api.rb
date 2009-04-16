@@ -29,7 +29,7 @@ module Tzatziki
     # Each API may have documents, specifications, types and layouts which inherit from the parent.
     attr_accessor :config, :documents, :specifications, :types, :layouts
     # Specs and types specific to this level of recursion are made available here.
-    attr_accessor :local_specifications, :local_types, :local_layouts
+    attr_accessor :local_specifications, :local_types, :local_layouts, :local_documentables
     # Job state
     attr_accessor :processed
     
@@ -49,6 +49,7 @@ module Tzatziki
       self.local_specifications = {}
       self.local_types = {}
       self.local_layouts = {}
+      self.local_documentables = []
       # Blanks that will get duped from parent and then merged with local results
       # when we descend from this point.    
       self.specifications   = (parent)? parent.specifications.dup : {}
@@ -164,6 +165,9 @@ module Tzatziki
     # then site path_offset_components will be "foo/bar"
     def path_offset
       self.source.gsub /#{self.site.source}\//, ""
+    end
+    def write_path
+      File.join(self.site.destination, path_offset)
     end
     
     # Marshalls the API into a hash ready for inclusion in templates.
@@ -294,7 +298,10 @@ module Tzatziki
     # Actually compiles the documentation and writes it to the destination folder.
     # +recurse+ is a boolean indicating whether or not to test the child APIs.
     def document!(recurse=true, options={}, stack=1)
-      
+      self.local_documentables.each {|d| d.write! }
+      if recurse
+        self.children.map {|api| api.document!(recurse, options, stack+1) }
+      end
     end
 
     private
@@ -306,7 +313,9 @@ module Tzatziki
         files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" or e.match(/\.(yaml|yml)/) }
         documentables = {}
         files.each do |f|
-          documentables[f.split(".").first] = transformable_klass.new(File.join(path, f), self)
+          trans = transformable_klass.new(File.join(path, f), self)
+          self.local_documentables << trans
+          documentables[f.split(".").first] = trans
         end
         return documentables
       rescue Errno::ENOENT => e
@@ -315,64 +324,6 @@ module Tzatziki
         return {}
       end
     end
-
-#    # Copy all regular files from <source> to <dest>/ ignoring
-#    # any files/directories that are hidden or backup files (start
-#    # with "." or end with "~") or contain site content (start with "_")
-#    # unless they are "_posts" directories or web server files such as
-#    # '.htaccess'
-#    #   The +dir+ String is a relative path used to call this method
-#    #            recursively as it descends through directories
-#    #
-#    # Returns nothing
-#    def transform_documents(dir = '')
-#      base = File.join(self.source, dir)
-#      entries = Dir.entries(base)
-#      entries = entries.reject { |e| e[-1..-1] == '~' }
-#      entries = entries.reject do |e|
-#        (e != '_posts') and ['.', '_'].include?(e[0..0]) unless ['.htaccess'].include?(e)
-#      end
-#      directories = entries.select { |e| File.directory?(File.join(base, e)) }
-#      files = entries.reject { |e| File.directory?(File.join(base, e)) }
-#
-#      # we need to make sure to process _posts *first* otherwise they 
-#      # might not be available yet to other templates as {{ site.posts }}
-#      if entries.include?('_posts')
-#        entries.delete('_posts')
-#        read_posts(dir)
-#      end
-#      [directories, files].each do |entries|
-#        entries.each do |f|
-#          if File.directory?(File.join(base, f))
-#            next if self.dest.sub(/\/$/, '') == File.join(base, f)
-#            transform_documents(File.join(dir, f))
-#          else
-#            first3 = File.open(File.join(self.source, dir, f)) { |fd| fd.read(3) }
-#        
-#            if first3 == "---"
-#              # file appears to have a YAML header so process it as a page
-#              page = Page.new(self.source, dir, f)
-#              page.render(self.layouts, site_payload)
-#              page.write(self.dest)
-#            else
-#              # otherwise copy the file without transforming it
-#              FileUtils.mkdir_p(File.join(self.dest, dir))
-#              FileUtils.cp(File.join(self.source, dir, f), File.join(self.dest, dir, f))
-#            end
-#          end
-#        end
-#      end
-#    end
-
-    
-#    # Write each post to <dest>/<year>/<month>/<day>/<slug>
-#    #
-#    # Returns nothing
-#    def write_posts
-#      self.posts.each do |post|
-#        post.write(self.dest)
-#      end
-#    end
     
   end
 end

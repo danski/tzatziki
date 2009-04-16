@@ -130,6 +130,10 @@ describe Tzatziki::API do
       @api.specifications.keys.should == ["searchable","successful"]
       @site.specifications.keys.should == ["successful"]
     end    
+    
+    it "should write the files recursively" do
+      @site.document!
+    end
   end
   
   describe "configuration merging" do

@@ -8,5 +8,9 @@ module Tzatziki
       parse!
     end
     
+    def write!(*args)
+      return nil
+    end
+    
   end #class Layout
 end #module Tzatziki
