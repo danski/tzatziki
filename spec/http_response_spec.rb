@@ -37,6 +37,24 @@ describe Net::HTTPResponse do
       ok.should be_false
       messages.length.should == 1
     end
+    
+    describe "hash transformation" do
+      it "has a numeric status code" do
+        @success_response.to_payload_hash[:code].should == "200"
+      end
+      it "has a text status" do
+        @success_response.to_payload_hash[:status].should == "ok"
+      end
+      it "preserves the headers" do
+        @success_response.to_payload_hash[:headers]["content-type"].should == "text/html; charset=ISO-8859-1"
+      end
+      it "has the response body" do
+        @success_response.to_payload_hash[:body].should include("<!doctype html>")
+      end
+      it "has the casual content-type available as 'kind'" do
+        @success_response.to_payload_hash[:kind].should == :html
+      end
+    end
   
     describe "casual typing" do
       it "should match any part of the content-type header, e.g. 'html' to 'text/html; charset...'" do

@@ -138,6 +138,9 @@ describe Tzatziki::API do
     end
   end
   
+  it "should get it's title from the index file"
+  it "should infer title from the folder name if no index file found"
+  
   describe "configuration merging" do
     before(:each) do
       # this is the searchable hash

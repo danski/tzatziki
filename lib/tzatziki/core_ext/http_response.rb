@@ -37,6 +37,21 @@ class Net::HTTPResponse
     end
   end
   
+  # Marshals the response into a hash suitable for inclusion in a template payload
+  def to_payload_hash
+    headers = {}
+    to_hash.each do |key, value|
+      headers[key] = value.flatten.join
+    end
+    {
+      :kind=>kind,
+      :code=>self.code,
+      :status=>Net::HTTPResponse::CODE_TO_OBJ[code.to_s].to_s.split("::HTTP").last.downcase,
+      :body=>self.body,
+      :headers=>headers
+    }
+  end
+  
   module Assertions
     class << self
       # Each assertion method returns a tuple of success (a boolean) and message, if applicable.
