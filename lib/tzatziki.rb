@@ -28,7 +28,7 @@ module Tzatziki
   end
   
   def self.document(site)
-    Taz.out.write "Tzatziki is writing the documentation to #{Tzatziki.destination} \n"
+    Taz.out.write "Tzatziki is writing the documentation to #{Tzatziki.site.destination} \n"
     Tzatziki.site.document!
   end
   

@@ -27,18 +27,9 @@ module Tzatziki
       #
       # Returns <Site>
       def initialize(source, destination)
-        super(source, destination)
-      end
-    
-      # Do the actual work of processing the site and generating the
-      # documentation, as well as outputting the test results.
-      #
-      # Returns nothing
-      def process(recurse=false)
-        #self.read_layouts
         super
       end
-      
+    
       def write_path
         self.destination
       end

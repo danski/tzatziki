@@ -164,7 +164,7 @@ module Tzatziki
     # within another subfolder called "foo" off the site root "~user/taz_site",
     # then site path_offset_components will be "foo/bar"
     def path_offset
-      self.source.gsub /#{self.site.source}\//, ""
+      self.source.gsub /#{self.site.source}\/*/, ""
     end
     def write_path
       File.join(self.site.destination, path_offset)

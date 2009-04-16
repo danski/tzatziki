@@ -60,14 +60,15 @@ module Tzatziki
       end
     end
     
-    def write_filename
+    def write_basename
       if file_basename
         ext = File.extname(file_basename)
-        "#{file_basename[0..(file_basename.length-ext.length-1)]}.html"
+        file_basename[0..(file_basename.length-ext.length-1)]
       else
         Digest::MD5.hexdigest(self.raw)
       end
     end
+    def write_filename; "#{write_basename}.html"; end
     
     def write_path
       File.join(
@@ -77,6 +78,9 @@ module Tzatziki
     end
     
     def write!(content=self.render)
+      #if write_path.match("/spec")
+      #  puts "Bad path on #{self.inspect}, #{write_path}"
+      #end
       FileUtils.mkdir_p(File.dirname(write_path))
       out = File.open(write_path, "w+")
       out.rewind

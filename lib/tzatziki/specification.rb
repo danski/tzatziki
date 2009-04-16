@@ -11,5 +11,9 @@ module Tzatziki
       self.data = self.api.inject_configuration(self.data)
     end
     
+    def write_basename
+      "specification.#{super}"
+    end
+    
   end # class Specification  
 end # module Tzatziki

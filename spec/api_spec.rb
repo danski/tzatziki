@@ -131,6 +131,8 @@ describe Tzatziki::API do
       @site.specifications.keys.should == ["successful"]
     end    
     
+    it "should create an index page if one does not exist"
+    
     it "should write the files recursively" do
       @site.document!
     end
