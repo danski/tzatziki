@@ -2,15 +2,22 @@ require 'net/http'
 
 class Net::HTTPResponse
   
-  def compare!(specification_hash)
+  def compare!(specification_hash, variable_payload={})
     header_fail = false
     specification_hash.inject([true, []]) do |result, (key, value)|
       ok, message = case key
                     when :status
+                      value = Liquid::Template.parse(value.to_s).render(Mash.new(variable_payload))      
                       Assertions.assert_status(self, value)
                     when :headers
-                      Assertions.assert_headers(self, value)
+                      v = {}
+                      value.each do |key, value|
+                        v[Liquid::Template.parse(key.to_s).render(Mash.new(variable_payload))] = 
+                          Liquid::Template.parse(value.to_s).render(Mash.new(variable_payload))      
+                      end
+                      Assertions.assert_headers(self, v)
                     when :body
+                      Liquid::Template.parse(value.to_s).render(Mash.new(variable_payload))      
                       #Assertions.assert_headers(self, value)
                     end
       last_ok = result.first

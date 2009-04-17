@@ -15,7 +15,11 @@ describe Net::HTTPResponse do
       @success_response = Net::HTTPRequest.from_hash(@testable.data[:request]) { |http, req| http.request(req) }
     end
   
-    it "should allow for liquid markup referencing the request properties"
+    it "should allow for liquid markup referencing the request properties" do
+      ok, messages = @success_response.compare!({:headers=>{"{{request.uri}}"=>"{{request.host}}"}}, @testable.template_payload)
+      ok.should be_false
+      messages.first.should == "header '/search' was expected to be 'www.google.com' but was ''"
+    end
   
     it "should return true, [] for the success fixture on comparison" do
       ok, messages = @success_response.compare!(:status=>200)
