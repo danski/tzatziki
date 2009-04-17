@@ -21,7 +21,7 @@ module Tzatziki
     
     # Tests this testable against the given option and response hashes.
     # Each key in the response hash will be considered to be an assertion.
-    def test!(request={}, response={})
+    def test!(request={}, response={}, variable_payload={})
       # Two-tier defaults system in effect, yo
       request_spec = request_options.deep_merge(request)
       response_spec = response_options.deep_merge(response)
@@ -32,7 +32,7 @@ module Tzatziki
         http.request(req)
       end
       self.tested = true
-      return self.response.compare!(response_spec)
+      return self.response.compare!(response_spec, variable_payload)
     end
     
     # The options for the request factory and response assertions may

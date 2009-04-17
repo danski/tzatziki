@@ -7,17 +7,16 @@ class Net::HTTPResponse
     specification_hash.inject([true, []]) do |result, (key, value)|
       ok, message = case key
                     when :status
-                      value = Liquid::Template.parse(value.to_s).render(Mash.new(variable_payload))      
+                      value = value.to_s.liquify(variable_payload)
                       Assertions.assert_status(self, value)
                     when :headers
                       v = {}
                       value.each do |key, value|
-                        v[Liquid::Template.parse(key.to_s).render(Mash.new(variable_payload))] = 
-                          Liquid::Template.parse(value.to_s).render(Mash.new(variable_payload))      
+                        v[key.to_s.liquify(variable_payload)] = value.to_s.liquify(variable_payload)      
                       end
                       Assertions.assert_headers(self, v)
                     when :body
-                      Liquid::Template.parse(value.to_s).render(Mash.new(variable_payload))      
+                      value.to_s.liquify(variable_payload)
                       #Assertions.assert_headers(self, value)
                     end
       last_ok = result.first

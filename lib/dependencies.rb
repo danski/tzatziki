@@ -12,6 +12,7 @@ require 'jekyll'
 require 'randexp'
 require 'mash'
 # Tzatziki requires
+require 'tzatziki/core_ext/string'
 require 'tzatziki/core_ext/hash'
 require 'tzatziki/core_ext/http_request'
 require 'tzatziki/core_ext/http_response'

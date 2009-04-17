@@ -269,7 +269,7 @@ module Tzatziki
         Taz.out.write "#{"--"*stack} #{self.is_a?(Tzatziki::Site)? "Document bundle" : "API"} located in #{self.source}\n"
         self.documents.each do |name, document|          
           if document.testable?
-            result, messages = document.test!
+            result, messages = document.test!({},{},document.template_payload)
             if result
               Taz.out.write "#{"--"*(stack+1)} "
               Taz.out.write green("#{name.capitalize}\n")

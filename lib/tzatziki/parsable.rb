@@ -18,7 +18,7 @@ module Tzatziki
       out = parsable_string.dup      
       while out =~ /^(---\s*\n.*?)(\n===\s*$)/m
         yaml = $1.dup
-        out = out.gsub(/#{yaml}#{$2}/m,"")
+        out = out.gsub(/#{Regexp.escape(yaml)}#{Regexp.escape($2)}/m,"")
         d = YAML.load(yaml)
         data_table = data_table.deep_merge(d) if d.is_a?(Hash)
         d = nil
