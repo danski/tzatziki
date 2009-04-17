@@ -2,6 +2,15 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe Tzatziki::Type do
 
-  it "should provide a name, excerpt and URL as a template payload, which should be a hash"
+  before(:each) do
+    @type = Tzatziki::Type.new("", get_test_site)
+  end
+
+  it "is documentable" do
+    @type.should be_kind_of(Tzatziki::Documentable)
+  end
+  it "is parsable" do
+    @type.should be_kind_of(Tzatziki::Parsable)
+  end
   
 end
