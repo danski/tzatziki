@@ -14,6 +14,11 @@ require 'net/http'
 module Tzatziki
   module Testable
     
+    attr_accessor :request
+    attr_accessor :response
+    attr_accessor :tested
+    def tested?; tested; end
+    
     # Tests this testable against the given option and response hashes.
     # Each key in the response hash will be considered to be an assertion.
     def test!(request={}, response={})
@@ -23,11 +28,11 @@ module Tzatziki
       failures = []
       
       # fire it and gather the response (::from_hash is defined in core_ext/http_request)
-      resp = Net::HTTPRequest.from_hash(request_spec) do |http, req|
+      self.response = Net::HTTPRequest.from_hash(request_spec) do |http, req|
         http.request(req)
       end
-      # feed the response data back into the returned response object
-      return resp.compare!(response_spec)
+      self.tested = true
+      return self.response.compare!(response_spec)
     end
     
     # The options for the request factory and response assertions may
@@ -49,6 +54,17 @@ module Tzatziki
       user_options = self.response_assertion_options || {}
       return Tzatziki::Testable.default_response_assertion_options.deep_merge(user_options.deep_symbolize)
     end
+    
+    # Extends the payload by including the response data. The response data will only be
+    # included if the document has been tested.
+    def payload
+      if tested?
+        resp = self.response.to_payload_hash 
+        super.merge({:response=>resp})
+      else
+        super
+      end
+    end
 
     # Factory defaults for the request and response that will received
     # the request_factory_options and response_assertion_options as merges.
@@ -66,7 +82,7 @@ module Tzatziki
             :"content-accept"=>"text/plain"
           }
         }
-      end      
+      end
       # Returns the default assertion set for any given HTTP response.
       def default_response_assertion_options
         { 
