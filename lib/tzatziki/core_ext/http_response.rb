@@ -32,6 +32,8 @@ class Net::HTTPResponse
       :xml
     when /json/
       :json
+    when /(yaml|yml)/
+      :yaml
     when /css/
       :css
     end
@@ -54,6 +56,17 @@ class Net::HTTPResponse
   
   def to_nokogiri
     return (kind == :html)? Nokogiri::HTML(self.body.to_s) : Nokogiri::XML(self.body.to_s)
+  end
+  
+  def parse_body
+    case kind
+    when :yaml
+      YAML.load(self.body)
+    when :json
+      JSON.parse(self.body)
+    else
+      raise RuntimeError, "Only JSON and YAML responses can be parsed at this time."
+    end
   end
   
   module Assertions
@@ -162,6 +175,15 @@ class Net::HTTPResponse
         end
         
         def assert_values(response, *args)
+          errors = []
+          body = response.parse_body
+          args.each do |arg|
+            
+            arg.each do |key, value|
+              
+            end
+            
+          end
         end
         
       end # class << self

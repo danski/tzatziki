@@ -5,6 +5,7 @@ require 'fileutils'
 require 'yaml'
 require 'net/http'
 # Gem requires
+require 'json'
 require 'liquid'
 require 'redcloth'
 require 'maruku'
