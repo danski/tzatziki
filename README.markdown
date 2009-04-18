@@ -71,9 +71,11 @@ status
 	- by name (ok/success/redirect/servererror etc.)
 headers
 body (TODO)
-	- xml/html
-		- by xpath
-		- by css
+	- xpath
+	- css
+	- matches
+	- values
+	- kind
 
 Design principles checklist
 ---------------------------
