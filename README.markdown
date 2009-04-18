@@ -70,10 +70,12 @@ status
 	- by mask (20X)
 	- by name (ok/success/redirect/servererror etc.)
 headers
-body (TODO)
-	- xml/html
-		- by xpath
-		- by css
+body
+	- xpath
+	- css
+	- matches
+	- values
+	- kind
 
 Design principles checklist
 ---------------------------
