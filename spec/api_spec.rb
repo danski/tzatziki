@@ -209,6 +209,8 @@ describe Tzatziki::API do
     it "should leave the type keys in the original location" do
       @output[:request][:query_string][:date][:type].should == "date"
     end
+    
+    it "should run signing specifications at the very end of the chain"
   end
   
   describe "marshalling" do

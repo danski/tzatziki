@@ -13,7 +13,7 @@ module Tzatziki
       self.data = self.api.inject_configuration(self.data)
     end
     
-    def test!
+    def test!(*args)
       super(self.data[:request], self.data[:response])
     end
     

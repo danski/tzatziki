@@ -27,6 +27,4 @@ The response that comes back is very simple, too:
 ---
 response: 
   status: 20X
-  headers:
-    foo: {{request.uri}}
 ===
