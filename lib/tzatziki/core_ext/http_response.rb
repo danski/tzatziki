@@ -10,6 +10,8 @@ class Net::HTTPResponse
                       Assertions.assert_status(self, value.to_s.liquify(variable_payload))
                     when :headers
                       Assertions.assert_headers(self, value.deep_liquify(variable_payload))
+                    when :kind
+                      Assertions.assert_kind(self, value.to_s.liquify(variable_payload))
                     when :body
                       Assertions.assert_body(self, value.deep_liquify(variable_payload))
                     end
@@ -111,6 +113,14 @@ class Net::HTTPResponse
             errors << "header '#{key}' was expected to be '#{value}' but was '#{response[key.to_s]}'"
           end
         end
+        ok = errors.empty?
+        return ok, (errors unless ok)
+      end
+      
+      def assert_kind(response, arg)
+        errors = []
+        r_kind = response.kind.to_s
+        errors << "Expected kind to be #{arg.inspect} but was #{r_kind.inspect}" unless r_kind == arg
         ok = errors.empty?
         return ok, (errors unless ok)
       end

@@ -101,6 +101,11 @@ describe Net::HTTPResponse do
           ok.should be_true
           messages.should be_empty
         end
+        it "should match against :kind by matching the content-type of the request" do
+          ok, messages = @success_response.compare!(:kind=>"html")
+          ok.should be_true
+          messages.should be_empty
+        end
         it "should match against :body by JSON variable parsing in the response hash"
         it "should match against :body by YAML variable parsing in the response hash"
       end
@@ -136,6 +141,11 @@ describe Net::HTTPResponse do
           messages.should_not be_empty
         end
         
+        it "should match against :kind by matching the content-type of the request" do
+          ok, messages = @success_response.compare!(:kind=>"yaml")
+          ok.should be_false
+          messages.should_not be_empty
+        end
         it "should match against :body by JSON variable parsing in the response hash"
         it "should match against :body by YAML variable parsing in the response hash"
       end
