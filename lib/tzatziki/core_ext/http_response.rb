@@ -52,6 +52,10 @@ class Net::HTTPResponse
     }
   end
   
+  def to_nokogiri
+    return (kind == :html)? Nokogiri::HTML(self.body.to_s) : Nokogiri::XML(self.body.to_s)
+  end
+  
   module Assertions
     class << self
       # Each assertion method returns a tuple of success (a boolean) and message, if applicable.
@@ -138,9 +142,23 @@ class Net::HTTPResponse
         end
         
         def assert_xpath(response, *args)
+          errors = []
+          document = response.to_nokogiri
+          args.each do |string|
+            errors << "Body was expected to match XPath expression #{string.inspect}" unless document.xpath(string).any?
+          end
+          ok = errors.empty?
+          return ok, (errors unless ok)
         end
         
         def assert_css(response, *args)
+          errors = []
+          document = response.to_nokogiri
+          args.each do |string|
+            errors << "Body was expected to match CSS selector #{string.inspect}" unless document.css(string).any?
+          end
+          ok = errors.empty?
+          return ok, (errors unless ok)
         end
         
         def assert_values(response, *args)

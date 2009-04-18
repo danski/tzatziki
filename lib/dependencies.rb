@@ -11,6 +11,7 @@ require 'maruku'
 require 'jekyll'
 require 'randexp'
 require 'mash'
+require 'nokogiri'
 # Tzatziki requires
 require 'tzatziki/core_ext/string'
 require 'tzatziki/core_ext/hash'

@@ -91,8 +91,16 @@ describe Net::HTTPResponse do
           ok.should be_true
           messages.should be_empty
         end
-        it "should match against :body by CSS in the response hash"
-        it "should match against :body by XPath in the response hash"
+        it "should match against :body by CSS in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:css=>["html", "body div"]})
+          ok.should be_true
+          messages.should be_empty
+        end
+        it "should match against :body by XPath in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:xpath=>"//html"})
+          ok.should be_true
+          messages.should be_empty
+        end
         it "should match against :body by JSON variable parsing in the response hash"
         it "should match against :body by YAML variable parsing in the response hash"
       end
@@ -105,7 +113,7 @@ describe Net::HTTPResponse do
         it "should recognise words like 'Success' and 'ok' as HTTP response class types e.g. HTTPSuccess" do
           ok, messages = @success_response.compare!(:status=>"redirect")
           ok.should be_false and messages.should_not be_empty
-        end 
+        end
       
         it "should match against :headers in the response hash" do
           ok, messages = @success_response.compare!(:headers=>{:foo=>"bar"})
@@ -117,8 +125,17 @@ describe Net::HTTPResponse do
           ok.should be_false
           messages.should_not be_empty
         end
-        it "should match against :body by CSS in the response hash"
-        it "should match against :body by XPath in the response hash"
+        it "should match against :body by CSS in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:css=>["html", "google nothere"]})
+          ok.should be_false
+          messages.should_not be_empty
+        end
+        it "should match against :body by XPath in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:xpath=>"//nothere"})
+          ok.should be_false
+          messages.should_not be_empty
+        end
+        
         it "should match against :body by JSON variable parsing in the response hash"
         it "should match against :body by YAML variable parsing in the response hash"
       end
