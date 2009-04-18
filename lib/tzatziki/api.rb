@@ -164,7 +164,7 @@ module Tzatziki
     # within another subfolder called "foo" off the site root "~user/taz_site",
     # then site path_offset_components will be "foo/bar"
     def path_offset
-      self.source.gsub /#{self.site.source}\/*/, ""
+      self.source.gsub /#{Regexp.escape(self.site.source)}\/*/, ""
     end
     def write_path
       File.join(self.site.destination, path_offset)
@@ -298,8 +298,6 @@ module Tzatziki
     # Actually compiles the documentation and writes it to the destination folder.
     # +recurse+ is a boolean indicating whether or not to test the child APIs.
     def document!(recurse=true, options={}, stack=1)
-      # Make directory
-      FileUtils.mkdir_p(File.dirname(write_path))
       # Write static files
       write_assets!
       write_documentables!
@@ -337,10 +335,11 @@ module Tzatziki
       files = Dir.entries(path).reject { |e| File.directory?(File.join(path, e)) }
       files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" }
       files = files.reject { |e| (%w(.yaml .yml)+Tzatziki::Documentable.file_extensions).include?(File.extname(e)) } # Exception cases
+      FileUtils.mkdir_p(write_path)
       files.each do |f|
         FileUtils.cp(
           File.join(path, File.basename(f)),
-          write_path
+          File.join(write_path, File.basename(f))
         )
       end
     end
