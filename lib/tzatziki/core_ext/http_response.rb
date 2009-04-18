@@ -111,14 +111,10 @@ class Net::HTTPResponse
       def assert_body(response, arg)
         errors = []
         arg.each do |key, value|
-          case key.to_s.downcase
-          when "matches"
-            m_ok, m_errors = BodyAssertions.assert_matches(response, *value)
+          begin
+            m_ok, m_errors = BodyAssertions.send("assert_#{key.to_s.downcase}", response, *value)
             errors << m_errors unless m_ok
-          when "xpath"
-          when "css"
-          when "values"
-          else
+          rescue NoMethodError => e
             raise RuntimeError, "#{key.inspect} is not a supported expectation type."
           end
         end
