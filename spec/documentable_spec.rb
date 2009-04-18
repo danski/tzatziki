@@ -97,6 +97,10 @@ i am the walrus
       content.should include("DOCUMENT LAYOUT")
       content.should include("DEFAULT LAYOUT")
     end
+    
+    it "should have the file path as a payload variable" do
+      @documentable.template_payload[:uri].should == "/the_google/index.html"
+    end
   end
   
   describe "content transformation" do

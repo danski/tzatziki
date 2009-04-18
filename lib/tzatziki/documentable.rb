@@ -77,6 +77,10 @@ module Tzatziki
       )
     end
     
+    def uri
+      write_path.gsub(self.api.destination, "")
+    end
+    
     def write!(content=self.render)
       #if write_path.match("/spec")
       #  puts "Bad path on #{self.inspect}, #{write_path}"
@@ -96,7 +100,8 @@ module Tzatziki
     def template_payload
       {
         :api=>self.api.to_hash,
-        :config=>self.api.config
+        :config=>self.api.config,
+        :uri=>uri
       }.merge(self.payload)
     end
     
