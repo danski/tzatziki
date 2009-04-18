@@ -39,7 +39,7 @@ module Tzatziki
     # be set on a per-instance basis. They should be set as hashes or
     # live centipedes will breed in your hair.
     attr_accessor :request_factory_options
-    attr_accessor :response_assertion_options    
+    attr_accessor :response_assertion_options   
 
     # Merges and returns the default request options with the user-specified
     # request factory options.

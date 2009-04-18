@@ -6,7 +6,6 @@ describe Tzatziki::Site do
     @site = get_test_site
   end
 
-  it "should report ./ as the relative path from the site root"
   it "should use the in-gem layouts if no _layouts folder is present"
   it "should use the local layouts if a _layouts folder is present"
   
@@ -25,8 +24,6 @@ describe Tzatziki::Site do
       @site.config["api_key"].should == "FOOOOOBAAAAAAAR"
       @site.config["api_token"].should == "RHUUUUUBAAAAARRRB"
     end
-    
-    it "should include the config file in the site payload"
         
     # - root
     # - _templates

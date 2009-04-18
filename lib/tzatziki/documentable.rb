@@ -44,7 +44,7 @@ module Tzatziki
       s = Liquid::Template.parse(s).render(Mash.new(p))
       if layout_name = p[:layout]
         p.delete(:layout)
-        s = self.api.layouts[layout_name].render(p.merge(:content=>s))
+        s = self.api.layouts[layout_name].render(p.merge(:content=>s)) rescue raise(RuntimeError, "Layout #{layout_name.inspect} not found for Documentable #{self.to_s}.")
       end
       return s
     end
@@ -105,6 +105,11 @@ module Tzatziki
       raise InterfaceNotProvided
     end
     
+    class << self
+      def file_extensions
+        %w(.html .textile .markdown .mdown)
+      end
+    end
     
   end
 end

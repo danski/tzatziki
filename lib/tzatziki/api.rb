@@ -298,7 +298,12 @@ module Tzatziki
     # Actually compiles the documentation and writes it to the destination folder.
     # +recurse+ is a boolean indicating whether or not to test the child APIs.
     def document!(recurse=true, options={}, stack=1)
-      self.local_documentables.each {|d| d.write! }
+      # Make directory
+      FileUtils.mkdir_p(File.dirname(write_path))
+      # Write static files
+      write_assets!
+      write_documentables!
+      # Write descender APIs
       if recurse
         self.children.map {|api| api.document!(recurse, options, stack+1) }
       end
@@ -310,7 +315,9 @@ module Tzatziki
         path = (folder==self.source)? folder : File.join(self.source, folder)
         entries = Dir.entries(path)
         files = entries.reject { |e| File.directory?(File.join(path, e)) }
-        files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" or e.match(/\.(yaml|yml)/) }
+        files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" }
+        files = files.reject { |e| %w(.yaml .yml).include?(File.extname(e)) } # Exception cases
+        files = files.select { |e| Tzatziki::Documentable.file_extensions.include?(File.extname(e)) } # Of what's left, take only transformables
         documentables = {}
         files.each do |f|
           trans = transformable_klass.new(File.join(path, f), self)
@@ -323,6 +330,23 @@ module Tzatziki
         #raise e if folder=="_layouts"
         return {}
       end
+    end
+    
+    def write_assets!
+      path = self.source
+      files = Dir.entries(path).reject { |e| File.directory?(File.join(path, e)) }
+      files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" }
+      files = files.reject { |e| (%w(.yaml .yml)+Tzatziki::Documentable.file_extensions).include?(File.extname(e)) } # Exception cases
+      files.each do |f|
+        FileUtils.cp(
+          File.join(path, File.basename(f)),
+          write_path
+        )
+      end
+    end
+    
+    def write_documentables!
+      self.local_documentables.each {|d| d.write! }
     end
     
   end

@@ -20,6 +20,8 @@ describe Net::HTTPRequest do
     it "should accept a block as an argument for returning the response object" do
       @response = Net::HTTPRequest.from_hash(@testable.data[:request]) { |http, req| http.request(req) }.should be_kind_of(Net::HTTPResponse)
     end
+    
+    it "should be able to sign the request"
   
     describe Net::HTTPRequest::Factory do
       before(:each) do

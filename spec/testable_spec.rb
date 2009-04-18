@@ -40,11 +40,6 @@ describe Tzatziki::Testable do
     @testable.response_options[:nested][:deep_symbolized].should == true
   end
   
-  describe "test assertion integration" do
-    it "should return a successful result from the success fixture"
-    it "should return a correct failure result from the failure fixture"
-  end
-  
   describe "response post-processing" do
     it "should make the real response data available to the template payload" do
       @testable.test!
