@@ -85,6 +85,16 @@ describe Net::HTTPResponse do
           ok, messages = @success_response.compare!(:headers=>{:"content-type"=>"text/html; charset=ISO-8859-1"})
           ok.should be_true and messages.should be_empty
         end
+        
+        it "should match against :body by string equality in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:matches=>["html", "google"]})
+          ok.should be_true
+          messages.should be_empty
+        end
+        it "should match against :body by CSS in the response hash"
+        it "should match against :body by XPath in the response hash"
+        it "should match against :body by JSON variable parsing in the response hash"
+        it "should match against :body by YAML variable parsing in the response hash"
       end
     
       describe "(failed)" do
@@ -101,13 +111,19 @@ describe Net::HTTPResponse do
           ok, messages = @success_response.compare!(:headers=>{:foo=>"bar"})
           ok.should be_false and messages.should_not be_empty
         end
+        
+        it "should match against :body by string equality in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:matches=>["html", "GOOD NEWS EVERYONE"]})
+          ok.should be_false
+          messages.should_not be_empty
+        end
+        it "should match against :body by CSS in the response hash"
+        it "should match against :body by XPath in the response hash"
+        it "should match against :body by JSON variable parsing in the response hash"
+        it "should match against :body by YAML variable parsing in the response hash"
       end
+      
 
-      it "should match against :body by string equality in the response hash"
-      it "should match against :body by CSS in the response hash"
-      it "should match against :body by XPath in the response hash"
-      it "should match against :body by JSON variable parsing in the response hash"
-      it "should match against :body by YAML variable parsing in the response hash"
     end
   end # if ENV["offline"]
 end

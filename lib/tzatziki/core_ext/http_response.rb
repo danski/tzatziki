@@ -113,6 +113,8 @@ class Net::HTTPResponse
         arg.each do |key, value|
           case key.to_s.downcase
           when "matches"
+            m_ok, m_errors = BodyAssertions.assert_matches(response, *value)
+            errors << m_errors unless m_ok
           when "xpath"
           when "css"
           when "values"
@@ -120,11 +122,37 @@ class Net::HTTPResponse
             raise RuntimeError, "#{key.inspect} is not a supported expectation type."
           end
         end
+        errors = errors.flatten.compact
         ok = errors.empty?
         return ok, (errors unless ok)
-      end      
+      end
 
     end # class << self
+    
+    module BodyAssertions
+      class << self
+        
+        def assert_matches(response, *args)
+          errors = []
+          args.each do |string|
+            errors << "Body was expected to contain #{string.inspect}" unless response.body.to_s.include?(string)
+          end
+          ok = errors.empty?
+          return ok, (errors unless ok)
+        end
+        
+        def assert_xpath(response, *args)
+        end
+        
+        def assert_css(response, *args)
+        end
+        
+        def assert_values(response, *args)
+        end
+        
+      end # class << self
+    end # module BodyAssertions
+    
   end # module Assertions
   
 end # class HTTPResponse
