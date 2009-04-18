@@ -11,6 +11,19 @@ class Hash
       memo
     end
   end
+  
+  # Returns a new hash just like this one, but with all STRING keys and values evaluated
+  # and rendered as liquid templates using the provided payload hash.
+  def deep_liquify(payload={})
+    target = dup
+    target.inject({}) do |memo, (key, value)|
+      value = value.deep_liquify(payload) if value.is_a?(Hash)
+      value = value.liquify(payload) if value.is_a?(String)
+      key = key.liquify(payload) if key.is_a?(String)
+      memo[(key.to_sym rescue key) || key] = value
+      memo
+    end
+  end
     
   # Merges self with another hash, recursively.
   # 

@@ -7,17 +7,11 @@ class Net::HTTPResponse
     specification_hash.inject([true, []]) do |result, (key, value)|
       ok, message = case key
                     when :status
-                      value = value.to_s.liquify(variable_payload)
-                      Assertions.assert_status(self, value)
+                      Assertions.assert_status(self, value.to_s.liquify(variable_payload))
                     when :headers
-                      v = {}
-                      value.each do |key, value|
-                        v[key.to_s.liquify(variable_payload)] = value.to_s.liquify(variable_payload)      
-                      end
-                      Assertions.assert_headers(self, v)
+                      Assertions.assert_headers(self, value.deep_liquify(variable_payload))
                     when :body
-                      value.to_s.liquify(variable_payload)
-                      #Assertions.assert_headers(self, value)
+                      Assertions.assert_body(self, value.deep_liquify(variable_payload))
                     end
       last_ok = result.first
       messages = result.last
@@ -92,6 +86,7 @@ class Net::HTTPResponse
         end
       end
       
+      # Headers is expected to be a uniform key/value list of HTTP headers with their associated expected values.
       def assert_headers(response, arg)
         errors = []
         arg.each do |key, value|
@@ -103,7 +98,30 @@ class Net::HTTPResponse
         return ok, (errors unless ok)
       end
       
+      # Body assertions are expected to be a keyed list of expectation types, which may have either a single argument or an array of 
+      # arguments as the value, like so:
+      # body:
+      #   matches: this string # a simple string comparison asserting that 'this string' appears anywhere in the response body.
+      #   xpath: //html # this will run an XPath expectation on the body, checking for the single expression //html
+      #   css: ["body div", "body p"] # this will run two CSS expectations on the body, checking for the presence of body div and body p.
+      #   values: # works for both JSON and YAML requests
+      #     i_am_a_key_in_the_json_object: i_am_the_expected_value
+      #     i_am_another_key:
+      #       with_nested_values: which_are_also_expected_to_be_present
       def assert_body(response, arg)
+        errors = []
+        arg.each do |key, value|
+          case key.to_s.downcase
+          when "matches"
+          when "xpath"
+          when "css"
+          when "values"
+          else
+            raise RuntimeError, "#{key.inspect} is not a supported expectation type."
+          end
+        end
+        ok = errors.empty?
+        return ok, (errors unless ok)
       end      
 
     end # class << self

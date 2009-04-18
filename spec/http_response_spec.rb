@@ -106,8 +106,8 @@ describe Net::HTTPResponse do
       it "should match against :body by string equality in the response hash"
       it "should match against :body by CSS in the response hash"
       it "should match against :body by XPath in the response hash"
-      it "should match against :body by JSONPath in the response hash"
-      it "should match against :body by XPath in the response hash"
+      it "should match against :body by JSON variable parsing in the response hash"
+      it "should match against :body by YAML variable parsing in the response hash"
     end
   end # if ENV["offline"]
 end
