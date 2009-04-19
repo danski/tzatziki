@@ -114,7 +114,7 @@ i am the walrus
       @documentable.parse!
       @documentable.transform.should == Maruku.new(@documentable.raw).to_html
     end
-    it "should not HTML files" do
+    it "should not transform HTML files" do
       @documentable = ::TestDocumentable.new(html_fixture_path, @api)
       @documentable.parse!
       @documentable.transform.should == @documentable.raw
