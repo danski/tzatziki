@@ -138,12 +138,11 @@ class Net::HTTPResponse
       def assert_body(response, arg)
         errors = []
         arg.each do |key, value|
-          begin
-            m_ok, m_errors = BodyAssertions.send("assert_#{key.to_s.downcase}", response, *value)
-            errors << m_errors unless m_ok
-          rescue NoMethodError => e
-            raise RuntimeError, "#{key.inspect} is not a supported expectation type."
-          end
+          meth = "assert_#{key.to_s.downcase}"
+          raise RuntimeError, "#{key.inspect} is not a supported expectation type." unless BodyAssertions.respond_to?(meth)
+          # FIXME the call for 'values' is broken by the pointered argument
+          m_ok, m_errors = (meth=="assert_values")? BodyAssertions.send(meth, response, value) : BodyAssertions.send(meth, response, *value)
+          errors << m_errors unless m_ok
         end
         errors = errors.flatten.compact
         ok = errors.empty?
@@ -184,17 +183,38 @@ class Net::HTTPResponse
           return ok, (errors unless ok)
         end
         
-        def assert_values(response, *args)
-          errors = []
+        def assert_values(response, arg)
           body = response.parse_body
-          args.each do |arg|
-            
-            arg.each do |key, value|
-              
-            end
-            
-          end
+          errors = assert_hash_match(body, arg)
+          ok = errors.empty?
+          return ok, (errors unless ok)
         end
+          
+        private
+        def assert_hash_match(data, expectations, key_path=[])
+          errors = []
+          data = data.deep_symbolize
+          expectations = expectations.deep_symbolize
+          text_path = (key_path.empty?)? "root of parsed object" : "object path /#{key_path.join("/")}"
+          
+          expectations.each do |key, value|
+            # Assert that the key is present
+            unless data.include?(key)
+              errors << "Expecting key #{key} to be present but was not found at #{text_path}"
+              next
+            end
+            found_value = data[key]
+            if value.is_a?(Hash)
+              # If value is a hash, recurse at the current key path
+              errors << assert_hash_match(data[key], value, key_path+[key])
+            else
+              # Other types, we just match the value
+              errors << "Expecting value at key #{key.inspect} to be #{value.inspect} at #{text_path} but found value #{found_value.inspect}" unless value == found_value
+            end
+          end
+          return errors.flatten.compact
+        end
+          
         
       end # class << self
     end # module BodyAssertions
