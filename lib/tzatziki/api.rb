@@ -176,7 +176,11 @@ module Tzatziki
       {
         :config=>config,
         :parent=>(parent ? parent.to_hash(false) : {}),
-        :children=>(include_children ? children.collect{|c| c.to_hash} : nil)
+        
+        :children=>(include_children ? children.collect { |c| c.to_hash } : nil),
+        :documents=>(include_children ? documents.collect { |name, d| d.to_hash } : nil),
+        :specifications=>(include_children ? specifications.collect { |name, d| d.to_hash } : nil),
+        :types=>(include_children ? types.collect { |name, d| d.to_hash } : nil)
       }
     end
     def to_mash(include_children=true)

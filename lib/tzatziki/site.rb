@@ -44,22 +44,7 @@ module Tzatziki
         end
         # run super
         super
-      end
-
-  #    # The Hash payload containing site-wide data
-  #    #
-  #    # Returns {"site" => {"time" => <Time>,
-  #    #                     "posts" => [<Post>],
-  #    #                     "categories" => [<Post>],
-  #    #                     "topics" => [<Post>] }}
-  #    def site_payload
-  #      {"site" => {
-  #        "time" => Time.now, 
-  #        "posts" => self.posts.sort { |a,b| b <=> a },
-  #        "categories" => post_attr_hash('categories'),
-  #        "topics" => post_attr_hash('topics')
-  #      }}
-  #    end    
+      end  
     
   end
 end

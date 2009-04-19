@@ -99,7 +99,7 @@ i am the walrus
     end
     
     it "should have the file path as a payload variable" do
-      @documentable.template_payload[:uri].should == "/the_google/index.html"
+      @documentable.template_payload[:document][:uri].should == "/the_google/index.html"
     end
   end
   
@@ -119,8 +119,7 @@ i am the walrus
       @documentable.parse!
       @documentable.transform.should == @documentable.raw
     end
-  end
-  
+  end  
   
   it "should recognise multi-datablock input and use the YAML declares as placeholders for data tables"
   it "should recognise single datablock input and let the user specify where to place the tables"
