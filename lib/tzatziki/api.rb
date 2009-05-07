@@ -304,26 +304,30 @@ EOS
       when :specdoc
         message_count = 1
         Taz.out.write "#{"--"*stack} #{self.is_a?(Tzatziki::Site)? "Document bundle" : "API"} located in #{self.source}\n"
-        self.documents.each do |name, document|       
-          if document.testable?
-            result, messages = document.test!({},{},document.template_payload)
-            if result
-              Taz.out.write "#{"--"*(stack+1)} "
-              Taz.out.write green("#{name.capitalize}\n")
+        self.documents.each do |name, doc|       
+          ([doc]+doc.examples.values).each do |document|
+            if document.testable?
+              n = document.data[:title] || name
+              cname = (document.is_a?(Tzatziki::Example))? "#{document.document.data[:title]} - example '#{n}'" : n
+              result, messages = document.test!({},{},document.template_payload)
+              if result
+                Taz.out.write "#{"--"*(stack+1)} "
+                Taz.out.write green("#{cname}\n")
+              else
+                Taz.out.write "#{"--"*(stack+1)} "
+                Taz.out.write red("#{cname}\n")
+                messages.each do |m| 
+                  Taz.out.write "#{"--"*(stack+2)} "
+                  Taz.out.write(red("[#{message_count}] #{m.capitalize}\n"))
+                  message_count += 1
+                end
+                Taz.out.write yellow("#{"  "*(stack+2)} Request data          \n #{"  "*(stack+2)}#{document.data[:request].inspect}\n")
+                Taz.out.write yellow("#{"  "*(stack+2)} Response assertions   \n #{"  "*(stack+2)}#{document.data[:response].inspect}\n")
+              end
             else
               Taz.out.write "#{"--"*(stack+1)} "
-              Taz.out.write red("#{name.capitalize}\n")
-              messages.each do |m| 
-                Taz.out.write "#{"--"*(stack+2)} "
-                Taz.out.write(red("[#{message_count}] #{m.capitalize}\n"))
-                message_count += 1
-              end
-              Taz.out.write yellow("#{"  "*(stack+2)} Request data          \n #{"  "*(stack+2)}#{document.data[:request].inspect}\n")
-              Taz.out.write yellow("#{"  "*(stack+2)} Response assertions   \n #{"  "*(stack+2)}#{document.data[:response].inspect}\n")
+              Taz.out.write green("#{cname} #{"(skipped because document contains no request data)" unless document.testable?}\n")
             end
-          else
-            Taz.out.write "#{"--"*(stack+1)} "
-            Taz.out.write green("#{name.capitalize} #{"(skipped because document contains no request data)" unless document.testable?}\n")
           end
         end
       else
