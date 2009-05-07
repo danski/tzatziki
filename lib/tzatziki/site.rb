@@ -17,6 +17,9 @@
 module Tzatziki
   class Site < API
     
+      @@singleton = nil # singleton pattern
+      def self.singleton; @@singleton; end
+      
       attr_accessor :layouts
     
       # Initialize the site
@@ -27,6 +30,7 @@ module Tzatziki
       #
       # Returns <Site>
       def initialize(source, destination)
+        @@singleton = self
         super
       end
     

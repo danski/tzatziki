@@ -60,13 +60,8 @@ module Tzatziki
       if parent
         self.parent = parent
         parent.children << self unless parent.children.include?(self)
-        # Traverse upwards and find root site
-        p = parent
-        while p and !p.is_a?(Tzatziki::Site) do
-          p = parent.parent
-        end
-        self.site = p
       end
+      self.site = Tzatziki::Site.singleton
       process
     end
     
@@ -86,7 +81,7 @@ module Tzatziki
       self.read_types
       self.read_specifications
       self.read_documents
-      self.read_children      
+      self.read_children
       self.children.each { |c| c.process } if recurse
     end
     
@@ -148,9 +143,12 @@ module Tzatziki
       entries = Dir.entries(self.source)
       directories = entries.select { |e| File.directory?(File.join(self.source, e)) }
       directories = directories.reject { |d| d[0..0]=~/\.|_/ or d=~/\.examples$/ or d[-1..-1]=="~" }
+      puts "Beginning child loop for #{self.source}"
       directories.each do |dir|
+        puts "--- found new API at #{File.join(self.source, dir)}"
         api = Tzatziki::API.new(File.join(self.source, dir), self.destination, self)
       end
+      puts "End child loop for #{self.source}"
     end
     
     # Comparison with another Tzatziki::Site or Tzatziki::API instance.
@@ -318,7 +316,6 @@ module Tzatziki
         entries = Dir.entries(path)
         files = entries.reject { |e| File.directory?(File.join(path, e)) }
         files = files.reject { |e| e[0..0]=~/\.|_/ or e[-1..-1]=="~" }
-        files = files.reject { |e| %w(.yaml .yml).include?(File.extname(e)) } # Exception cases
         files = files.select { |e| Tzatziki::Documentable.file_extensions.include?(File.extname(e)) } # Of what's left, take only transformables
         documentables = {}
         files.each do |f|
