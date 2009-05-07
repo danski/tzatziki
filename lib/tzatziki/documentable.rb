@@ -98,9 +98,15 @@ module Tzatziki
     # to any request fixtures that use liquid syntax, and is also included in the
     # wider hash used to render this document as an HTML file.
     def template_payload
+      { 
+        :document => to_hash,
+        :site => (Tzatziki.site.to_hash rescue {}),
+        :api => api.to_hash
+      }.merge(self.payload)
+    end
+    
+    def to_hash
       {
-        :api=>self.api.to_hash,
-        :config=>self.api.config,
         :uri=>uri
       }.merge(self.payload)
     end

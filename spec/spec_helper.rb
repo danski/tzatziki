@@ -12,9 +12,9 @@ module SpecHelper
     )
   end
   
-  def get_test_api(site=get_test_site)
+  def get_test_api(folder="the_google", site=get_test_site)
     Tzatziki::API.new(
-      File.join(File.dirname(__FILE__), *%w[example source the_google]),
+      File.join(File.dirname(__FILE__), *(%w[example source]+[folder])),
       File.join(File.dirname(__FILE__), *%w[example destination]),
       site
     )

@@ -67,6 +67,22 @@ describe Net::HTTPResponse do
     end
   
     describe "response assertions" do
+      before(:all) do
+        @github_api = get_test_api("github")
+        @yaml_testable = @github_api.documents["show_repo"]
+        @yaml_testable.data[:response][:kind].should == "yaml"
+        @yaml_uri = Net::HTTPRequest::Factory.specification_hash_to_uri(@yaml_testable.data[:request])
+        @yaml_request = Net::HTTPRequest.from_hash(@yaml_testable.data[:request])
+        @yaml_response = Net::HTTPRequest.from_hash(@yaml_testable.data[:request]) { |http, req| http.request(req) }
+        
+        @json_testable = @github_api.documents["show_user"]
+        @json_testable.data[:response][:kind].should == "json"
+        @json_uri = Net::HTTPRequest::Factory.specification_hash_to_uri(@json_testable.data[:request])
+        @json_request = Net::HTTPRequest.from_hash(@json_testable.data[:request])
+        @json_response = Net::HTTPRequest.from_hash(@json_testable.data[:request]) { |http, req| http.request(req) }
+        
+      end
+      
       describe "(successful)" do
         it "should allow 20X-style request types as ranges" do
           ok, messages = @success_response.compare!(:status=>"20X")
@@ -85,6 +101,51 @@ describe Net::HTTPResponse do
           ok, messages = @success_response.compare!(:headers=>{:"content-type"=>"text/html; charset=ISO-8859-1"})
           ok.should be_true and messages.should be_empty
         end
+        
+        it "should match against :body by string equality in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:matches=>["html", "google"]})
+          ok.should be_true
+          messages.should be_empty
+        end
+        it "should match against :body by CSS in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:css=>["html", "body div"]})
+          ok.should be_true
+          messages.should be_empty
+        end
+        it "should match against :body by XPath in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:xpath=>"//html"})
+          ok.should be_true
+          messages.should be_empty
+        end
+        it "should match against :kind by matching the content-type of the request" do
+          ok, messages = @success_response.compare!(:kind=>"html")
+          ok.should be_true
+          messages.should be_empty
+        end
+        it "should match against :body by JSON variable parsing in the response hash" do
+          ok, messages = @json_response.compare!(:body=>{
+            :values=>{
+              :user=>{
+                :login=>"danski",
+                :email=>"dan@angryamoeba.co.uk"
+              }
+            }
+          })
+          ok.should be_true
+          messages.should be_empty
+        end
+        it "should match against :body by YAML variable parsing in the response hash" do
+          ok, messages = @yaml_response.compare!(:body=>{
+            :values=>{
+              :repository=>{
+                :name=>"tzatziki",
+                :private=>false
+              }
+            }
+          })
+          ok.should be_true
+          messages.should be_empty
+        end
       end
     
       describe "(failed)" do
@@ -95,19 +156,61 @@ describe Net::HTTPResponse do
         it "should recognise words like 'Success' and 'ok' as HTTP response class types e.g. HTTPSuccess" do
           ok, messages = @success_response.compare!(:status=>"redirect")
           ok.should be_false and messages.should_not be_empty
-        end 
+        end
       
         it "should match against :headers in the response hash" do
           ok, messages = @success_response.compare!(:headers=>{:foo=>"bar"})
           ok.should be_false and messages.should_not be_empty
         end
+        
+        it "should match against :body by string equality in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:matches=>["html", "GOOD NEWS EVERYONE"]})
+          ok.should be_false
+          messages.should_not be_empty
+        end
+        it "should match against :body by CSS in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:css=>["html", "google nothere"]})
+          ok.should be_false
+          messages.should_not be_empty
+        end
+        it "should match against :body by XPath in the response hash" do
+          ok, messages = @success_response.compare!(:body=>{:xpath=>"//nothere"})
+          ok.should be_false
+          messages.should_not be_empty
+        end
+        
+        it "should match against :kind by matching the content-type of the request" do
+          ok, messages = @success_response.compare!(:kind=>"yaml")
+          ok.should be_false
+          messages.should_not be_empty
+        end
+        it "should match against :body by JSON variable parsing in the response hash" do
+          ok, messages = @json_response.compare!(:body=>{
+            :values=>{
+              :user=>{
+                :login=>"not danski",
+                :email=>"notdanski@nowhere.com"
+              }
+            }
+          })
+          ok.should be_false
+          messages.length.should == 2
+        end
+        it "should match against :body by YAML variable parsing in the response hash" do
+          ok, messages = @yaml_response.compare!(:body=>{
+            :values=>{
+              :repository=>{
+                :name=>"fooo fooooooo",
+                :private=>true
+              }
+            }
+          })
+          ok.should be_false
+          messages.length.should == 2
+        end
       end
+      
 
-      it "should match against :body by string equality in the response hash"
-      it "should match against :body by CSS in the response hash"
-      it "should match against :body by XPath in the response hash"
-      it "should match against :body by JSONPath in the response hash"
-      it "should match against :body by XPath in the response hash"
     end
   end # if ENV["offline"]
 end

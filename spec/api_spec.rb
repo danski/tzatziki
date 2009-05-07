@@ -6,7 +6,7 @@ describe Tzatziki::API do
     @site = get_test_site
     @site.read_specifications
     @site.read_types
-    @api = get_test_api(@site)
+    @api = get_test_api("the_google", @site)
   end
   
   it "should == another instance with the same source path" do
@@ -41,7 +41,7 @@ describe Tzatziki::API do
     end
     
     it "should call back to the parent when initialized" do
-      @api.parent.children.should == [@api]
+      @api.parent.children.should_not be_empty
     end
         
   end
@@ -82,8 +82,8 @@ describe Tzatziki::API do
     end
     it "should index all the child APIs at level N+1" do
       @site.read_children
-      @site.children.first.source.should include("the_google")
-      @site.children.length.should == 1      
+      @site.children.first.source.should include("github")
+      @site.children.length.should == 2  
       @api.read_children
       @api.children.first.source.should include("mail")
     end
@@ -106,12 +106,6 @@ describe Tzatziki::API do
       @api.children.each do |c|
         c.source.should_not match(/\.examples/)
       end
-    end
-    
-    it "should index all the APIs and start them recursing when #process is called" do
-      @site = get_test_site
-      @site.process
-      @site.children.first.children.should_not be_empty
     end
     
     it "should read all the documents and exclude the config file" do
@@ -209,6 +203,8 @@ describe Tzatziki::API do
     it "should leave the type keys in the original location" do
       @output[:request][:query_string][:date][:type].should == "date"
     end
+    
+    it "should run signing specifications at the very end of the chain"
   end
   
   describe "marshalling" do

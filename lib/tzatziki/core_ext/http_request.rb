@@ -28,7 +28,7 @@ class Net::HTTPRequest
         # Start with the URI
         uri = Factory.specification_hash_to_uri(spec)
         # Then create the request of correct type and combine the query
-        request = method_klass.new(uri.path + ("?#{uri.query}" if uri.query))
+        request = method_klass.new(uri.path + (uri.query ? "?#{uri.query}" : ""))
         # Set the form data if given (this will set the method to POST)
         request.set_form_data(Factory.parameter_hash_to_fixture_hash(spec[:form_data])) if spec[:form_data]
         # Headers
@@ -49,7 +49,7 @@ class Net::HTTPRequest
     # Currently only HTTP is supported, so this method is
     # (for now) pretty redundant. Just refactoring early.
     def module_for_protocol(p)
-      case (p.is_a?(Symbol) ? p : p.downcase.to_sym)
+      case (p.is_a?(Symbol) ? p : p.downcase.to_sym rescue :http)
       when :https
         Net::HTTPS
       else
@@ -59,7 +59,7 @@ class Net::HTTPRequest
     
     # Returns the corresponding request class for a given HTTP method name.
     def class_for_method(m, in_module=Net::HTTP)
-      case (m.is_a?(Symbol) ? m : m.downcase.to_sym)
+      case (m.is_a?(Symbol) ? m : m.downcase.to_sym rescue :get)
       when :post
         in_module::Post
       when :put
@@ -83,7 +83,7 @@ class Net::HTTPRequest
         uri.scheme = spec[:protocol]
         uri.host = spec[:host]
         uri.port = spec[:port] if spec[:port]
-        uri.path = spec[:uri]
+        uri.path = spec[:uri] || spec[:path]
         uri.fragment = spec[:fragment] if spec[:fragment]
         uri.query = parameter_hash_to_query_string(spec[:query_string]) if spec[:query_string]
         uri
