@@ -29,6 +29,11 @@ $(document).ready(function() {
 			footer.after('<div class="clear"></div><span class="outer-bottom"><span class="right"></span></span>');
 		});
 		
+		
+	// Interactivity - Make active all nav-tab arrays.
+		$("ul.nav-tabbed a").make_nav_tab();
+		$("ul.nav-tabbed a:first").activate_nav_tab();
+		
 	
 	// Interactivity - Hide All Tooltips whenever an input, textarea or select focuses
 		$('textarea, input, select').focus(function() {
@@ -53,6 +58,29 @@ $(document).ready(function() {
 
 // Tiny Extensions to jQuery (major extensions should get their own files)
 // ==============================================================================
+
+// Used on a link within a nav-tab controller bar to give it all the right interactivity.
+$.fn.make_nav_tab = function(options) {
+	return this.each(function() { $link = $(this);
+		$link.click(function() {
+			$(this).activate_nav_tab();
+			return false;
+		})
+	});
+}
+// Used on a tab bar nav-tab to activate it and display the content it relates to.
+$.fn.activate_nav_tab = function(options) {
+	return this.each(function() { $link = $(this); $ul = $link.closest("ul"); $li = $link.closest("li");
+		// Mark all containing LIs in the controller as inactive
+		$("li", $ul).removeClass("active");
+		// Mark this link's containing LI as active
+		$li.addClass("active");
+		// Hide all content blocks owned by this controller block
+		$(".tabbed-content[data-group="+$ul.attr("data-controls")+"]").collapse();
+		// Show the specific content block we're activating
+		$($link.attr("href")).expand();
+	});
+}
 
 // Animate the closing of all matched elements. 
 // Used to keep animation settings consistent.

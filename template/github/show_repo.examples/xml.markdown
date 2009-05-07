@@ -1,10 +1,8 @@
 ---
-title: Getting Repo information
+title: XML
 request:
-  host: github.com
   uri: /api/v2/xml/repos/show/{{config.github.user}}/{{config.github.repo}}
 response:
-  status: ok
   kind: xml
 ===
 

@@ -1,11 +1,9 @@
 ---
-title: Getting Repo information
+title: JSON
 request:
-  host: github.com
-  uri: /api/v2/xml/repos/show/{{config.github.user}}/{{config.github.repo}}
+  uri: /api/v2/json/repos/show/{{config.github.user}}/{{config.github.repo}}
 response:
-  status: ok
-  kind: xml
+  kind: json
 ===
 
 To retrieve the Information for a repo, you can make a request like this:

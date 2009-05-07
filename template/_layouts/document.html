@@ -6,43 +6,36 @@ layout: wrapper
 
 	<div class="box">
 		
-		<h1>{{ document.title }}</h1>					
-
-		<!-- START The Content -->					
+		<h1>{{ document.title }}</h1>								
 		
 		<div class="content clearfix">					
 			
 			{{ content }}
 			
 			Response body for this API call was
-			{{ document.response.body }}		
+			{{ document.response.body }}
+			
+			<div class="tabbed-box clearfix">		
+				<ul class="nav-tabbed clearfix" data-controls="examples">
+					<li><a href="#an_example" title="An example">An example<i></i></a></li>
+					<li><a href="#another_example" title="An example">Another example<i></i></a></li>
+				</ul><span class="right"></span>
+				
+				<div class="tabbed-content" data-group="examples" id="an_example">
+					<p>An example</p>
+				</div>				
+				<div class="tabbed-content" data-group="examples" id="another_example">
+					<p>Another example</p>
+				</div>				
+			</div>
 			
 		</div>
 		
 		<section class="footer"></section>
 		
 	</div>	
-
-	
-<!--[if !IE]> END The Dark Box <![endif]-->			
 	
 </section>				
-
-<!--[if !IE]> END LAYOUT ( <section #content>, the wide column ) <![endif]-->
-<!--[if !IE]> START LAYOUT ( <aside>, the narrow column ) <![endif]-->
-
-
-<!--	 //////////////////////   READ ME - About The Aside //////////
-
-The aside is meant for content about the main content.  for example: 
-
-	Did you know ?
-	Whats this form ?
-	You might also want To...
-	Related pages
-
-//////////////////////   READ ME  ////////////////////////// -->		
-
 
 <aside class="box box-light">
 	
@@ -60,25 +53,21 @@ The aside is meant for content about the main content.  for example:
 			{% endfor %}
 		</ol>
 		
-		{% if api.types.length == 0 %}
-			<h1>Data Types</h1>
-			
-			<ol>
-				{% for d in api.types %}
-					<li><a href="/{{d.uri}}">{{d.title}}</a></li>
-				{% endfor %}							
-			</ol>
-		{% endif %}
+		<h1>Data Types</h1>
 		
-		{% if api.specifications.length == 0 %}
-			<h1>Data Types</h1>
-			
-			<ol>
-				{% for d in api.specifications %}
-					<li><a href="/{{d.uri}}">{{d.title}}</a></li>
-				{% endfor %}							
-			</ol>
-		{% endif %}
+		<ol>
+			{% for d in api.types %}
+				<li><a href="/{{d.uri}}">{{d.title}}</a></li>
+			{% endfor %}							
+		</ol>
+		
+		<h1>Specifications</h1>
+		
+		<ol>
+			{% for d in api.specifications %}
+				<li><a href="/{{d.uri}}">{{d.title}}</a></li>
+			{% endfor %}							
+		</ol>
 		
 		<div class="help">
 			<span class="help-top"><span class="help-R"></span></span>
@@ -91,4 +80,3 @@ The aside is meant for content about the main content.  for example:
 	<section class="footer"> </section>				
 				
 </aside>
-	<!--[if !IE]> END ( <aside>, the narrow column ) <![endif]-->

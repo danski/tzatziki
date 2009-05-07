@@ -5,12 +5,21 @@ module Tzatziki
     include Parsable
     include Testable
 
+    attr_accessor :examples
+
     def initialize(*args)
       super
+      @examples = {}
       parse!(self.raw, :layout=>"document")
       self.data = self.api.inject_specifications(self.data)
       self.data = self.api.inject_types(self.data)
       self.data = self.api.inject_configuration(self.data)
+    end
+    
+    # Sets the examples as a hash such as would be outputted by the
+    # read_documentables_from_directory method on Tz::API.
+    def examples=(examples_hash)
+      @examples = examples_hash
     end
     
     def test!(*args)

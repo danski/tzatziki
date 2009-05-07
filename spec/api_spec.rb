@@ -88,6 +88,11 @@ describe Tzatziki::API do
       @api.children.first.source.should include("mail")
     end
     
+    it "should index all the examples and register them with the appropriate documents" do
+      @api.documents["search"].examples.should_not be_empty
+      @api.documents["index"].examples.should be_empty
+    end
+    
     it "should ignore folders ending with a tilde" do
       # Assert that a folder with .examples does exist
       entries = Dir.entries(@api.source)

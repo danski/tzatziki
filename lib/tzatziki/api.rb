@@ -81,6 +81,7 @@ module Tzatziki
       self.read_types
       self.read_specifications
       self.read_documents
+      self.read_examples
       self.conditionally_generate_index
       self.read_children
       self.children.each { |c| c.process } if recurse
@@ -127,6 +128,13 @@ module Tzatziki
     # Read all the flat text files in self.source and create a new Document instance for each.
     def read_documents
       self.documents = read_documentables_from_directory(self.source, Tzatziki::Document)
+    end
+
+    # Reads the examples for each document and registers them accordingly
+    def read_examples
+      self.documents.each do |name, doc|
+        doc.examples = read_documentables_from_directory("#{name}.examples", Tzatziki::Example)
+      end
     end
     
     # Generates an index page for this API *only* if the API already has documents and
@@ -195,7 +203,7 @@ EOS
         
         :uri=>uri,
         :title=>(Mash.new(self.documents["index"].to_hash).title rescue "Untitled"),        
-        :index=>self.documents["index"],
+        :index=>(self.documents["index"].to_hash rescue {}),
         
         :parent=>(parent ? parent.to_hash(false) : {}),
         

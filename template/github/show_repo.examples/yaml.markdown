@@ -1,11 +1,9 @@
 ---
-title: Getting Repo information
+title: YAML
 request:
-  host: github.com
-  uri: /api/v2/xml/repos/show/{{config.github.user}}/{{config.github.repo}}
+  uri: /api/v2/yaml/repos/show/{{config.github.user}}/{{config.github.repo}}
 response:
-  status: ok
-  kind: xml
+  kind: yaml
 ===
 
 To retrieve the Information for a repo, you can make a request like this:
