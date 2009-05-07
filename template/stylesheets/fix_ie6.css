@@ -1,0 +1,174 @@
+/************************************************
+
+FILE:		  	ie6.css
+DESCRIPTION:  	File Fixes IE6 Bugs
+
+************************************************/
+
+
+header,footer,nav,section,document,aside { display: block; }
+
+/* @group 1. Generic Fixes */
+
+	body			{float:left; height:100%;} /* For the Overlay */
+	.clearfix 		{zoom: 1; display: block;}
+	
+	/* @group Generic List Fixes */	
+		dl			{float:left; display:block;}
+		dt			{position:relative; float:left; display:block; clear: both; }
+		dd			{position:relative; float:none; display:block; clear: right; }
+	/* @end */
+	
+/* @end Group 1. */
+
+/* @group 2.  Swap PNG's for GIFS */
+
+	/* Sprite 03 - 24 bit PNG [INTERFACE] */
+		.spr-03,
+		.btn span,
+		.btn i,
+		.ul-select li .t,
+		.ul-select li .tr,
+		.ul-select li .select-content,
+		.ul-select li ul, 
+		.ul-select li .b,
+		.ul-select li .b .br,
+		.msg-field-msg .t,
+		.msg-field-msg .b,
+		.msg-field-content				{background-image: url(../images/sprites/ie/spr_03_interface_24.png);}
+		
+	/* Messages */
+		div.message li		{background-image: url(../images/common/bullets/ie/bullets-messages.png) ;}
+	
+	
+	
+	
+/* @group 3. Fix Stuff */
+
+	/* Ie6 likes treats height as min-height, therefore add overflow:hidden to cure this.  This particuarly affects flexible boxes with curved corners */
+		.outer-top,
+		.outer-bottom,
+		.inner-top,
+		.inner-bottom,
+		.inner-top .right,
+		.outer-top .right,
+		.inner-bottom .right,
+		.outer-bottom .right,
+		.frm-flex div.top,
+		.frm-flex div.tr,
+		.frm-flex div.bottom,
+		.frm-flex div.br,
+		.help .help-top,
+		.help .help-top .help-R,
+		.help .help-bottom .help-R,
+		.help .help-bottom,
+		.box-light .outer-bottom .right		{overflow:hidden;}
+		
+		
+	/* Remove Borders from Anchors that don't need it */
+		a.item-edit,
+		a.item-delete,
+		a.item-up,
+		a.item-down,
+		a.item-edit:link,
+		a.item-delete:link,
+		a.item-up:link,
+		a.item-down:link,
+		a.item-edit:visited,
+		a.item-delete:visited,
+		a.item-up:visited,
+		a.item-down:visited,
+		a.item-edit:hover,
+		a.item-delete:hover,
+		a.item-up:hover,
+		a.item-down:hover,
+		a.tool-tip-icon,
+		a.tool-tip-icon:link,
+		a.tool-tip-icon:visited,
+		a.tool-tip-icon:hover,
+		a.tool-tip-icon:focus,
+		a.tool-tip-icon:active				{border:none;}
+
+
+	/* Boxes */
+		.content							{height:20px; }
+		.box-light .outer-bottom .right		{background-position: right -144px; height:10px; position:relative;}
+		
+	/* Dark Button Bars */
+		.btn-dark-bar span,
+		.btn-dark-bar i					{background-image: url(../images/sprites/spr_01_interface_8.png);}
+		
+	/* .btn-selects (Fix positioning issues + remove the curved corners)*/
+		.ul-select 						{float:left;}
+		.ul-select li					{float:left;}
+		.ul-select li .wrapper			{display:inline; position:absolute; top:20px; left:-2px; clear:left; background:none;}
+		.ul-select li .children			{display:inline; clear:left; position:static;}
+		
+		.ul-select li .select-content	{background:none;}
+		.ul-select li ul				{background:#E8E8E8; border:1px solid #B9B9B9; position:relative; left:5px;}
+		.ul-select li ul li				{position:static;}
+		
+		.ul-select li .t,
+		.ul-select li .t .tr,
+		.ul-select li .b,
+		.ul-select li .b .br			{display:none;}
+		
+		.ul-select li ul 				{float:left;}
+		.ul-select li li 				{display:inline; height:22px; }
+		
+	/* Expandable Fieldsets */
+		.frm-flex fieldset.open legend a,
+		.frm-flex fieldset.open legend a:link,
+		.frm-flex fieldset.open legend a:visited,
+		.frm-flex fieldset.open legend a:hover,
+		.frm-flex fieldset.open legend a:focus,
+		.frm-flex fieldset.open legend a:active		{background-position:0 -593px;}
+		
+		.frm-flex fieldset.closed legend a,
+		.frm-flex fieldset.closed legend a:link,
+		.frm-flex fieldset.closed legend a:visited,
+		.frm-flex fieldset.closed legend a:hover,
+		.frm-flex fieldset.closed legend a:focus,
+		.frm-flex fieldset.closed legend a:active	{background-position:-0 -695px;}
+		
+	/* Content Actions - Alternative form wide actions at the bottom on the content area */
+		dl.content-actions dt		{position:absolute; right:100px;}
+		dl.content-actions dd		{float:right; width:auto;}
+		
+	/* Tabbed Navigation */
+		ul.nav-tabbed 				{height:27px; margin:0; padding:0;}
+		ul.nav-tabbed li			{float:left; list-style-type:none; margin:0 1px 0 0; padding:0;}
+		ul.nav-tabbed li a			{float:left; padding:0 7px 0 10px; margin:0 4px 0 0; height:26px; line-height:26px; position:relative; background-position:-600px -219px;}
+		ul.nav-tabbed li a i		{float:left; width:4px; height:26px; position:absolute; right:-4px; top:0; background-position:-1196px -219px;}
+		
+	/* Message Box */
+		.tool-tip-msg				{bottom:100%;}
+	
+	/* Display by status - Order a list of stuff by its status (Top of list page) */
+		.frm-display-by-status		{width:200px;}
+
+	/* Search forms - Forms that are just for searching */		
+		.frm-srch-content				{width:177px}
+		
+	/* A list of files */
+		.files-list ul li				{float:left;}
+		.files-list ul li a.movie-clip	{width:126px; }
+		.files-list ul li a.remove		{float:right; position:static; margin-top:5px;}
+		
+	/* Channel (A little button with a channel name in it and a remove button on the right) */
+		.channel .channel-content			{float:left; }
+		.channel .channel-content .text		{float:left;}
+		.channel .channel-content .remove	{position:relative; float:right; top:3px; right:0; }
+		
+	/* Upload progress form */
+		.aside-L #content .ul.upload-progress	{width:580px;}
+		.upload-progress .progress-wrapper		{clear:none;}
+
+	
+	
+
+
+
+
+	
+	

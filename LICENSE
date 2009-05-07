@@ -1,4 +1,8 @@
-Copyright (c) 2008 danski
+PART 1
+======
+The following applies to all Ruby code within the Tzatziki software:
+--------------------------------------------------------------------
+Copyright (c) 2008 Dan Glegg
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -18,3 +22,16 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+PART 2
+======
+The following applies to the default HTML and CSS assets provided 
+with the Tzatziki software
+------------------------------------------------------------------
+Copyright (c) 2008 Moko Digital
+
+The HTML and CSS assets used in Tzatziki's default document output
+are made available under a Creative Commons Attribution-Share Alike 
+3.0 United States License.
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png" /></a><br /><span xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dc:title" rel="dc:type">Tzatziki Default template set</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://aelius.net" property="cc:attributionName" rel="cc:attributionURL">Moko Digital</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">Creative Commons Attribution-Share Alike 3.0 United States License</a>.<br />Based on a work at <a xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://mokodigital.co.uk" rel="dc:source">mokodigital.co.uk</a>.
