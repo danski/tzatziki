@@ -25,11 +25,9 @@ class Hash
       if hash[key].is_a? Hash and self[key].is_a? Hash
         target[key] = target[key].deep_merge(hash[key])
         next
-      end
-      
+      end      
       target[key] = hash[key]
-    end
-    
+    end    
     target
   end
 end
