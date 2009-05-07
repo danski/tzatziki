@@ -134,10 +134,10 @@ describe Tzatziki::API do
       # the github API does not contain an index file
       github = get_test_api("github", @site)
       File.file?(File.join(github.source, "index.markdown")).should be_false
-      github.documents["index"].should be_kind_of Tzatziki::Document
+      github.documents["index"].should be_kind_of(Tzatziki::Document)
     end
     it "should not create an index page if one exists" do
-      @api.documents["index"].should be_kind_of Tzatziki::Document
+      @api.documents["index"].should be_kind_of(Tzatziki::Document)
       Tzatziki::Document.new(File.join(@api.source, @api.documents["index"].file_basename), @api).raw.should == @api.documents["index"].raw
     end
     it "should not create an index page if there are no documentables in the API folder" do
@@ -150,8 +150,14 @@ describe Tzatziki::API do
     end
   end
   
-  it "should get it's title from the index file"
-  it "should infer title from the folder name if no index file found"
+  it "should get it's title from the index file" do
+    # the google API has an index file
+    @api.to_hash[:title].should == "The Google Search API"
+  end
+  it "should infer title from the folder name if no index file found" do
+    api = get_test_api("github", @site)
+    api.to_hash[:title].should == "Github"
+  end
   
   describe "configuration merging" do
     before(:each) do

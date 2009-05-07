@@ -2,13 +2,8 @@ module Tzatziki
   
   class Example < Document
 
-    def initialize(*args)
-      super
-      parse!(self.raw)
-      self.data = self.api.inject_specifications(self.data)
-      self.data = self.api.inject_types(self.data)
-      self.data = self.api.inject_configuration(self.data)
-    end
+    # Examples belong to a document
+    attr_accessor :document
     
     def write!
       "Examples are not written to the disk."

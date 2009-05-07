@@ -26,6 +26,12 @@ module Tzatziki
       super(self.data[:request], self.data[:response])
     end
     
+    def payload
+      super.merge({
+        :examples=>examples.collect {|name, doc| doc.to_hash }
+      })
+    end
+    
     # Determines if tests should be run against this particular document
     # based on the presence of a request fixture in the doc.
     def testable?
