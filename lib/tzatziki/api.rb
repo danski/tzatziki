@@ -133,7 +133,16 @@ module Tzatziki
     # does not have an index page specified by the author.
     def conditionally_generate_index
       unless self.documents.empty?
-        self.documents["index"] ||= Tzatziki::Document.new(File.join(self.source, "index.markdown"), self, "index") 
+        default_index = <<-EOS
+---
+title: #{File.split(self.source).last.capitalize}
+layout: document
+===
+
+I am the index
+EOS
+        
+        self.documents["index"] ||= Tzatziki::Document.new(default_index, self, "index.markdown") 
       end
     end
     
@@ -183,12 +192,14 @@ module Tzatziki
       {
         :config=>config,
         :source=>self.source,
+        
         :uri=>uri,
-        :title=>File.split(self.source).last.capitalize,
+        :title=>(Mash.new(self.documents["index"].to_hash).title rescue "Untitled"),        
+        :index=>self.documents["index"],
         
         :parent=>(parent ? parent.to_hash(false) : {}),
         :children=>(include_children ? children.select {|c| c.documents.any?}.collect { |c| c.to_hash } : nil),
-        :documents=>(include_children ? documents.collect { |name, d| d.to_hash } : nil),
+        :documents=>(include_children ? documents.reject {|name, d| name == "index"}.collect { |name, d| d.to_hash } : nil),
         :specifications=>(include_children ? specifications.collect { |name, d| d.to_hash } : nil),
         :types=>(include_children ? types.collect { |name, d| d.to_hash } : nil)
       }
@@ -281,7 +292,7 @@ module Tzatziki
       when :specdoc
         message_count = 1
         Taz.out.write "#{"--"*stack} #{self.is_a?(Tzatziki::Site)? "Document bundle" : "API"} located in #{self.source}\n"
-        self.documents.each do |name, document|          
+        self.documents.each do |name, document|       
           if document.testable?
             result, messages = document.test!({},{},document.template_payload)
             if result
@@ -358,6 +369,7 @@ module Tzatziki
     end
     
     def write_documentables!
+      self.documents["index"].write! rescue false # FIXME The imaginary index file is not included in the local documentables array
       self.local_documentables.each {|d| d.write! }
     end
     

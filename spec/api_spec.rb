@@ -189,9 +189,11 @@ describe Tzatziki::API do
     it "should deep merge the specifications, giving priority to the local document scope" do
       @output[:request][:query_string][:q].should == {
         :type=>"search_query",
+        :title=>"Search query format",
         :description=>"An entity-escaped string that you wish to search for on The Google.",
         :example=>"now you're thinking with portals",
-        :layout=>"type"
+        :layout=>"type",
+        :format=>"/.*/"
       }
     end
     it "should deep merge the types, giving priority to the local document scope" do

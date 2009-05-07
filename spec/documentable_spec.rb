@@ -87,7 +87,7 @@ i am the walrus
       @documentable.raw = "{{title}}"
       render_output = @documentable.render
       render_output.should be_kind_of(String)
-      render_output.should == "The Google Search API"
+      render_output.should include("The Google Search API")
     end
   
     it "should render the template with each layout in turn" do

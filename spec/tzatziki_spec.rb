@@ -13,7 +13,7 @@ describe Tzatziki do
 
     it "should test and generate the documents" do
       output = `#{@taz} #{@source_path} #{@destination_path}`
-      Dir.entries(@destination_path).length.should == 7
+      Dir.entries(@destination_path).length.should == 8
     end
     
     it "should copy the default templates when given the --generate option"

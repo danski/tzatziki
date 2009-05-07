@@ -41,7 +41,7 @@ module Tzatziki
     # +raw_source+ is the string to render, while 
     # +_payload+ is a Mash of options to pass to the templates.
     def render(_payload={})
-      s,p = self.raw, template_payload.merge(_payload)
+      s,p = self.transform, template_payload.merge(_payload)
       s = Liquid::Template.parse(s).render(Mash.new(p))
       if layout_name = p[:layout]
         p.delete(:layout)
@@ -83,9 +83,6 @@ module Tzatziki
     end
     
     def write!(content=self.render)
-      #if write_path.match("/spec")
-      #  puts "Bad path on #{self.inspect}, #{write_path}"
-      #end
       FileUtils.mkdir_p(File.dirname(write_path))
       out = File.open(write_path, "w+")
       out.rewind

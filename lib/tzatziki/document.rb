@@ -23,14 +23,6 @@ module Tzatziki
       true if self.data[:request]
     end
     
-    def process!
-      # set the request factory options
-      # test this document
-      # test the examples
-      # write the file
-      write!
-    end
-    
     def inspect
       "<Document: #{@path}>"
     end

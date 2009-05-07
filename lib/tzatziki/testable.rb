@@ -23,10 +23,10 @@ module Tzatziki
     # Each key in the response hash will be considered to be an assertion.
     def test!(request={}, response={}, variable_payload={})
       # Two-tier defaults system in effect, yo
-      request_spec = request_options.deep_merge(request)
-      response_spec = response_options.deep_merge(response)
+      request_spec = request_options.deep_symbolize.deep_merge(request.deep_symbolize)
+      response_spec = response_options.deep_symbolize.deep_merge(response.deep_symbolize)
       failures = []
-      
+    
       # fire it and gather the response (::from_hash is defined in core_ext/http_request)
       self.response = Net::HTTPRequest.from_hash(request_spec) do |http, req|
         http.request(req)

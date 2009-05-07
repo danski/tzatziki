@@ -70,13 +70,13 @@ describe Net::HTTPResponse do
       before(:all) do
         @github_api = get_test_api("github")
         @yaml_testable = @github_api.documents["show_repo"]
-        @yaml_testable.data[:response][:kind].should == "yaml"
+        @yaml_testable.payload[:response][:kind].should == "yaml"
         @yaml_uri = Net::HTTPRequest::Factory.specification_hash_to_uri(@yaml_testable.data[:request])
         @yaml_request = Net::HTTPRequest.from_hash(@yaml_testable.data[:request])
         @yaml_response = Net::HTTPRequest.from_hash(@yaml_testable.data[:request]) { |http, req| http.request(req) }
         
         @json_testable = @github_api.documents["show_user"]
-        @json_testable.data[:response][:kind].should == "json"
+        @json_testable.payload[:response][:kind].should == "json"
         @json_uri = Net::HTTPRequest::Factory.specification_hash_to_uri(@json_testable.data[:request])
         @json_request = Net::HTTPRequest.from_hash(@json_testable.data[:request])
         @json_response = Net::HTTPRequest.from_hash(@json_testable.data[:request]) { |http, req| http.request(req) }

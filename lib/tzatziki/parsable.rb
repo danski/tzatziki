@@ -10,7 +10,7 @@ module Tzatziki
     
     # Overrides and extends documentable
     def payload
-      self.data
+      self.data.deep_symbolize
     end
     
     def extract_yaml(parsable_string, replacement_pattern=nil, defaults={})

@@ -36,10 +36,14 @@ class Net::HTTPRequest
           spec[:headers].each { |key, value| request[key.to_s] = value }
         end
         
-        if block_given?        
+        if block_given?
+          begin
           response =  Net::HTTP.start(uri.host, uri.port) do |http|
                         block.call(http, request)
-                      end
+                      end 
+          rescue Errno::ECONNREFUSED => e
+            raise "Could not connect to #{uri.inspect}"
+          end
           return response
         end
         return request
@@ -79,6 +83,7 @@ class Net::HTTPRequest
     class << self
       
       def specification_hash_to_uri(spec)
+        spec = spec.deep_symbolize
         uri = URI.parse("")
         uri.scheme = spec[:protocol]
         uri.host = spec[:host]
