@@ -90,6 +90,9 @@ describe Tzatziki::API do
     
     it "should index all the examples and register them with the appropriate documents" do
       @api.documents["search"].examples.should_not be_empty
+      @api.documents["search"].examples.each do |name, example|
+        example.document.should == @api.documents["search"]
+      end
       @api.documents["index"].examples.should be_empty
     end
     

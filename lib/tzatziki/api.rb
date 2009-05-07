@@ -134,6 +134,9 @@ module Tzatziki
     def read_examples
       self.documents.each do |name, doc|
         doc.examples = read_documentables_from_directory("#{name}.examples", Tzatziki::Example)
+        doc.examples.each do |name, example|
+          example.document = doc
+        end
       end
     end
     
