@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />	
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<link href="../stylesheets/reset.css" rel="stylesheet" type="text/css" />
+	<link href="../stylesheets/layout.css" rel="stylesheet" type="text/css" />
+	<link href="../stylesheets/content.css" rel="stylesheet" type="text/css" />
+	<link href="../stylesheets/navigation.css" rel="stylesheet" type="text/css" />
+	<link href="../stylesheets/forms.css" rel="stylesheet" type="text/css" />
+
+	<!--[if lte IE 7]><link href="../stylesheets/fix_ie7.css" rel="stylesheet" type="text/css"/><![endif]-->
+	<!--[if lt IE 7]><link href="../stylesheets/fix_ie6.css" rel="stylesheet" type="text/css"/><![endif]-->	
+	<link href="../stylesheets/fix_print.css" rel="stylesheet" type="text/css" media="print" />
+	
+	<script src='../javascripts/jquery.js' type="text/javascript"></script>
+	<script src='../javascripts/jquery.easing.js' type="text/javascript"></script>
+	<script src='../javascripts/application.js' type="text/javascript"></script>
+
+	<title>{{document.title}} - Tzatziki</title>	
+	
+	<!--[if IE]><script src="../javascripts/html5.js" type="text/javascript"></script><![endif]-->
+	
+</head>
+
+<body>
+	<header>
+		<span class="container">
+			<a href="/" title="Return to the Home page" id="logo">Tzatzki</a>		
+			<!--
+			<nav id="head">
+				{% for a in site.children %}
+					<a href="/{{a.uri}}" class="btn btn-dark-bar {% if forloop.first %}dark-bar-L{% else %}{% if forloop.last %}dark-bar-R{% else %}dark-bar-M{% endif %}{% endif %}">{{a.title}}</a>
+				{% endfor %}
+			</nav>
+			-->
+		</span>
+	</header>
+	
+	<!--[if !IE]> End <header> <![endif]-->
+	
+	<nav id="main">
+		{% for a in site.children %}
+			<a href="/{{a.uri}}" {%if a.source == api.source %}class="active"{% endif %}>{{a.title}}</a>
+		{% endfor %}
+	</nav>
+	
+	<!--[if !IE]> End <nav #main> <![endif]-->
+	
+	<nav id="toolbar">	
+	
+		<ul class="ul-select clearfix">
+			{% for a in api.children %}
+				<li><a href="/{{a.uri}}" class="btn btn-default">{{a.title}}</a></li>
+			{% endfor %}
+		</ul>			
+		
+	</nav>
+	
+	<!--[if !IE]> End <nav #toolbar> <![endif]-->
+	
+<!--[if !IE]> END LAYOUT ( The Header, includes: <header>, <nav #main>, <nav #toolbar> )<![endif]-->	
+<!--[if !IE]> START LAYOUT ( <section #template>, Where all the content goes ) <![endif]-->
+
+	<!--	 //////////////////////   READ ME - About The Template Section  //////////
+	
+		<Section#template> is the wrapper for the content area on every page. 
+		It has 3 Main Types ( As of 26/04/09 ) which are specified using the class applied to the section:
+		
+			.aside-L	The Aside is on the left side of the page
+			.aside-R	The Aside is on the right side of the page
+			.aside-N	There is no aside, instead <section#template> takes up the full width of <section#template>
+
+		Additionaly it will need the .clearfix class in order to clear correctly.
+	
+		//////////////////////   READ ME  ////////////////////////// -->	
+	
+	<section id="template" class="aside-R clearfix">	
+		<div class="container clearfix">
+		
+			
+			{{ content }}	
+			
+			
+		</div>
+		
+	<!--[if !IE]> END The Container (Sets the width of the page) <![endif]-->
+	</section>
+
+<!--[if !IE]> END LAYOUT ( <section #template>, All content ends by here ) <![endif]-->
+<!--[if !IE]> START LAYOUT ( <footer>, the footer ) <![endif]-->	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<footer>
+	<!--[if !IE]> END The Copyright Info <![endif]-->
+		
+		<section id="info">
+			<h1>Documentation by Tzatziki</h1>
+			<p>A tool for documenting and testing your app's public API.</p>
+			
+			<ul>
+				<li><a href="http://github.com/danski/tzatziki">Tzatziki on Github</a></li>
+				<li><a href="http://angryamoeba.co.uk">Developer's Blog</a></li>
+			</ul>		
+		</section>
+		
+	<!--[if !IE]> END The Information Centre <![endif]-->
+		
+		<section id="develop">
+			<h1>Template by Moko Digital</h1>
+			<p><span xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dc:title" rel="dc:type">Tzatziki Default template set</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://aelius.net" property="cc:attributionName" rel="cc:attributionURL">Moko Digital</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">Creative Commons Attribution-Share Alike 3.0 United States License</a>.<br />Based on a work at <a xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://mokodigital.co.uk" rel="dc:source">mokodigital.co.uk</a>.</p>
+			
+			<ul>
+				<li><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png" /></a></li>
+				<li><a href="http://mokodigital.com">Moko Digital</a></li>
+			</ul>		
+		</section>
+		
+	<!--[if !IE]> END The Developer Centre <![endif]-->
+	
+		<!--><section id="help">
+			<h1>Help Centre</h1>
+			<form method="get" action="" class="frm-srch">
+				<fieldset>
+					<legend class="hide">Search The Help Centre</legend>
+					<label class="hide" for="srch-footer">Search:</label>
+					<input type="text" id="srch-footer" class="textfield textfield-dark" value="Search Help Centre"/>
+					<button type="submit" title="Search the help Centre">Submit</button>
+				</fieldset>			
+			</form>
+		</section>-->
+	
+	<!--[if !IE]> END The Help Centre <![endif]-->
+	
+	</footer>
+	
+<!--[if !IE]> END The page <![endif]-->
+
+
+
+
+
+
+</body>
+</html>

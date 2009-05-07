@@ -1,304 +1,94 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />	
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	
-	<link href="../stylesheets/reset.css" rel="stylesheet" type="text/css" />
-	<link href="../stylesheets/layout.css" rel="stylesheet" type="text/css" />
-	<link href="../stylesheets/content.css" rel="stylesheet" type="text/css" />
-	<link href="../stylesheets/navigation.css" rel="stylesheet" type="text/css" />
-	<link href="../stylesheets/forms.css" rel="stylesheet" type="text/css" />
+---
+layout: wrapper
+===
 
-	<!--[if lte IE 7]><link href="../stylesheets/fix_ie7.css" rel="stylesheet" type="text/css"/><![endif]-->
-	<!--[if lt IE 7]><link href="../stylesheets/fix_ie6.css" rel="stylesheet" type="text/css"/><![endif]-->	
-	<link href="../stylesheets/fix_print.css" rel="stylesheet" type="text/css" media="print" />
-	
-	<script src='../javascripts/jquery.js' type="text/javascript"></script>
-	<script src='../javascripts/jquery.easing.js' type="text/javascript"></script>
-	<script src='../javascripts/application.js' type="text/javascript"></script>
+<section id="content">
 
-	<title>{{document.title}} - Tzatziki</title>	
-	
-	<!--[if IE]><script src="../javascripts/html5.js" type="text/javascript"></script><![endif]-->
-	
-</head>
-
-<body>
-	<header>
-		<span class="container">
-			<a href="/" title="Return to the Home page" id="logo">Tzatzki</a>		
-			<!--
-			<nav id="head">
-				{% for a in site.children %}
-					<a href="/{{a.uri}}" class="btn btn-dark-bar {% if forloop.first %}dark-bar-L{% else %}{% if forloop.last %}dark-bar-R{% else %}dark-bar-M{% endif %}{% endif %}">{{a.title}}</a>
-				{% endfor %}
-			</nav>
-			-->
-		</span>
-	</header>
-	
-	<!--[if !IE]> End <header> <![endif]-->
-	
-	<nav id="main">
-		{% for a in site.children %}
-			<a href="/{{a.uri}}" {%if a.source == api.source %}class="active"{% endif %}>{{a.title}}</a>
-		{% endfor %}
-	</nav>
-	
-	<!--[if !IE]> End <nav #main> <![endif]-->
-	
-	<nav id="toolbar">	
-	
-		<ul class="ul-select clearfix">
-			{% for d in api.documents %}
-			
-			{% endfor %}
-			<li><a href="#" title="" class="btn btn-default">Standard Button (Default)</a></li>
-			<li><a href="#" title="" class="btn btn-default default-selected">Standard Button (Selected)</a></li>
-			<li><a href="#" title="" class="btn btn-default default-disabled">Standard Button (Disabled)</a></li>
-		</ul>			
+	<div class="box">
 		
-	</nav>
-	
-	<!--[if !IE]> End <nav #toolbar> <![endif]-->
-	
-<!--[if !IE]> END LAYOUT ( The Header, includes: <header>, <nav #main>, <nav #toolbar> )<![endif]-->	
-<!--[if !IE]> START LAYOUT ( <section #template>, Where all the content goes ) <![endif]-->
+		<h1>{{ document.title }}</h1>					
 
-	<!--	 //////////////////////   READ ME - About The Template Section  //////////
-	
-		<Section#template> is the wrapper for the content area on every page. 
-		It has 3 Main Types ( As of 26/04/09 ) which are specified using the class applied to the section:
+		<!-- START The Content -->					
 		
-			.aside-L	The Aside is on the left side of the page
-			.aside-R	The Aside is on the right side of the page
-			.aside-N	There is no aside, instead <section#template> takes up the full width of <section#template>
+		<div class="content clearfix">					
+			
+			{{ content }}
+			
+			Response body for this API call was
+			{{ document.response.body }}		
+			
+		</div>
+		
+		<section class="footer"></section>
+		
+	</div>	
 
-		Additionaly it will need the .clearfix class in order to clear correctly.
 	
-		//////////////////////   READ ME  ////////////////////////// -->	
+<!--[if !IE]> END The Dark Box <![endif]-->			
 	
-	<section id="template" class="aside-R clearfix">	
-		<div class="container clearfix">
-		
-			<section id="content">
-			
-	<!--	 //////////////////////   READ ME - About Boxes  //////////
-		
-		<div.box> can have two styles:
-		
-			.box			A dark bordered box
-			.box .box-light	A light bordered box
-			
-		Both styles are flexible, that is they will expand and contract to fit the area they are put in. 
-		To facilitate this each box has the following structure:
-		
-			< .box >
-				< .outer-top >	.< right >
-				Title Content
-				< .inner-top >	< right >
-				< .content >
-				< .inner-bottom >	.< right >
-				< .footer >		footer content
-				< .outer-bottom>	< right >			.
-				
-			As of 6th May 09, the structure is added by jQuery at document-ready time. You may
-			omit the outer-top, inner-top, inner-bottom and .outer-bottom elements, and you may
-			optionally omit the .footer element as a blank one will be inserted if none is present.
-			
-		//////////////////////   READ ME  ////////////////////////// -->	
-			
-			
-			
-				<div class="box">
-					
-					<h1>{{ document.title }}</h1>					
-
-					<!-- START The Content -->					
-					
-					<div class="content clearfix">					
-						
-						{{ content }}					
-						
-					</div>
-					
-					
-					
-					
-					<section class="footer">
-					
-						<dl class="content-actions">
-							<dt>Export:</dt>
-							<dd>
-								<ul>
-									<li>
-										<form id="frm-xml" method="" action="">
-											<fieldset>
-												<button type="submit" title="Export as an XML File" class="btn btn-dark-bar dark-bar-L" id="frm-xml-Submit">
-													.xml
-												</button>
-											</fieldset>
-										</form>
-									</li>
-									<li>
-										<form id="frm-vCard" method="" action="">
-											<fieldset>
-												<button type="submit" title="Export as a vCard" class="btn btn-dark-bar dark-bar-R" id="frm-vCard-Submit">
-													vCard
-												</button>
-											</fieldset>
-										</form>
-									</li>
-								</ul>							
-							</dd>
-						</dl>
-					
-					</section>
-					
-				</div>	
-
-				
-			<!--[if !IE]> END The Dark Box <![endif]-->			
-				
-			</section>				
+</section>				
 
 <!--[if !IE]> END LAYOUT ( <section #content>, the wide column ) <![endif]-->
 <!--[if !IE]> START LAYOUT ( <aside>, the narrow column ) <![endif]-->
 
 
-			<!--	 //////////////////////   READ ME - About The Aside //////////
-			
-			The aside is meant for content about the main content.  for example: 
-			
-				Did you know ?
-				Whats this form ?
-				You might also want To...
-				Related pages
+<!--	 //////////////////////   READ ME - About The Aside //////////
 
-			//////////////////////   READ ME  ////////////////////////// -->		
+The aside is meant for content about the main content.  for example: 
 
+	Did you know ?
+	Whats this form ?
+	You might also want To...
+	Related pages
+
+//////////////////////   READ ME  ////////////////////////// -->		
+
+
+<aside class="box box-light">
+	
+	
+	<h1><a href="/{{api.index.uri}}">{{ api.title }}</a></h1>	
+	
+	
+	<div class="content">
+	
+		<h1>Reference {{num_types}}</h1>
+	
+		<ol>
+			{% for d in api.documents %}
+				<li><a href="/{{d.uri}}">{{d.title}}</a></li>
+			{% endfor %}
+		</ol>
+		
+		{% if api.types.length == 0 %}
+			<h1>Data Types</h1>
 			
-			<aside class="box box-light">
-				
-				
-				<h1>{{ api.title }}</h1>	
-				
-				
-				<div class="content">
-				
-					{% if api.parent.source != site.source %}
-						<h2><a href="/{{api.parent.uri}}">Back to {{api.parent.title}}</a><h2>
-					{% endif %}
-				
-					<ol>
-						{% for d in api.documents %}
-							<li><a href="/{{d.uri}}">{{d.title}}</a></li>
-						{% endfor %}
-					</ol>											
-					
-					<div class="help">
-						<span class="help-top"><span class="help-R"></span></span>
-							<div class="help-content"><strong>Did you Know?</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>					
-						<span class="help-bottom"><span class="help-R"></span></span>					
-					</div>					
-					
-				</div>
-				
-				<section class="footer"> </section>				
-							
-			</aside>
+			<ol>
+				{% for d in api.types %}
+					<li><a href="/{{d.uri}}">{{d.title}}</a></li>
+				{% endfor %}							
+			</ol>
+		{% endif %}
+		
+		{% if api.specifications.length == 0 %}
+			<h1>Data Types</h1>
 			
-			
-			
-			
-			
-			
+			<ol>
+				{% for d in api.specifications %}
+					<li><a href="/{{d.uri}}">{{d.title}}</a></li>
+				{% endfor %}							
+			</ol>
+		{% endif %}
+		
+		<div class="help">
+			<span class="help-top"><span class="help-R"></span></span>
+				<div class="help-content"><strong>Did you Know?</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>					
+			<span class="help-bottom"><span class="help-R"></span></span>					
+		</div>					
+		
+	</div>
+	
+	<section class="footer"> </section>				
+				
+</aside>
 	<!--[if !IE]> END ( <aside>, the narrow column ) <![endif]-->
-			
-		</div>
-		
-	<!--[if !IE]> END The Container (Sets the width of the page) <![endif]-->
-	</section>
-
-<!--[if !IE]> END LAYOUT ( <section #template>, All content ends by here ) <![endif]-->
-<!--[if !IE]> START LAYOUT ( <footer>, the footer ) <![endif]-->	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<footer>
-		<div id="copyright"><span class="container"><small>&copy; Videojuicer 2009, All rights Reserved</small></span></div>
-	<!--[if !IE]> END The Copyright Info <![endif]-->
-		
-		<section id="info">
-			<h1>Information Centre</h1>
-			<p>Find Out what's Happeneing at Videojuicer...</p>
-			
-			<ul>
-				<li><a href="#" title="">Product updates &amp; latest release information</a></li>
-				<li><a href="#" title="">New features and walk-throughs</a></li>
-				<li><a href="#" title="">Future platform roadmap</a></li>
-				<li><a href="#" title="">Videojuicer developer blog</a></li>
-				<li><a href="#" title="">Careers at Videojuicer</a></li>
-				<li><a href="#" title="">Frequently Asked Questions</a></li>
-			</ul>		
-		</section>
-		
-	<!--[if !IE]> END The Information Centre <![endif]-->
-		
-		<section id="develop">
-			<h1>Developer Centre</h1>
-			<p>Videojuicer integration resource for developers...</p>
-			
-			<ul>
-				<li><a href="#" title="">Videojuicer API Overview</a></li>
-				<li><a href="#" title="">Getting started with the Videojuicer API</a></li>
-				<li><a href="#" title="">Videojuicer Core SDK Download</a></li>
-				<li><a href="#" title="">Videojuicer Player SDK Download</a></li>
-				<li><a href="#" title="">API Documentation &amp; Method Reference</a></li>
-				<li><a href="#" title="">Frequently Asked Questions</a></li>
-			</ul>		
-		</section>
-		
-	<!--[if !IE]> END The Developer Centre <![endif]-->
-	
-		<section id="help">
-			<h1>Help Centre</h1>
-			<form method="" action="" class="frm-srch">
-				<fieldset>
-					<legend class="hide">Search The Help Centre</legend>
-					<label class="hide" for="srch-footer">Search:</label>
-					<input type="text" id="srch-footer" class="textfield textfield-dark" value="Search Help Centre"/>
-					<button type="submit" title="Search the help Centre">Submit</button>
-				</fieldset>			
-			</form>
-			
-			<ul>
-				<li><a href="#" title="">Videojuicer API Overview</a></li>
-				<li><a href="#" title="">Getting started with the Videojuicer API</a></li>
-				<li><a href="#" title="">Videojuicer Core SDK Download</a></li>
-				<li><a href="#" title="">Videojuicer Player SDK Download</a></li>
-				<li><a href="#" title="">API Documentation &amp; Method Reference</a></li>
-				<li><a href="#" title="">Frequently Asked Questions</a></li>
-			</ul>		
-		</section>
-	
-	<!--[if !IE]> END The Help Centre <![endif]-->
-	
-	</footer>
-	
-<!--[if !IE]> END The page <![endif]-->
-
-
-
-
-
-
-</body>
-</html>

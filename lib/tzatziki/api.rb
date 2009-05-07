@@ -198,6 +198,7 @@ EOS
         :index=>self.documents["index"],
         
         :parent=>(parent ? parent.to_hash(false) : {}),
+        
         :children=>(include_children ? children.select {|c| c.documents.any?}.collect { |c| c.to_hash } : nil),
         :documents=>(include_children ? documents.reject {|name, d| name == "index"}.collect { |name, d| d.to_hash } : nil),
         :specifications=>(include_children ? specifications.collect { |name, d| d.to_hash } : nil),

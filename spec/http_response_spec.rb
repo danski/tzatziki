@@ -79,8 +79,7 @@ describe Net::HTTPResponse do
         @json_testable.payload[:response][:kind].should == "json"
         @json_uri = Net::HTTPRequest::Factory.specification_hash_to_uri(@json_testable.data[:request])
         @json_request = Net::HTTPRequest.from_hash(@json_testable.data[:request])
-        @json_response = Net::HTTPRequest.from_hash(@json_testable.data[:request]) { |http, req| http.request(req) }
-        
+        @json_response = Net::HTTPRequest.from_hash(@json_testable.data[:request]) { |http, req| http.request(req) }        
       end
       
       describe "(successful)" do

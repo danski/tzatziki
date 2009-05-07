@@ -13,3 +13,6 @@ I am the content
 
 **Paragraph**
 
+{% highlight 'yaml' %}
+	{{document.response.body}}
+{% endhighlight %}

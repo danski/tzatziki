@@ -31,4 +31,5 @@ require 'tzatziki/layout'
 require 'tzatziki/type'
 require 'tzatziki/specification'
 # Extensions to Liquid's template markup
+require 'tzatziki/tags/highlight'
 require 'tzatziki/tags/include'
