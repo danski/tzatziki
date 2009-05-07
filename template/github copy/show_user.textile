@@ -1,0 +1,9 @@
+---
+title: Show the a user's profile
+request:
+  host: github.com
+  uri: /api/v2/json/user/show/{{config.github.user}}
+response:
+  status: ok
+  kind: json
+===

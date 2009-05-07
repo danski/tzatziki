@@ -83,7 +83,7 @@ describe Tzatziki::API do
     it "should index all the child APIs at level N+1" do
       @site.read_children
       @site.children.first.source.should include("github")
-      @site.children.length.should == 2  
+      @site.children.length.should == 3  
       @api.read_children
       @api.children.first.source.should include("mail")
     end
@@ -125,7 +125,20 @@ describe Tzatziki::API do
       @site.specifications.keys.should == ["successful"]
     end    
     
-    it "should create an index page if one does not exist"
+    it "should create an index page if one does not exist and there are existing documents in the API" do
+      # the github API does not contain an index file
+      github = get_test_api("github", @site)
+      File.file?(File.join(github.source, "index.markdown")).should be_false
+      github.documents["index"].should be_kind_of Tzatziki::Document
+    end
+    it "should not create an index page if one exists" do
+      @api.documents["index"].should be_kind_of Tzatziki::Document
+      Tzatziki::Document.new(File.join(@api.source, @api.documents["index"].file_basename), @api).raw.should == @api.documents["index"].raw
+    end
+    it "should not create an index page if there are no documentables in the API folder" do
+      api = get_test_api("images", @site)
+      api.documents.should be_empty
+    end
     
     it "should write the files recursively" do
       @site.document!

@@ -7,9 +7,3 @@ response:
   status: ok
   kind: yaml
 ===
-
-I am the content
-----------------
-
-**Paragraph**
-

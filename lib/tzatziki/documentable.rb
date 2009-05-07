@@ -18,13 +18,14 @@ module Tzatziki
     # path_or_document: A string which can be the path to a file (which will be read), or
     #                   the document to be dealt with itself.
     # api:              An instance of Jekyll::API, to which this document will belong.
-    def initialize(path_or_document, api=nil)
+    def initialize(path_or_document, api=nil, basename=nil)
       self.api = api
       if File.file?(path_or_document)
         self.file_basename = File.basename(path_or_document)
         read(path_or_document)
       else
         self.raw = path_or_document
+        self.file_basename = basename
       end
     end
     
@@ -65,7 +66,7 @@ module Tzatziki
         ext = File.extname(file_basename)
         file_basename[0..(file_basename.length-ext.length-1)]
       else
-        Digest::MD5.hexdigest(self.raw)
+        @write_basename ||= Digest::MD5.hexdigest(self.raw)
       end
     end
     def write_filename; "#{write_basename}.html"; end
@@ -100,7 +101,7 @@ module Tzatziki
     def template_payload
       { 
         :document => to_hash,
-        :site => (Tzatziki.site.to_hash rescue {}),
+        :site => (Tzatziki::Site.singleton.to_hash rescue {}),
         :api => api.to_hash
       }.merge(self.payload)
     end

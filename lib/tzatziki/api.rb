@@ -81,6 +81,7 @@ module Tzatziki
       self.read_types
       self.read_specifications
       self.read_documents
+      self.conditionally_generate_index
       self.read_children
       self.children.each { |c| c.process } if recurse
     end
@@ -128,6 +129,14 @@ module Tzatziki
       self.documents = read_documentables_from_directory(self.source, Tzatziki::Document)
     end
     
+    # Generates an index page for this API *only* if the API already has documents and
+    # does not have an index page specified by the author.
+    def conditionally_generate_index
+      unless self.documents.empty?
+        self.documents["index"] ||= Tzatziki::Document.new(File.join(self.source, "index.markdown"), self, "index") 
+      end
+    end
+    
     # Reads and instantiates any layouts in the _layouts directory below self.source,
     # if such a folder exists. Otherwise the layouts hash will be left untouched from the parent.
     def read_layouts
@@ -143,12 +152,9 @@ module Tzatziki
       entries = Dir.entries(self.source)
       directories = entries.select { |e| File.directory?(File.join(self.source, e)) }
       directories = directories.reject { |d| d[0..0]=~/\.|_/ or d=~/\.examples$/ or d[-1..-1]=="~" }
-      puts "Beginning child loop for #{self.source}"
       directories.each do |dir|
-        puts "--- found new API at #{File.join(self.source, dir)}"
         api = Tzatziki::API.new(File.join(self.source, dir), self.destination, self)
       end
-      puts "End child loop for #{self.source}"
     end
     
     # Comparison with another Tzatziki::Site or Tzatziki::API instance.
@@ -167,15 +173,21 @@ module Tzatziki
     def write_path
       File.join(self.site.destination, path_offset)
     end
+    def uri
+      path_offset
+    end
     
     # Marshalls the API into a hash ready for inclusion in templates.
     # Returns the resulting hash object.
     def to_hash(include_children=true)
       {
         :config=>config,
-        :parent=>(parent ? parent.to_hash(false) : {}),
+        :source=>self.source,
+        :uri=>uri,
+        :title=>File.split(self.source).last.capitalize,
         
-        :children=>(include_children ? children.collect { |c| c.to_hash } : nil),
+        :parent=>(parent ? parent.to_hash(false) : {}),
+        :children=>(include_children ? children.select {|c| c.documents.any?}.collect { |c| c.to_hash } : nil),
         :documents=>(include_children ? documents.collect { |name, d| d.to_hash } : nil),
         :specifications=>(include_children ? specifications.collect { |name, d| d.to_hash } : nil),
         :types=>(include_children ? types.collect { |name, d| d.to_hash } : nil)
