@@ -25,9 +25,49 @@ Tzatziki tests are of the "black box" variety. While your ruby/python/whatever t
 * You can make your Tzatziki tests available to developers, and developers can run Tzatziki tests against their own accounts if they so choose.
 * You can use Tzatziki to document APIs on *other services that you don't own*.
 
-* Description of gem purpose
-** Documentation system based on [Jekyll](http://github.com/mojombo/jekyll)
-** Tests your API as you document
+Tzatziki's documentation format is heavily based on patterns seen in [Jekyll](http://github.com/mojombo/jekyll) and uses the [Liquid](http://github.com/tobi/liquid) templating system. Templates are completely user-serviceable and can be altered to match your product's existing site.
+
+Getting to Hello World
+----------------------
+
+Start out by install the gem and making a couple of folders. One will be the source, and one will be the destination where your docs are saved.
+
+	sudo gem install danski-tzatziki -s http://gems.github.com
+	mkdir myapi
+	mkdir myapi_out
+
+Now just for fun, let's make something that tests the new [Github API](http://develop.github.com). Create a file in the **myapi** folder called **show_repo.markdown**. Textile and HTML extensions are also permitted and will be processed accordingly. Write into the file:
+
+	---
+	title: Getting Repo information
+	===
+	
+	To retrieve the Information for a repo, you can make an unsigned request to a path like:
+	
+		/api/v2/:type/repos/show/:user/:repo
+		
+	Here is an example request:
+	
+	---
+	request:
+	  host: github.com
+	  uri: /api/v2/xml/repos/show/danski/tzatziki
+	===
+	
+	The response that comes back looks like this (defining a response YAML block inline to force Tzatziki to render the response table within my content):
+	
+	---
+	response:
+	  status: ok
+	  kind: xml
+	===
+
+As you can see, your Tzatziki docs can contain YAML blocks in a similar way to Jekyll, but we do things slightly differently to allow the inclusion of multiple YAML blocks within the document body. Each YAML block should begin with three dashes (---) and end with three equal signs (===) with each being on their own line. When the document is processed, the YAML declare at the top of the document will be removed and processed, and each subsequent declare will be deep-merged into the first and replaced with a data table containing the data for that YAML block.
+
+Let's run this document through Tzatziki and see what comes back:
+
+	
+
 * Examples of use
 ** Documenting existing APIs
 ** Documenting new APIs
@@ -37,12 +77,6 @@ Tzatziki tests are of the "black box" variety. While your ruby/python/whatever t
 
 * User-configurable config file
 * Folder structure
-
-* Why test over HTTP?
-** Verify API documentation integrity
-** Abstract public API docs from private functional docs
-** Allow the public to run the test suites
-** Your API docs use your API!
 
 * What are api calls?
 * What are specifications?
