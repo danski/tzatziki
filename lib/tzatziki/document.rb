@@ -28,7 +28,7 @@ module Tzatziki
     
     def payload
       super.merge({
-        :examples=>examples.collect {|name, doc| doc.to_hash.merge(:content=>lambda { doc.render({}, false) }) }
+        :examples=>examples.collect {|name, doc| doc.to_hash.merge(:content=>lambda { doc.render }) }
       })
     end
     

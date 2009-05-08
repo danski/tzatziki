@@ -41,12 +41,15 @@ module Tzatziki
     # +raw_source+ is the string to render, while 
     # +_payload+ is a Mash of options to pass to the templates.
     def render(_payload={}, do_layout=true)
-      s,p = self.transform, template_payload.merge(_payload)
-      s = Liquid::Template.parse(s).render(Mash.new(p))
+      s,p = self.raw, template_payload.merge(_payload)
+      s = Liquid::Template.parse(s).render(Mash.new(p), Tzatziki::Filters)
+      s = self.transform(s)
+      
       if (layout_name = p[:layout]) and (do_layout)
         p.delete(:layout)
         s = self.api.layouts[layout_name].render(p.merge(:content=>s)) rescue raise(RuntimeError, "Layout #{layout_name.inspect} not found for Documentable #{self.to_s}.")
       end
+      
       return s
     end
     

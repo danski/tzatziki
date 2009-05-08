@@ -3,13 +3,23 @@
 module Tzatziki
   
   module Filters
+    
+    attr_accessor :inline_rendered_data
+    
     def textilize(input)
       RedCloth.new(input).to_html
     end
     
-    def render_document(documentable)
-      documentable.inspect
-      #documentable.render
+    def render_table(input)
+      return xml_escape(input) unless input.is_a?(Hash)
+      return "" if input.empty?
+      self.inline_rendered_data = (inline_rendered_data || {}).deep_merge(input)
+      inner = input.inject("") do |memo, (key, value)|
+        frag = "<dt>#{key}</dt><dd>#{render_table(value)}</dd>"
+        self.inline_rendered_data[key] =  frag
+        memo << frag
+      end
+      "<dl>#{inner}</dl>"
     end
     
     def date_to_string(date)
@@ -25,7 +35,7 @@ module Tzatziki
     end
     
     def xml_escape(input)
-      input.gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;")
+      input.to_s.gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;")
     end
     
     def number_of_words(input)

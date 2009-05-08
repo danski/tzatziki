@@ -12,8 +12,30 @@ layout: wrapper
 			
 			{{ content }}
 			
-			Response body for this API call was
-			{{ document.response.body }}
+			<div class="box box-light">
+				<h1>Request</h1>
+				<div class="content">
+
+					<div class="tabbed-box clearfix">		
+						<ul class="nav-tabbed clearfix" data-controls="technical">
+								<li><a href="#technical_request">Request<i></i></a></li>
+								<li><a href="#technical_response">Response<i></i></a></li>
+						</ul><span class="right"></span>
+
+						<div class="tabbed-content" data-group="technical" id="technical_request">
+							{{ document.request | render_table }}
+						</div>
+						
+						<div class="tabbed-content" data-group="technical" id="technical_response">
+							{{ document.response | render_table }}
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+			
+			<hr />
 			
 			<div class="box box-light">
 				<h1>Examples</h1>
@@ -37,8 +59,6 @@ layout: wrapper
 			</div>
 			
 		</div>
-		
-		<section class="footer"></section>
 		
 	</div>	
 	

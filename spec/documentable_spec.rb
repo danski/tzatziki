@@ -87,12 +87,11 @@ i am the walrus
       @documentable.raw = "{{title}}"
       render_output = @documentable.render
       render_output.should be_kind_of(String)
-      render_output.should include("The Google Search API")
+      render_output.should include("Google Search")
     end
   
     it "should render the template with each layout in turn" do
       @documentable.data[:layout] = "document"
-      @documentable.payload.should == @documentable.data
       content = @documentable.render
       content.should include("DOCUMENT LAYOUT")
       content.should include("DEFAULT LAYOUT")
@@ -120,9 +119,5 @@ i am the walrus
       @documentable.transform.should == @documentable.raw
     end
   end  
-  
-  it "should recognise multi-datablock input and use the YAML declares as placeholders for data tables"
-  it "should recognise single datablock input and let the user specify where to place the tables"
-  it "should place the request/response data tables at the end of the document if the user did not place them"
   
 end

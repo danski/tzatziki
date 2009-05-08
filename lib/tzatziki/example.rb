@@ -5,6 +5,11 @@ module Tzatziki
     # Examples belong to a document
     attr_accessor :document
     
+    def initialize(*args)
+      super
+      parse!(self.raw, :layout=>"example")
+    end
+    
     # The data inherits from the parent document
     def data
       (document)? document.data.deep_merge(super) : super

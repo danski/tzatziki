@@ -27,6 +27,33 @@ describe Tzatziki::Parsable do
     data, template = @parsable.parse!(@parsable.raw, {:layout=>"specification"})
     data[:layout].should == "specification"    
   end
-  it "should replace YAML blocks with a liquid template marker"
   
+  describe "multiblock support" do
+   before(:each) do
+     @doc = <<-TESTDOC
+---
+title: A block that will not be included inline, as it is the first block
+===
+
+Some content
+
+---
+inline: this data is inline and will be replaced
+===
+
+Some more content    
+
+      TESTDOC
+      @parsable = ::TestParsable.new(@doc)
+      @data, @template = @parsable.extract_yaml(@parsable.raw)
+    end
+    
+    it "stores inline blocks in a payload array" do
+      @parsable.inline_data.length.should == 1
+    end
+    
+    it "replaces YAML blocks with a liquid template marker" do
+      @template.should include("render_table")
+    end
+  end
 end

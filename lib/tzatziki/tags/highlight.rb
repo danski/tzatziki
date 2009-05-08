@@ -52,4 +52,4 @@ module Tzatziki
   
 end
 
-Liquid::Template.register_tag('highlight', Jekyll::HighlightBlock)
+Liquid::Template.register_tag('highlight', Tzatziki::HighlightBlock)

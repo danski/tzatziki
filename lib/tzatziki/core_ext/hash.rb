@@ -12,6 +12,24 @@ class Hash
     end
   end
   
+  # Subtracts one hash from another by removing keys from the actor and recursing on any hash values.
+  # Returns a new Hash without affecting the actors.
+  # Example 1:
+  # {:foo=>"bar"} - {:foo=>"bar"} == {}
+  # Example 2 of deep nesting:
+  # {:foo=>{:bar=>"baz", :car=>"naz"}, :bar=>"baz"} - {:foo=>{:car=>"naz"}} == {:foo=>{:bar=>"baz"}, :bar=>"baz"}
+  def -(arg)
+    target = dup; actor = arg.dup
+    actor.each do |key, value|
+      if value.is_a?(Hash)
+        target[key] = target[key] - value
+      else
+        target.delete(key)
+      end
+    end
+    return target
+  end
+  
   # Returns a new hash just like this one, but with all STRING keys and values evaluated
   # and rendered as liquid templates using the provided payload hash.
   def deep_liquify(payload={})
@@ -32,8 +50,7 @@ class Hash
   # 
   # Thanks to whoever made it.
   def deep_merge(hash)
-    target = dup
-    
+    target = dup    
     hash.keys.each do |key|
       if hash[key].is_a? Hash and self[key].is_a? Hash
         target[key] = target[key].deep_merge(hash[key])
