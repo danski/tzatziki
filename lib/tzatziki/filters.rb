@@ -7,6 +7,11 @@ module Tzatziki
       RedCloth.new(input).to_html
     end
     
+    def render_document(documentable)
+      documentable.inspect
+      #documentable.render
+    end
+    
     def date_to_string(date)
       date.strftime("%d %b %Y")
     end
