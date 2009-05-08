@@ -143,7 +143,7 @@ module Tzatziki
     # Generates an index page for this API *only* if the API already has documents and
     # does not have an index page specified by the author.
     def conditionally_generate_index
-      unless self.documents.empty?
+      unless self.documents.empty? or self.documents["index"]
         default_index = <<-EOS
 ---
 title: #{File.split(self.source).last.capitalize}
@@ -153,7 +153,8 @@ layout: document
 I am the index
 EOS
         
-        self.documents["index"] ||= Tzatziki::Document.new(default_index, self, "index.markdown") 
+        self.documents["index"] = Tzatziki::Document.new(default_index, self, "index.markdown")
+        @generated_index = true
       end
     end
     
@@ -304,7 +305,9 @@ EOS
       when :specdoc
         message_count = 1
         Taz.out.write "#{"--"*stack} #{self.is_a?(Tzatziki::Site)? "Document bundle" : "API"} located in #{self.source}\n"
-        self.documents.each do |name, doc|       
+        
+        docs = self.documents.reject {|name, doc| @generated_index and name=="index" }        
+        docs.each do |name, doc|       
           ([doc]+doc.examples.values).each do |document|
             if document.testable?
               n = document.data[:title] || name

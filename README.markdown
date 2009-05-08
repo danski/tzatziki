@@ -54,12 +54,14 @@ Now just for fun, let's make something that tests the new [Github API](http://de
 	  uri: /api/v2/xml/repos/show/danski/tzatziki
 	===
 	
-	The response that comes back looks like this (defining a response YAML block inline to force Tzatziki to render the response table within my content):
+	The response that comes back should be something like:
 	
 	---
 	response:
 	  status: ok
-	  kind: xml
+	  kind: json
+	  headers:
+	    arbitrary: lol
 	===
 
 As you can see, your Tzatziki docs can contain YAML blocks in a similar way to Jekyll, but we do things slightly differently to allow the inclusion of multiple YAML blocks within the document body. Each YAML block should begin with three dashes (---) and end with three equal signs (===) with each being on their own line. When the document is processed, the YAML declare at the top of the document will be removed and processed, and each subsequent declare will be deep-merged into the first and replaced with a data table containing the data for that YAML block.
@@ -67,37 +69,74 @@ As you can see, your Tzatziki docs can contain YAML blocks in a similar way to J
 Let's run this document through Tzatziki and see what comes back:
 
 	Jet-Jaguar:tmp danski$ taz myapi myapi_out
-	
+	Tzatziki is reading the specifications from myapi...
+	=> Done.
+	Tzatziki is testing against the specifications...
+	-- Document bundle located in myapi
+	---- Getting Repo information
+	------ [1] Header 'arbitrary' was expected to be 'lol' but was ''
+	------ [2] Expected kind to be "json" but was "xml"
+	       Request data          
+	       {:host=>"github.com", :uri=>"/api/v2/xml/repos/show/danski/tzatziki"}
+	       Response assertions   
+	       {:headers=>{:arbitrary=>"lol"}, :status=>"ok", :kind=>"json"}
 
-	
+Ooh! Errors! What just happened? Tzatziki made a request to http://github.com/api/v2/xml/repos/show/danski/tzatziki and checked to see that the response was OK and had a content-type of application/xml. And it failed, because we told Tzatziki to expect something different. Let's fix up the document by replacing the response block with:
 
-* Examples of use
-** Documenting existing APIs
-** Documenting new APIs
-** BDD for APIs
+	---
+	response:
+	  status: ok
+	  kind: xml
+	===
 
-* Hello world with a single text file
+And running it again:
+
+	Jet-Jaguar:tmp danski$ taz myapi myapi_out
+	Tzatziki is reading the specifications from myapi...
+	=> Done.
+	Tzatziki is testing against the specifications...
+	-- Document bundle located in myapi
+	---- Getting Repo information
+	Tzatziki is writing the documentation to myapi_out 
+	Done. Enjoy your Tzatziki. 
+
+See? All passed. We could just as easily change the status to 'redirect' or '201' or '30X' and see another failed case. We'll go into all the options Tzatziki supports for requests and responses shortly.
+
+Try opening the resulting HTML file in the myapi_out folder. Ugh. Ugly. This brings us neatly onto:
+
+Making the output pretty
+------------------------
+
+
+Refactoring your docs with Specifications and Types
+---------------------------------------------------
+
+* What are specifications?
+	* Examples of specifications
+	* Signing specifications
+	* Included specifications
+* What are data types?
+	* Examples of data types
+	* Included data types
+
+Adding examples to your API methods
+-----------------------------------
+* What are examples?
+	* Examples of examples (very meta)
+
+Sub-Apis and inheritance
+------------------------
 
 * User-configurable config file
 * Folder structure
 
-* What are api calls?
-* What are specifications?
-** Examples of specifications
-** Signing specifications
-** Included specifications
-* What are data types?
-** Examples of data types
-* What are examples?
-** Examples of examples (very meta)
-** Included data types
-* Customising the HTML
-** Liquid reference
+Reference
+=========
 
-* Authoring documentation
-* YAML declare syntax
-* Declaring with one block (jekyll-style)
-* Declaring with multiple blocks (auto table insertion)
+Customising the HTML
+--------------------
+	* Liquid reference
+
 
 Supported request variables
 ---------------------------
@@ -135,6 +174,9 @@ body
 	- values
 	- kind
 
+Other stuff
+===========
+
 Design principles checklist
 ---------------------------
 
@@ -142,11 +184,11 @@ Design principles checklist
 * Scalable logic. Same classes and patterns apply to one-file Tzatziki sites as to 50-level/500-file sites.
 * Nesting and inheritance
 * Out of the box experience:
-** Must be easy to start a new site
-** Portable directory structure should allow sites to migrate seamlessly to new versions of this gem
-** Must provide a great cross-browser default template set, and...
-** ...must allow users to replace it completely or partially as they choose.
-* Interactivity primarily through rake and the `taz` terminal command
+	* Must be easy to start a new site
+	* Portable directory structure should allow sites to migrate seamlessly to new versions of this gem
+	* Must provide a great cross-browser default template set, and...
+	* ...must allow users to replace it completely or partially as they choose.
+* Interactivity through rake and the `taz` terminal command
 * It should be safe to make an uncompiled Tzatziki site available for public download
 * Users should be able to run Tzatziki tests against their own accounts (depending on your APIs ability to sandbox API calls or to provide a test environment)
 

@@ -1,3 +1,4 @@
 *.DS_Store
+pkg/*
 spec/example/destination/*/*
 spec/example/destination/*.html

@@ -47,7 +47,7 @@ module Tzatziki
       
       if (layout_name = p[:layout]) and (do_layout)
         p.delete(:layout)
-        s = self.api.layouts[layout_name].render(p.merge(:content=>s)) rescue raise(RuntimeError, "Layout #{layout_name.inspect} not found for Documentable #{self.to_s}.")
+        s = self.api.layouts[layout_name].render(p.merge(:content=>s)) rescue s
       end
       
       return s
