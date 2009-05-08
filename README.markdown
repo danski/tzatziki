@@ -1,8 +1,29 @@
 Tzatziki
 ========
-**Work in progress not ready for installation**
 
-This README is actually a TODO of things I need to write in the README so that people understand WTF this gem is for.
+**This README is work in progress because there's a lot to cover**
+
+Document and test your app's developer API in one go.
+-----------------------------------------------------
+
+So I was working on the Videojuicer API and figuring out a strategy for testing and documentation, and I realised that if we did things the usual way, we'd have redundancy:
+
+1. Unit specs for the app
+2. Integration specs for the app
+3. Public API specs that simulate inbound calls over HTTP to check adherence to the documentation
+4. The documentation itself.
+
+So every time we create a new app revision, we have to update the public API specs, and the documentation, and somehow enforce parity between the two. There's too much room for human error in that process, and consistency is really business critical when it comes to publishing APIs. What if we miss something? Why do I have to document my public API once so that a computer can test it and once again so that a human can understand it? Can't I automated this problem away? As it turns out, we can.
+
+WTF is Tzatziki?
+----------------
+It's a dip containing cucumber and yoghurt. It's also a tool that lets you write API documentation for your application that not only gets converted into an attractive ready-to-upload developer site, but is also tested and enforced prior to being published. Where existing testing tools are *tests that can be used as documentation*, Tzatziki docs are *documents that can be tested and verified*.
+
+Tzatziki tests are of the "black box" variety. While your ruby/python/whatever tests run within your application and can peek/poke at internal information, Tzatziki tests as if it itself were a client for your API. Tzatziki treats everything you tell it about the request as a means of generating *request fixtures*, and everything you tell it about the response as *assertions* about the data expected to be returned by your API. The advantages of black box testing are manyfold:
+
+* You can use Tzatziki with any application that serves over HTTP, regardless of the language or framework used to build that app.
+* You can make your Tzatziki tests available to developers, and developers can run Tzatziki tests against their own accounts if they so choose.
+* You can use Tzatziki to document APIs on *other services that you don't own*.
 
 * Description of gem purpose
 ** Documentation system based on [Jekyll](http://github.com/mojombo/jekyll)
