@@ -1,2 +1,3 @@
 *.DS_Store
-spec/example/destination/*
+spec/example/destination/*/*
+spec/example/destination/*.html

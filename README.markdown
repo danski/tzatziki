@@ -66,6 +66,9 @@ As you can see, your Tzatziki docs can contain YAML blocks in a similar way to J
 
 Let's run this document through Tzatziki and see what comes back:
 
+	Jet-Jaguar:tmp danski$ taz myapi myapi_out
+	
+
 	
 
 * Examples of use
